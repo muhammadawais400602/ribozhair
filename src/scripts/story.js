@@ -160,14 +160,14 @@ export async function initStory() {
 
   // render + ambient loops only run while the section is on screen
   ScrollTrigger.create({
-    trigger: story, start: "top bottom", end: "bottom top",
+    trigger: story.parentNode && story.parentNode.classList.contains("pin-spacer") ? story.parentNode : story, start: "top bottom", end: "bottom top",
     onToggle: (self) => {
       if (self.isActive) { if (!reduced) { waveTween.resume(); sloshTween.resume(); } gl && gl.start(); }
       else { waveTween.pause(); sloshTween.pause(); gl && gl.stop(); }
     },
   });
   if (gl) { addEventListener("resize", () => gl.layout()); gl.layout(); gl.frame(); }
-  if (import.meta.env.DEV) window.__story = { tl, P };
+  if (import.meta.env.DEV) window.__story = { tl, P, gl };
 
   /* ======================================================================== */
   async function buildScene() {
@@ -289,7 +289,7 @@ export async function initStory() {
     const dustMat = new THREE.MeshPhysicalMaterial({ color: 0xeaf6ff, roughness: 0.03, metalness: 0.55, envMapIntensity: 3, transparent: true, opacity: 0.85, clearcoat: 1 });
     const dropMat = new THREE.MeshPhysicalMaterial(lite
       ? { color: 0xdca658, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.7, envMapIntensity: 2.4 }
-      : { color: 0xffffff, roughness: 0.02, transmission: 1, ior: 1.36, thickness: 0.1, attenuationColor: new THREE.Color("#f0bd72"), attenuationDistance: 0.45, envMapIntensity: 1.6, transparent: true });
+      : { color: 0xe8ad55, roughness: 0.04, metalness: 0, transparent: true, opacity: 0.86, envMapIntensity: 2.2, clearcoat: 1, clearcoatRoughness: 0.02, emissive: new THREE.Color("#6b3d0c"), emissiveIntensity: 0.35 });
 
     // ---- rig ----
     const rig = new THREE.Group(); scene.add(rig);
@@ -676,13 +676,22 @@ export async function initStory() {
       renderer.render(scene, camera);
     }
 
+    canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); canvas.style.display = "none"; api.stop(); });
+    // keep it smooth on slower GPUs: step the pixel ratio down if frames run long
+    let pr = renderer.getPixelRatio(), slow = 0, seen = 0;
+    function adapt(dt) {
+      if (pr <= 1 || P.burst <= 0 || P.fade >= 1) return;
+      seen++; if (dt > 24) slow++;
+      if (seen >= 45) { if (slow > 30) { pr = Math.max(1, pr - 0.25); renderer.setPixelRatio(pr); renderer.setSize(L.W, L.H, false); } seen = 0; slow = 0; }
+    }
     let running = false;
-    const tick = (time, dt) => { clock += Math.min(dt, 50) / 1000; frame(); };
-    return {
+    const tick = (time, dt) => { clock += Math.min(dt, 50) / 1000; adapt(dt); frame(); };
+    const api = {
       layout,
       frame,
       start() { if (!running) { running = true; gsap.ticker.add(tick); } },
       stop() { if (running) { running = false; gsap.ticker.remove(tick); } },
     };
+    return api;
   }
 }

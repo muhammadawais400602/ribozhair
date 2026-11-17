@@ -67,7 +67,7 @@
 .hero__wordmark { top: calc(var(--nav-h) + 5svh); color: rgba(255, 255, 255, 0.14); text-shadow: 0 0 80px rgba(120, 190, 255, 0.25); }
 .hero__stage { padding-top: calc(var(--nav-h) + clamp(36px, 8svh, 96px)); perspective: 1400px; }
 
-.hero__product { position: relative; height: clamp(420px, 66svh, 780px); aspect-ratio: var(--bottle-ar, 0.34); transform-style: preserve-3d; will-change: transform; }
+.hero__product { position: relative; height: clamp(540px, 72svh, 860px); aspect-ratio: var(--bottle-ar, 0.2786); transform-style: preserve-3d; will-change: transform; }
 .hero__bottle { position: relative; z-index: 2; height: 100%; width: 100%;
   filter: drop-shadow(18px 26px 26px rgba(2, 10, 30, 0.42)) drop-shadow(0 4px 6px rgba(2, 10, 30, 0.35)); }
 /* contact shadow on the water */
