@@ -7,8 +7,8 @@ const EASE = "expo.out";
 
 /* ---------- Theme: one shared colour language that eases between sections ---------- */
 const THEMES = {
-  dark: { "--bg": "#06142e", "--fg": "#ffffff", "--soft": "rgba(255,255,255,0.72)", "--card": "rgba(255,255,255,0.06)", "--line": "rgba(255,255,255,0.14)", "--accent": "#64b5f6", "--pill": "rgba(255,255,255,0.14)" },
-  light: { "--bg": "#f5f8fc", "--fg": "#0d1b2a", "--soft": "rgba(13,27,42,0.68)", "--card": "rgba(255,255,255,0.92)", "--line": "rgba(10,42,94,0.12)", "--accent": "#1e88e5", "--pill": "rgba(10,42,94,0.08)" },
+  dark: { "--bg": "#06142e", "--fg": "#ffffff", "--soft": "rgba(255,255,255,0.72)", "--card": "rgba(255,255,255,0.08)", "--line": "rgba(255,255,255,0.14)", "--accent": "#64b5f6", "--pill": "rgba(255,255,255,0.14)" },
+  light: { "--bg": "#f5f8fc", "--fg": "#0d1b2a", "--soft": "rgba(13,27,42,0.68)", "--card": "rgba(255,255,255,0.58)", "--line": "rgba(10,42,94,0.12)", "--accent": "#1e88e5", "--pill": "rgba(10,42,94,0.08)" },
 };
 THEMES.blue = THEMES.dark;
 THEMES.deep = THEMES.dark;
@@ -26,6 +26,14 @@ export function initThemes() {
       trigger: el, start: "top 55%", end: "bottom 55%",
       onToggle: (self) => self.isActive && set(el.dataset.theme),
     });
+  });
+}
+
+/* ---------- Cinematic photo backdrops: slow parallax ---------- */
+export function initBackdrops() {
+  $$(".sec-bg img").forEach((img) => {
+    const host = img.closest(".how") || img.closest("section, footer");
+    gsap.fromTo(img, { yPercent: -7 }, { yPercent: 7, ease: "none", scrollTrigger: { trigger: host, start: "top bottom", end: "bottom top", scrub: true } });
   });
 }
 

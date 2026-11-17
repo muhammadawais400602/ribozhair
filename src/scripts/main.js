@@ -1,6 +1,7 @@
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/inter";
 import "../styles/main.css";
+import "../styles/cinema.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -8,7 +9,7 @@ import Lenis from "lenis";
 import { initNav } from "./nav.js";
 import { initHero } from "./hero.js";
 import { initStory } from "./story.js";
-import { initThemes, initReveals, initTilt, initIngredients, initChart, initStars, initSeals, initFaq, initShop, initNewsletter } from "./ui.js";
+import { initThemes, initBackdrops, initReveals, initTilt, initIngredients, initChart, initStars, initSeals, initFaq, initShop, initNewsletter } from "./ui.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,6 +33,7 @@ async function boot() {
   const how = initHow();
 
   initThemes();
+  initBackdrops();
   initReveals();
   initTilt();
   initIngredients();

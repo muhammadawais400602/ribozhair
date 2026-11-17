@@ -1,0 +1,38 @@
+/* Section 3 + 4 — shared pinned stage (overrides the story rules in main.css) */
+.story__stage { position: relative; width: 100%; height: 100svh; overflow: hidden; background: #050d1f; isolation: isolate; }
+.story__bg { position: absolute; inset: 0; background: #050d1f center / cover no-repeat; animation: none; }
+.story__bg--dark { background-color: #071226; }
+.story__bg--blue { opacity: 0; background-color: #0f4f9e; background-size: cover; }
+.story__gl { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; display: block; }
+.story__vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(120% 90% at 50% 46%, transparent 42%, rgba(2, 8, 22, 0.5) 100%), linear-gradient(to bottom, rgba(2, 8, 22, 0.55), transparent 16%, transparent 84%, rgba(2, 8, 22, 0.45)); }
+.story .grain { z-index: 2; opacity: 0.07; }
+.scene { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+
+.problem__heading { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 92%; text-align: center; font: 700 clamp(2.5rem, 7.2vw, 7rem) / 0.98 var(--font-d); letter-spacing: -0.04em; color: #fff; text-shadow: 0 2px 2px rgba(2, 8, 22, 0.35), 0 14px 60px rgba(2, 8, 22, 0.85); }
+.statement { position: absolute; left: var(--x); top: var(--y); rotate: var(--rot); font: 600 var(--size) / 1.2 var(--font-d); letter-spacing: -0.01em; color: #fff; white-space: nowrap; padding: 0.6rem 1.05rem 0.6rem 0.95rem; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.16); border-left: 2px solid var(--sky); background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)), rgba(4, 14, 34, 0.5); backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 14px 40px rgba(2, 8, 22, 0.45); text-shadow: none; }
+
+.scene--meet { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(8px, 1.6svh, 18px); padding: calc(var(--nav-h) + 10px) 20px 18px; text-align: center; color: #fff; }
+.meet__bottle { position: relative; flex: none; height: clamp(250px, 54svh, 640px); aspect-ratio: var(--bottle-ar, 0.305); }
+.meet__bottle img { position: relative; width: 100%; height: 100%; max-width: none; visibility: hidden; }
+.meet__shadow { position: absolute; left: 50%; bottom: -2.2%; width: 150%; height: 7%; translate: -50% 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(2, 10, 30, 0.6), rgba(2, 10, 30, 0.28) 45%, transparent 100%); filter: blur(7px); opacity: 0; }
+.meet__bloom { position: absolute; left: 50%; top: 50%; width: 330%; height: 120%; translate: -50% -50%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, 0.75), rgba(160, 215, 255, 0.35) 40%, transparent 72%); mix-blend-mode: screen; opacity: 0; }
+.liquid { position: absolute; inset: 0; mix-blend-mode: multiply; opacity: 0; -webkit-mask: center / 100% 100% no-repeat; mask: center / 100% 100% no-repeat; }
+.liquid svg { width: 100%; height: 100%; overflow: visible; }
+.meet__tagline { font: 700 clamp(1.7rem, min(4.8vw, 6.6svh), 4.2rem) / 1 var(--font-d); letter-spacing: -0.04em; text-shadow: 0 10px 40px rgba(2, 10, 30, 0.45); }
+.meet__intro { max-width: 60ch; color: rgba(255, 255, 255, 0.9); font-size: clamp(0.9rem, min(1.25vw, 2.2svh), 1.12rem); line-height: 1.5; text-shadow: 0 2px 18px rgba(2, 10, 30, 0.5); }
+.badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.story .glass-badge { padding: 0.7rem 1.2rem; border-radius: 999px; font: 600 clamp(0.82rem, 1.9svh, 0.95rem) / 1 var(--font-d); }
+
+@media (max-width: 960px) {
+  .statement { left: var(--mx); top: var(--my); font-size: clamp(0.8rem, 3.5vw, 1rem) !important; padding: 0.5rem 0.85rem 0.5rem 0.75rem; border-radius: 12px; }
+  .problem__heading { font-size: clamp(2.3rem, 10.5vw, 4.6rem); }
+}
+@media (max-width: 560px) {
+  .meet__bottle { height: clamp(220px, 43svh, 440px); }
+  .badges { gap: 7px; }
+  .story .glass-badge { padding: 0.6rem 0.9rem; }
+}
+@media (max-height: 560px) {
+  .meet__bottle { height: 46svh; }
+  .meet__intro { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+}
