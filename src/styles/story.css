@@ -6,22 +6,23 @@
 .story__vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(125% 95% at 50% 46%, transparent 55%, rgba(8, 26, 54, 0.22) 100%); }
 .scene { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 
-.problem__heading { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 92%; text-align: center; font: 700 clamp(2.5rem, 7.2vw, 7rem) / 0.98 var(--font-d); letter-spacing: -0.04em; color: #fff; text-shadow: 0 2px 3px rgba(8, 26, 54, 0.35), 0 12px 50px rgba(8, 26, 54, 0.6); }
+/* centred by layout, never by a transform: GSAP owns the transform and would freeze a translate in px */
+.problem__heading { position: absolute; inset: 0; translate: none; width: auto; max-width: none; height: fit-content; margin: auto; padding: 0 4%; text-align: center; font: 700 clamp(2.5rem, min(6.6vw, 17svh), 12rem) / 0.98 var(--font-d); letter-spacing: -0.04em; color: #fff; text-shadow: 0 2px 3px rgba(8, 26, 54, 0.35), 0 12px 50px rgba(8, 26, 54, 0.6); }
 /* solid translucent chips: no backdrop-filter while they animate */
-.statement { position: absolute; left: var(--x); top: var(--y); rotate: var(--rot); font: 600 var(--size) / 1.2 var(--font-d); letter-spacing: -0.01em; color: #fff; white-space: nowrap; padding: 0.6rem 1.05rem 0.6rem 0.95rem; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.22); border-left: 2px solid var(--sky); background: linear-gradient(180deg, rgba(40, 72, 112, 0.82), rgba(24, 52, 90, 0.78)); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 10px 26px rgba(8, 26, 54, 0.26); text-shadow: none; will-change: transform, opacity; }
+.statement { position: absolute; left: var(--x); top: var(--y); rotate: var(--rot); font: 600 clamp(0.95rem, 1.15vw, 2.1rem) / 1.2 var(--font-d); letter-spacing: -0.01em; color: #fff; white-space: nowrap; padding: 0.55em 0.95em 0.55em 0.85em; border-radius: 0.8em; border: 1px solid rgba(255, 255, 255, 0.22); border-left: 2px solid var(--sky); background: linear-gradient(180deg, rgba(40, 72, 112, 0.82), rgba(24, 52, 90, 0.78)); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 10px 26px rgba(8, 26, 54, 0.26); text-shadow: none; will-change: transform, opacity; }
 
 .scene--meet { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(8px, 1.6svh, 18px); padding: calc(var(--nav-h) + 10px) 20px 18px; text-align: center; color: #fff; }
 .scene--meet::before { content: ""; position: absolute; left: 50%; bottom: 0; width: min(1100px, 100%); height: 46%; translate: -50% 0; background: radial-gradient(60% 70% at 50% 62%, rgba(10, 60, 120, 0.3), transparent 72%); opacity: var(--scrim, 0); pointer-events: none; }
-.meet__bottle { position: relative; flex: none; height: clamp(250px, 54svh, 640px); aspect-ratio: var(--bottle-ar, 0.305); margin-bottom: clamp(6px, 1.4svh, 16px); }
+.meet__bottle { position: relative; flex: none; height: clamp(250px, 54svh, 1100px); aspect-ratio: var(--bottle-ar, 0.305); margin-bottom: clamp(6px, 1.4svh, 16px); }
 .meet__bottle img { position: relative; width: 100%; height: 100%; max-width: none; visibility: hidden; filter: drop-shadow(0 30px 26px rgba(2, 10, 30, 0.4)); will-change: transform, opacity; }
-.meet__shadow { position: absolute; left: 50%; bottom: -2.2%; width: 150%; height: 7%; translate: -50% 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(2, 10, 30, 0.5), rgba(2, 10, 30, 0.22) 45%, transparent 100%); opacity: 0; }
+.meet__shadow { position: absolute; left: -25%; bottom: -2.2%; width: 150%; height: 7%; translate: none; border-radius: 50%; background: radial-gradient(closest-side, rgba(2, 10, 30, 0.5), rgba(2, 10, 30, 0.22) 45%, transparent 100%); opacity: 0; }
 .meet__bloom { position: absolute; left: 50%; top: 50%; width: 330%; height: 120%; translate: -50% -50%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, 0.7), rgba(200, 232, 255, 0.3) 40%, transparent 72%); opacity: 0; }
 .liquid { position: absolute; inset: 0; mix-blend-mode: multiply; opacity: 0; -webkit-mask: center / 100% 100% no-repeat; mask: center / 100% 100% no-repeat; }
 .liquid svg { width: 100%; height: 100%; overflow: visible; }
-.meet__tagline { position: relative; font: 700 clamp(1.7rem, min(4.8vw, 6.6svh), 4.2rem) / 1 var(--font-d); letter-spacing: -0.04em; text-shadow: 0 2px 3px rgba(6, 40, 90, 0.3), 0 10px 40px rgba(6, 40, 90, 0.5); }
-.meet__intro { position: relative; max-width: 60ch; color: #fff; font-weight: 500; font-size: clamp(0.9rem, min(1.25vw, 2.2svh), 1.12rem); line-height: 1.5; text-shadow: 0 1px 2px rgba(6, 40, 90, 0.45), 0 2px 22px rgba(6, 40, 90, 0.6); }
+.meet__tagline { position: relative; font: 700 clamp(1.7rem, min(4.8vw, 6.6svh), 7rem) / 1 var(--font-d); letter-spacing: -0.04em; text-shadow: 0 2px 3px rgba(6, 40, 90, 0.3), 0 10px 40px rgba(6, 40, 90, 0.5); }
+.meet__intro { position: relative; max-width: 60ch; color: #fff; font-weight: 500; font-size: clamp(0.9rem, min(1.25vw, 2.2svh), 1.7rem); line-height: 1.5; text-shadow: 0 1px 2px rgba(6, 40, 90, 0.45), 0 2px 22px rgba(6, 40, 90, 0.6); }
 .badges { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.story .glass-badge { padding: 0.7rem 1.2rem; border-radius: 999px; font: 600 clamp(0.82rem, 1.9svh, 0.95rem) / 1 var(--font-d); backdrop-filter: none; -webkit-backdrop-filter: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.16)), rgba(20, 90, 170, 0.28); border: 1px solid rgba(255, 255, 255, 0.45); color: #fff; }
+.story .glass-badge { padding: 0.7rem 1.2rem; border-radius: 999px; font: 600 clamp(0.82rem, min(1vw, 1.9svh), 1.4rem) / 1 var(--font-d); backdrop-filter: none; -webkit-backdrop-filter: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.16)), rgba(20, 90, 170, 0.28); border: 1px solid rgba(255, 255, 255, 0.45); color: #fff; }
 
 /* hero bottle travelling into the story */
 .traveller { position: fixed; z-index: 40; visibility: hidden; pointer-events: none; will-change: transform; transform-origin: 50% 50%; }
@@ -31,16 +32,13 @@
 .hero.is-departing .hero__lines, .hero.is-departing [data-callout], .hero.is-departing .hero__shadow, .hero.is-departing .hero__reflect, .hero.is-departing .hero__rim { opacity: 0 !important; }
 
 @media (max-width: 960px) {
-  .statement { left: var(--mx); top: var(--my); font-size: clamp(0.8rem, 3.5vw, 1rem) !important; padding: 0.5rem 0.85rem 0.5rem 0.75rem; border-radius: 12px; }
+  .statement { font-size: clamp(0.8rem, 3.5vw, 1.15rem) !important; }
   .problem__heading { font-size: clamp(2.3rem, 10.5vw, 4.6rem); }
 }
 @media (max-width: 560px) {
   .meet__bottle { height: clamp(220px, 43svh, 440px); }
   .badges { gap: 7px; }
   .story .glass-badge { padding: 0.6rem 0.9rem; }
-}
-@media (max-height: 620px) and (min-width: 961px) {
-  .problem__heading { font-size: clamp(2.4rem, min(6.4vw, 15svh), 6rem); }
 }
 @media (max-height: 560px) {
   .meet__bottle { height: 46svh; }

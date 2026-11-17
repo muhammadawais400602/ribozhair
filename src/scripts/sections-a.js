@@ -132,11 +132,11 @@ function initBenefits({ desk, reduced }) {
     gsap.set(p, { transformPerspective: 1300 });
 
     const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
-    tl.fromTo(p, { scale: 0.88, y: 26, opacity: 0.55 }, { scale: 1, y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0)
+    tl.fromTo(p, { scale: 0.88, y: 26, opacity: 0.6 }, { scale: 1, y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0)
       .fromTo(shade, { opacity: 0 }, { opacity: 1, duration: 1 }, 0)
       .fromTo(photo, { scale: 1.22 }, { scale: 1.02, duration: 1, ease: "power1.out" }, 0)
       .fromTo(num, { xPercent: 55, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.25)
-      .fromTo(body, { y: 34, opacity: 0.35 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.2)
+      .fromTo(body, { y: 10, opacity: 0.35 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.2)
       .fromTo(ico, { scale: 0.5, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(2.4)" }, 0.38)
       .to(parts, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut", stagger: 0.05 }, 0.42)
       .fromTo(lines, { yPercent: 115 }, { yPercent: 0, duration: 0.4, ease: "power3.out", stagger: 0.12 }, 0.45)
@@ -146,18 +146,21 @@ function initBenefits({ desk, reduced }) {
   });
 
   if (desk) {
-    let vw = window.innerWidth, dist = 0;
+    let vw = window.innerWidth, dist = 0, c0 = 0, cN = 0;
     const measure = () => {
       vw = window.innerWidth;
       dist = Math.max(0, track.offsetWidth - vw);
       cards.forEach((c) => (c.c = c.p.offsetLeft + c.p.offsetWidth / 2)); // layout offsets ignore transforms
+      c0 = cards[0].c; cN = cards[cards.length - 1].c;
     };
     measure();
     const paint = (prog) => {
       const x = -dist * prog;
+      // the focus point travels from the first card's resting spot to the last card's, so both ends land in focus
+      const fx = c0 + (cN - dist - c0) * prog;
       for (const c of cards) {
-        const d = (c.c + x - vw * 0.58) / vw;                 // signed distance from the focus point, in viewport widths
-        const f = 1 - clamp((Math.abs(d) - 0.2) / 0.3);        // plateau around the focus point, then falls away
+        const d = (c.c + x - fx) / vw;                         // signed distance from the focus point, in viewport widths
+        const f = 1 - clamp((Math.abs(d) - 0.07) / 0.25);      // short plateau at the focus point, then falls away
         c.tl.progress(f);
         gsap.set(c.p, { rotationY: clamp(d * 2.2, -1, 1) * -11 * (1 - f) });
         gsap.set(c.img, { xPercent: clamp(d, -1, 1) * -10 });
