@@ -10,8 +10,8 @@ const THEMES = {
   dark: { "--bg": "#06142e", "--fg": "#ffffff", "--soft": "rgba(255,255,255,0.72)", "--card": "rgba(255,255,255,0.08)", "--line": "rgba(255,255,255,0.14)", "--accent": "#64b5f6", "--pill": "rgba(255,255,255,0.14)" },
   light: { "--bg": "#f5f8fc", "--fg": "#0d1b2a", "--soft": "rgba(13,27,42,0.68)", "--card": "rgba(255,255,255,0.58)", "--line": "rgba(10,42,94,0.12)", "--accent": "#1e88e5", "--pill": "rgba(10,42,94,0.08)" },
 };
-THEMES.blue = THEMES.dark;
-THEMES.deep = THEMES.dark;
+THEMES.blue = { ...THEMES.dark, "--bg": "#f5f8fc" };
+THEMES.deep = THEMES.blue;
 
 export function initThemes() {
   const root = document.documentElement;

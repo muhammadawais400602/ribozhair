@@ -247,7 +247,7 @@ export async function initScalp(canvas) {
     renderer.setSize(w, h, false);
     aspect = w / h; camera.aspect = aspect;
     const t = Math.tan((camera.fov * Math.PI) / 360);
-    baseDist = Math.max(3.0 / t, 3.3 / (t * aspect));
+    baseDist = Math.max(3.0 / t, (aspect < 1 ? 1.55 : 3.3) / (t * aspect));
     if (aspect > 1.25) camera.setViewOffset(w, h, -w * 0.15, 0, w, h); else camera.clearViewOffset();
     camera.updateProjectionMatrix();
   }

@@ -126,7 +126,7 @@ function initBenefits({ desk, reduced }) {
     });
     gsap.to(bar, { scaleX: 1, ease: "none", scrollTrigger: { trigger: stage, start: "top top", end: () => "+=" + (dist() + window.innerHeight * 0.35), scrub: 0.7 } });
     // deal the panels in with depth as the stage arrives
-    gsap.from(panels, { x: 220, y: 60, rotationY: -22, autoAlpha: 0, transformPerspective: 1400, transformOrigin: "0% 50%", duration: 1.6, ease: EASE, stagger: 0.12, scrollTrigger: { trigger: stage, start: "top 62%", once: true } });
+    gsap.from(panels, { x: 120, y: 50, rotationY: -14, autoAlpha: 0, transformPerspective: 1400, transformOrigin: "0% 50%", duration: 1.6, ease: EASE, stagger: 0.12, scrollTrigger: { trigger: stage, start: "top 62%", once: true } });
     panels.forEach((p) => {
       gsap.fromTo($(".bpanel__photo img", p), { xPercent: -9 }, { xPercent: 9, ease: "none", scrollTrigger: { trigger: p, containerAnimation: move, start: "left right", end: "right left", scrub: true } });
       gsap.fromTo($(".bpanel__n", p), { x: 70 }, { x: -40, ease: "none", scrollTrigger: { trigger: p, containerAnimation: move, start: "left right", end: "right left", scrub: true } });
