@@ -2,8 +2,9 @@ import { gsap } from 'gsap';
 import { sciState } from './sections-a.js';
 
 const ENV = import.meta.glob('../assets/env/*.hdr', { eager: true, query: '?url', import: 'default' });
+const BACK = import.meta.glob('../assets/bg/science-m.webp', { eager: true, query: '?url', import: 'default' });
 
-const COLORS = { C: 0xbfd8f7, O: 0x2f9bff, H: 0xffffff };
+const COLORS = { C: 0xeaf4ff, O: 0x4aa5f5, H: 0xffffff };
 const RADII = { C: 0.4, O: 0.38, H: 0.21 };
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const smooth = (t) => { t = clamp(t); return t * t * (3 - 2 * t); };
@@ -98,7 +99,7 @@ export async function initMolecule(canvas) {
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
   const key = new THREE.DirectionalLight(0xffffff, 1.5);
   key.position.set(4, 6, 5);
-  const rim = new THREE.PointLight(0x4aa8ff, 60, 30);
+  const rim = new THREE.PointLight(0x4aa8ff, 40, 30);
   rim.position.set(-5, -2, -4);
   const kick = new THREE.PointLight(0x9fd0ff, 22, 30);
   kick.position.set(5, -3, 3);
@@ -110,26 +111,45 @@ export async function initMolecule(canvas) {
   scene.add(tilt);
 
   const { atoms, bonds } = buildAtoms();
+  // clear crystal: real transmission, refracting a soft copy of the section's own photo backdrop
   const mats = {};
+  const glass = {
+    C: { transmission: 1, thickness: 1.3, attenuationColor: 0x8fc4ff, attenuationDistance: 1.6 },
+    O: { transmission: 0.92, thickness: 1.4, attenuationColor: 0x1e88e5, attenuationDistance: 0.55 },
+    H: { transmission: 0.95, thickness: 0.7, attenuationColor: 0xcfe6ff, attenuationDistance: 2.5 },
+  };
   for (const el of Object.keys(COLORS)) {
     mats[el] = new THREE.MeshPhysicalMaterial({
-      color: COLORS[el],
-      roughness: el === 'H' ? 0.12 : 0.06,
-      metalness: 0,
-      clearcoat: 1,
-      clearcoatRoughness: 0.03,
-      envMapIntensity: el === 'O' ? 1.5 : 1.25,
-      iridescence: el === 'O' ? 0.55 : 0.3,
-      iridescenceIOR: 1.35,
-      sheen: 0.4,
-      sheenColor: new THREE.Color(0x9fd0ff),
-      emissive: el === 'O' ? 0x0a5fd0 : el === 'C' ? 0x16345f : 0x2a4a6e,
-      emissiveIntensity: el === 'O' ? 0.42 : 0.1,
+      color: COLORS[el], roughness: 0.04, metalness: 0, ior: 1.5,
+      clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.35,
+      iridescence: el === 'O' ? 0.35 : 0.2, iridescenceIOR: 1.3,
+      specularIntensity: 1, ...glass[el],
     });
+    mats[el].attenuationColor = new THREE.Color(glass[el].attenuationColor);
   }
   const bondMat = new THREE.MeshPhysicalMaterial({
-    color: 0xe6f1ff, roughness: 0.12, transparent: true, opacity: 0.62, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.5,
+    color: 0xf4f9ff, roughness: 0.06, transmission: 1, thickness: 0.4, ior: 1.45, attenuationColor: new THREE.Color(0x9fd0ff), attenuationDistance: 1.2,
+    clearcoat: 1, clearcoatRoughness: 0.04, envMapIntensity: 1.5,
   });
+
+  // backdrop inside the canvas (edge-masked in CSS so it melts into the page photo) — gives the glass something to refract
+  {
+    const url = Object.values(BACK)[0];
+    const cv = document.createElement('canvas'); cv.width = 1024; cv.height = 512;
+    const cx = cv.getContext('2d');
+    const paint = (img) => {
+      cx.fillStyle = '#f2f7fd'; cx.fillRect(0, 0, 1024, 512);
+      if (img) { cx.globalAlpha = 0.5; cx.drawImage(img, 0, 0, 1024, 512); cx.globalAlpha = 1; }
+      const g = cx.createRadialGradient(560, 256, 40, 560, 256, 520);
+      g.addColorStop(0, 'rgba(255,255,255,0.75)'); g.addColorStop(0.5, 'rgba(214,234,253,0.45)'); g.addColorStop(1, 'rgba(160,205,250,0.5)');
+      cx.fillStyle = g; cx.fillRect(0, 0, 1024, 512);
+    };
+    paint(null);
+    const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+    const back = new THREE.Mesh(new THREE.PlaneGeometry(90, 45), new THREE.MeshBasicMaterial({ map: tex, toneMapped: false, fog: false }));
+    back.position.z = -22; scene.add(back);
+    if (url) { const img = new Image(); img.onload = () => { paint(img); tex.needsUpdate = true; }; img.src = url; }
+  }
 
   // soft additive glow (reads as bloom / shallow depth of field)
   const haloCanvas = document.createElement('canvas');
@@ -137,12 +157,12 @@ export async function initMolecule(canvas) {
   {
     const ctx = haloCanvas.getContext('2d');
     const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.2, 'rgba(170,215,255,0.55)'); g.addColorStop(0.55, 'rgba(70,150,240,0.16)'); g.addColorStop(1, 'rgba(30,136,229,0)');
+    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.25, 'rgba(255,255,255,0.5)'); g.addColorStop(0.6, 'rgba(255,255,255,0.13)'); g.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, 128, 128);
   }
   const haloTex = new THREE.CanvasTexture(haloCanvas);
   haloTex.colorSpace = THREE.SRGBColorSpace;
-  const haloMat = (opacity, color = 0x6fbaff) => new THREE.SpriteMaterial({ map: haloTex, color, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity });
+  const haloMat = (opacity, color = 0x3d9bf2) => new THREE.SpriteMaterial({ map: haloTex, color, transparent: true, depthWrite: false, opacity, toneMapped: false });
 
   const R = rng(19);
   const sphereGeo = new THREE.SphereGeometry(1, 64, 48);
@@ -173,14 +193,14 @@ export async function initMolecule(canvas) {
     return { m, order: k / bonds.length };
   });
 
-  const core = new THREE.Sprite(haloMat(0, 0x3f9bff));
+  const core = new THREE.Sprite(haloMat(0, 0xffffff));
   core.scale.setScalar(9); core.renderOrder = -2; tilt.add(core);
 
   // out-of-focus particles floating in front of / behind the molecule
   const dust = new THREE.Group(); scene.add(dust);
   const motes = [];
   for (let i = 0; i < (small ? 26 : 54); i++) {
-    const s = new THREE.Sprite(haloMat(0.05 + R() * 0.22, R() > 0.5 ? 0x9fd0ff : 0x4aa3ff));
+    const s = new THREE.Sprite(haloMat(0.06 + R() * 0.2, R() > 0.5 ? 0x64b5f6 : 0x1e88e5));
     const far = R();
     s.position.set((R() - 0.5) * 22, (R() - 0.5) * 12, -8 + far * 14);
     s.scale.setScalar(0.12 + Math.pow(R(), 2) * (far > 0.7 ? 1.5 : 0.6));
@@ -242,13 +262,13 @@ export async function initMolecule(canvas) {
       v.y += Math.cos(time * 0.5 + n.wob * 1.3) * 0.35 * loose;
       n.m.position.copy(v);
       n.m.scale.setScalar(Math.max(0.0001, n.s * (0.35 + 0.65 * e) * smooth(a * 6 - n.order * 2)));
-      if (n.halo) { n.halo.position.copy(v); n.halo.material.opacity = 0.34 * e * (0.85 + 0.15 * Math.sin(time * 1.7 + n.wob)); }
+      if (n.halo) { n.halo.position.copy(v); n.halo.material.opacity = 0.3 * e * (0.85 + 0.15 * Math.sin(time * 1.7 + n.wob)); }
     }
     for (const b of bondNodes) {
       const t = smooth((a - 0.62 - b.order * 0.16) / 0.2);
       b.m.scale.set(Math.max(0.0001, t), Math.max(0.0001, t), Math.max(0.0001, t));
     }
-    core.material.opacity = 0.2 + 0.3 * smooth((a - 0.5) / 0.5);
+    core.material.opacity = 0.35 + 0.4 * smooth((a - 0.5) / 0.5);
 
     const k = 1 - Math.exp(-d * 4);
     cur.x += (target.x - cur.x) * k;

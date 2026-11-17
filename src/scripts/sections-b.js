@@ -71,6 +71,7 @@ function trust(canHover) {
     head.addEventListener("pointerleave", () => { ry(0); rx(0); sx(0); });
   }
 
+  if (canHover) spotlight(tiles);
   // glass tiles settle in from depth, then a single light sweep crosses each one
   gsap.set(tiles, { transformPerspective: 1100, transformOrigin: "50% 100%" });
   const tl = gsap.timeline({ scrollTrigger: { trigger: $(".badge-grid", sec), start: "top 84%", once: true } });
@@ -108,6 +109,7 @@ function reviews(desktop, canHover) {
     gsap.from(cards, { x: 90, opacity: 0, duration: 1.4, ease: EASE, stagger: 0.12, scrollTrigger: { trigger: deck, start: "top 88%", once: true } });
   }
   if (canHover) spotlight(cards);
+  if (desktop) dragDeck(deck);
 
   // stars: arrive one by one, then a soft travelling shimmer
   const stars = $$(".stars svg", deck);
@@ -116,6 +118,26 @@ function reviews(desktop, canHover) {
     const shimmer = gsap.to(stars, { keyframes: [{ opacity: 0.45, duration: 0.5 }, { opacity: 1, duration: 0.7 }], ease: "sine.inOut", stagger: { each: 0.09, repeat: -1, repeatDelay: 2.6 }, paused: true });
     ScrollTrigger.create({ trigger: sec, start: "top bottom", end: "bottom top", onToggle: (s) => (s.isActive ? shimmer.play() : shimmer.pause()) });
   }
+}
+
+// grab the deck and pull it: it follows with weight and springs back
+function dragDeck(deck) {
+  const x = gsap.quickTo(deck, "x", { duration: 0.9, ease: "power3.out" });
+  const rz = gsap.quickTo(deck, "rotationZ", { duration: 0.9, ease: "power3.out" });
+  let startX = null;
+  deck.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") return; startX = e.clientX; deck.classList.add("is-dragging"); deck.setPointerCapture(e.pointerId); });
+  deck.addEventListener("pointermove", (e) => {
+    if (startX == null) return;
+    const d = gsap.utils.clamp(-260, 260, (e.clientX - startX) * 0.7);
+    x(d); rz(d * 0.012);
+  });
+  const end = () => {
+    if (startX == null) return;
+    startX = null; deck.classList.remove("is-dragging");
+    gsap.to(deck, { x: 0, rotationZ: 0, duration: 1.4, ease: "elastic.out(1, 0.55)", overwrite: "auto" });
+  };
+  deck.addEventListener("pointerup", end);
+  deck.addEventListener("pointercancel", end);
 }
 
 /* ---------- 13. FAQ ---------- */
@@ -146,15 +168,19 @@ function shop(canHover) {
   const shadow = $(".shop__shadow", sec);
   const halo = $(".shop__halo", sec);
   const card = $(".shop__card", sec);
+  const arch = $(".shop__arch", sec);
 
   gsap.set([turn, product], { transformPerspective: 1500 });
 
   // entrance: the bottle rises into the light, the purchase card unfolds beside it
   const tl = gsap.timeline({ scrollTrigger: { trigger: visual, start: "top 78%", once: true } });
-  tl.from(float, { y: 160, opacity: 0, scale: 0.9, duration: 2, ease: EASE })
-    .from(halo, { scale: 0.5, opacity: 0, duration: 2.2, ease: EASE }, 0)
-    .from([shadow, $(".shop__plinth", sec)], { opacity: 0, scaleX: 0.5, duration: 1.8, ease: EASE }, 0.2)
-    .from($(".shop__rays", sec), { opacity: 0, duration: 2.4, ease: "power2.out" }, 0.2);
+const ARCH = "round 999px 999px 44px 44px";
+  tl.fromTo(arch, { clipPath: `inset(100% 12% 0% 12% ${ARCH})` }, { clipPath: `inset(0% 0% 0% 0% ${ARCH})`, duration: 1.8, ease: EASE }, 0)
+    .from(float, { y: 220, opacity: 0, scale: 0.86, duration: 2.1, ease: EASE }, 0.35)
+    .from(halo, { scale: 0.5, opacity: 0, duration: 2.2, ease: EASE }, 0.35)
+    .from(shadow, { opacity: 0, scaleX: 0.4, duration: 1.8, ease: EASE }, 0.7)
+    .from($(".shop__rays", sec), { opacity: 0, duration: 2.4, ease: "power2.out" }, 0.5);
+  gsap.fromTo($(".shop__arch-img", sec), { yPercent: -8 }, { yPercent: 8, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } });
   gsap.from(card, { y: 90, opacity: 0, rotationX: -8, transformPerspective: 1400, transformOrigin: "50% 100%", duration: 1.7, ease: EASE, clearProps: "transform", scrollTrigger: { trigger: card, start: "top 86%", once: true } });
   gsap.from(card.children, { y: 30, opacity: 0, duration: 1.2, ease: EASE, stagger: 0.07, delay: 0.25, clearProps: "transform,opacity", scrollTrigger: { trigger: card, start: "top 86%", once: true } });
 
@@ -174,9 +200,10 @@ function shop(canHover) {
       const r = visual.getBoundingClientRect();
       const nx = gsap.utils.clamp(-1, 1, (e.clientX - (r.left + r.width / 2)) / (r.width * 1.2));
       const ny = gsap.utils.clamp(-1, 1, (e.clientY - (r.top + r.height / 2)) / r.height);
-      ry(nx * 14); rx(-ny * 6); hx(nx * 26);
+      ry(nx * 16); rx(-ny * 7); hx(nx * 26);
     });
     sec.addEventListener("pointerleave", () => { ry(0); rx(0); hx(0); });
+    spotlight([card]);
   }
 }
 
@@ -216,7 +243,6 @@ function initAddToCart() {
     clearTimeout(timer);
     timer = setTimeout(() => btn.classList.remove("is-added"), 1900);
     if (reduced) return;
-    gsap.fromTo(btn, { scale: 0.95 }, { scale: 1, duration: 0.8, ease: "back.out(2.6)", clearProps: "transform" });
     const src = $(".shop__bottle");
     const cart = $(".nav__cta");
     if (!src || !cart) return;
@@ -254,7 +280,6 @@ function news(canHover) {
   gsap.fromTo(bg, { clipPath: "inset(14% 7% 10% 7% round 44px)" }, { clipPath: "inset(0% 0% 0% 0% round 0px)", ease: "none", scrollTrigger: { trigger: sec, start: "top 92%", end: "top 12%", scrub: 0.6 } });
   gsap.fromTo(pic, { scale: 1.28 }, { scale: 1, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom bottom", scrub: true } });
   gsap.from($(".news__field", sec), { y: 60, opacity: 0, scale: 0.94, duration: 1.6, ease: EASE, scrollTrigger: { trigger: $(".news__form", sec), start: "top 90%", once: true } });
-  if (canHover) magnetic($(".news__form .btn", sec), 0.35);
 }
 
 /* ---------- 16. Footer ---------- */
@@ -275,17 +300,4 @@ function spotlight(els) {
     el.style.setProperty("--mx", `${e.clientX - r.left}px`);
     el.style.setProperty("--my", `${e.clientY - r.top}px`);
   }));
-}
-function magnetic(el, strength) {
-  if (!el) return;
-  const x = gsap.quickTo(el, "x", { duration: 0.9, ease: "elastic.out(1, 0.5)" });
-  const y = gsap.quickTo(el, "y", { duration: 0.9, ease: "elastic.out(1, 0.5)" });
-  const zone = el.closest(".news__field") || el;
-  zone.addEventListener("pointermove", (e) => {
-    const r = el.getBoundingClientRect();
-    const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
-    if (Math.abs(dx) > r.width * 1.1) { x(0); y(0); return; }
-    x(dx * strength); y(dy * strength);
-  });
-  zone.addEventListener("pointerleave", () => { x(0); y(0); });
 }

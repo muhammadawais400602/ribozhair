@@ -1,21 +1,21 @@
 Background photographs from Unsplash (Unsplash License, https://unsplash.com/license).
-Sourced via the Unsplash Lite Dataset. Each image was resized and colour-graded toward the brand blue.
+Sourced via the Unsplash Lite Dataset. Each image was resized and colour-graded toward a light blue/white palette.
 Each file also has a 1100px-wide -m variant.
 
-hero-sea.webp  ->  https://unsplash.com/photos/XzOq0STXv9s  by Shaafi Ali (@shaafi)
-problem.webp  ->  https://unsplash.com/photos/ncJKXaCp-3A  by redcharlie (@redcharlie)
+hero-sea.webp  ->  https://unsplash.com/photos/cfR-V1QuEKw  by YUCAR FotoGrafik (@yucar)
+problem.webp  ->  https://unsplash.com/photos/jeZXVb3JHgc  by Max Okhrimenko (@maxokhrimenko)
 meet.webp  ->  https://unsplash.com/photos/bEZRJC-XvTc  by Jean Carlo Emer (@jeancarloemer)
-science.webp  ->  https://unsplash.com/photos/f42uyMi7uuk  by Marcel Strauß (@martzzl)
+science.webp  ->  https://unsplash.com/photos/PTwUwY_3qao  by NON (@non_creation)
 how.webp  ->  https://unsplash.com/photos/X2WUR5hF3Rs  by eberhard 🖐 grossgasteiger (@eberhardgross)
 benefits.webp  ->  https://unsplash.com/photos/CKJYAcSc3WE  by Erik Mclean (@introspectivedsgn)
-ingredients.webp  ->  https://unsplash.com/photos/u6EQMFb9_ho  by Luke Barnard (@lukeyslife)
+ingredients.webp  ->  https://unsplash.com/photos/NrflUuJJK0I  by Annie Spratt (@anniespratt)
 results.webp  ->  https://unsplash.com/photos/OOuPX8bcpjI  by Nicolas J Leclercq (@nicolasjleclercq)
-use.webp  ->  https://unsplash.com/photos/tz-nFaE_iYs  by Lanju Fotografie (@lanju_fotografie)
+use.webp  ->  https://unsplash.com/photos/6M0oZxnTTOk  by Isaac Quesada (@isaacquesada)
 trust.webp  ->  https://unsplash.com/photos/cKyqdM-xias  by Bethany Legg (@bkotynski)
-reviews.webp  ->  https://unsplash.com/photos/eodA_8CTOFo  by Jackson Hendry (@actionjackson801)
+reviews.webp  ->  https://unsplash.com/photos/bwLTlE9aZIw  by Cinthia Aguilar (@hello_cinthia)
 faq.webp  ->  https://unsplash.com/photos/-UsvhirEIeI  by Erik Odiin (@odiin)
-shop.webp  ->  https://unsplash.com/photos/XexawgzYOBc  by Cristian Palmer (@cristianpalmer)
+shop.webp  ->  https://unsplash.com/photos/RLBxNfPoB9U  by Hussain Faruhaan (@fareyyhan)
 news.webp  ->  https://unsplash.com/photos/o9eV8adqOoY  by Jackie Chou (@jackiechou)
-footer.webp  ->  https://unsplash.com/photos/e2M48b0df8g  by Marko Blažević (@kerber)
+footer.webp  ->  https://unsplash.com/photos/DSwBHyWKiVw  by manu schwendener (@manuschwendener)
 
 env/studio_1k.hdr  ->  https://polyhaven.com/a/studio_small_08  (Poly Haven, CC0)

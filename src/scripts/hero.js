@@ -16,14 +16,14 @@ export function initHero() {
     const path = document.createElementNS(NS, "path");
     path.setAttribute("pathLength", "1");
     path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "rgba(255,255,255,0.4)");
+    path.setAttribute("stroke", "rgba(255,255,255,0.85)");
     path.setAttribute("stroke-width", "1");
     path.style.strokeDasharray = "1";
     const dots = [0, 1].map(() => {
       const d = document.createElementNS(NS, "circle");
       d.setAttribute("r", "4.5");
-      d.setAttribute("fill", "rgba(255,255,255,0.22)");
-      d.setAttribute("stroke", "rgba(255,255,255,0.65)");
+      d.setAttribute("fill", "rgba(255,255,255,0.5)");
+      d.setAttribute("stroke", "rgba(255,255,255,0.95)");
       d.setAttribute("stroke-width", "1");
       return d;
     });

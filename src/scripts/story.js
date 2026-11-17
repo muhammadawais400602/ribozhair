@@ -67,6 +67,7 @@ export async function initStory() {
   const story = document.querySelector(".story");
   const stage = story.querySelector(".story__stage");
   const canvas = story.querySelector(".story__gl");
+  const vignette = story.querySelector(".story__vignette");
   const darkBg = story.querySelector(".story__bg--dark");
   const blueBg = story.querySelector(".story__bg--blue");
   const meetBottle = story.querySelector("[data-meet-bottle]");
@@ -131,6 +132,7 @@ export async function initStory() {
   tl.to([heading, ...stmts], { autoAlpha: 0, y: -28, duration: 0.8, ease: "power2.in", stagger: 0.04 }, 6.2);
   tl.to(P, { bg: 1, duration: 2.1, ease: "power1.inOut" }, 6.5);
   tl.to(blueBg, { opacity: 1, duration: 2.1, ease: "power1.inOut" }, 6.5);
+  tl.to(vignette, { opacity: 0.35, duration: 2.1, ease: "power1.inOut" }, 6.5);
   // 4 · the same shards fly inward and assemble into the RibozHair bottle
   tl.to(P, { asm: 1, duration: 2.5 }, 7.1);
   tl.to(P, { sweep: 1, duration: 1.2, ease: "power1.inOut" }, 9.0);
@@ -176,16 +178,17 @@ export async function initStory() {
 
   /* ======================================================================== */
   async function buildScene() {
-    const probe = document.createElement("canvas");
-    if (!(probe.getContext("webgl2") || probe.getContext("webgl"))) return null;
+    const ctxOpts = { antialias: true, alpha: false, powerPreference: "high-performance" };
+    const context = canvas.getContext("webgl2", ctxOpts);
+    if (!context) return null;
     const THREE = await import("three");
     const { Vector3: V3, Quaternion: Q4, Matrix4: M4 } = THREE;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({ canvas, context, ...ctxOpts });
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, lite ? 1.5 : 2));
     renderer.toneMapping = THREE.NeutralToneMapping;
     renderer.toneMappingExposure = 1.05;
-    renderer.setClearColor(0x050d1f, 1);
+    renderer.setClearColor(0x5f7f9c, 1);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(FOV, 1, 0.5, 80);
@@ -212,6 +215,7 @@ export async function initStory() {
     const key = new THREE.DirectionalLight(0xffffff, 2.4); key.position.set(-4, 7, 9); scene.add(key);
     const rim = new THREE.DirectionalLight(0x7fc4ff, 2.2); rim.position.set(6, 3, -6); scene.add(rim);
     const sweepLight = new THREE.PointLight(0xffffff, 0, 30, 1.6); scene.add(sweepLight);
+    const cursorLight = new THREE.PointLight(0xdcefff, 0, 14, 1.8); scene.add(cursorLight);
 
     // ---- cinematic photo backdrop (lives in the scene so the glass refracts it) ----
     const texLoader = new THREE.TextureLoader();
@@ -229,7 +233,7 @@ export async function initStory() {
       return { tex: t, ar: t.image.width / t.image.height };
     }
     const [pA, pB] = await Promise.all([
-      photo(urls.problem, [[0, "#0a1830"], [0.5, "#0b1f3f"], [0.56, "#081428"], [1, "#030a18"]]),
+      photo(urls.problem, [[0, "#9db4c8"], [0.5, "#6f8eaa"], [0.56, "#4f7090"], [1, "#35546f"]]),
       photo(urls.meet, [[0, "#0d4d9c"], [0.6, "#1e88e5"], [1, "#6fbcf7"]]),
     ]);
     const bgMat = new THREE.ShaderMaterial({
@@ -463,7 +467,7 @@ export async function initStory() {
         mesh, labelMesh, rag, c, lp, lc, rest: origin.clone(), theta: c[0] / R, y: pc.y, f: c[1] / S, area: Math.abs(c[2]),
         dist: Math.hypot(c[0] - imp.x, c[1] - imp.s), rnd: [rand(), rand(), rand(), rand(), rand(), rand()],
         axis: new V3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize(), axis2: new V3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize(),
-        scat: new V3(), driftV: new V3(), asmP: new V3(), delay: 0, stag: 0, spin: 0,
+        scat: new V3(), driftV: new V3(), asmP: new V3(), push: new V3(), delay: 0, stag: 0, spin: 0,
       });
     }
     // crack network revealed outward from the impact point just before the pieces separate
@@ -599,23 +603,40 @@ export async function initStory() {
     // ---- per-frame: everything derives from P (+ a little idle float) ----
     const q1 = new Q4(), q2 = new Q4(), pA2 = new V3(), dummy = new THREE.Object3D(), up = new V3(0, 1, 0);
     let clock = 0;
+    // pointer: lerped so every reaction eases in and out
+    const ptr = { tx: 0, ty: 0, x: 0, y: 0, on: 0, onT: 0 };
+    const hover = matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced;
+    if (hover) {
+      stage.addEventListener("pointermove", (e) => { const r = stage.getBoundingClientRect(); ptr.tx = ((e.clientX - r.left) / r.width) * 2 - 1; ptr.ty = ((e.clientY - r.top) / r.height) * 2 - 1; ptr.onT = 1; });
+      stage.addEventListener("pointerleave", () => { ptr.onT = 0; ptr.tx = 0; ptr.ty = 0; });
+    }
+    const ptrL = new V3(), pushT = new V3();
+    const setX = gsap.quickSetter([bottleImg, liquid], "x", "px"), setY = gsap.quickSetter([bottleImg, liquid], "y", "px"), setR = gsap.quickSetter([bottleImg, liquid], "rotation", "deg");
     const solidOrFade = (mat, a) => { const t = a < 0.999; if (mat.transparent !== t) { mat.transparent = t; mat.needsUpdate = true; } mat.opacity = a; };
     function frame() {
       const { fall, crack, burst, flash, drift, bg, asm, sweep, fade } = P;
       const idle = reduced ? 0 : clock;
       const impacted = burst > 0.0004;
+      ptr.x += (ptr.tx - ptr.x) * 0.07; ptr.y += (ptr.ty - ptr.y) * 0.07; ptr.on += (ptr.onT - ptr.on) * 0.06;
+      const lock = smooth(clamp01((asm - 0.55) / 0.4)); // parallax eases out so the glass lands exactly on the photo
+      camera.position.set(-ptr.x * 0.42 * (1 - lock), ptr.y * 0.24 * (1 - lock), DIST); camera.lookAt(0, 0, 0);
+      const pwx = (ptr.x * L.visW) / 2, pwy = (-ptr.y * VH) / 2;
+      ptrL.set(pwx, pwy, 0).applyMatrix4(MimpInv);
+      cursorLight.position.set(pwx, pwy, 3.4); cursorLight.intensity = 46 * ptr.on * (1 - fade);
+      setX(ptr.x * 9 * fade); setY(ptr.y * 5 * fade); setR(ptr.x * 1.1 * fade);
 
       // backdrop: slow push-in and drift, crossfade to the bright water as the bottle is rebuilt
       const u = bgMat.uniforms, prog = tl.progress();
       u.uMix.value = bg; u.uFlash.value = flash;
       u.uZoom.value = 1.04 + prog * 0.1 + Math.sin(idle * 0.11) * 0.006;
-      u.uShift.value.set(Math.sin(idle * 0.07) * 0.004, (prog - 0.5) * 0.018);
-      u.uDim.value = 0.3 * smooth(clamp01((burst - 0.25) * 3)) * (1 - bg);
+      u.uShift.value.set(Math.sin(idle * 0.07) * 0.004 + ptr.x * 0.006, (prog - 0.5) * 0.018 - ptr.y * 0.004);
+      u.uDim.value = 0.34 * smooth(clamp01((burst - 0.25) * 3)) * (1 - bg);
 
       // fall
       const fy = VH / 2 + 3.4 * L.fit;
       rig.position.set(lerp(-0.25, 0, fall), lerp(fy, impactPose.y, fall), 0);
-      rig.rotation.set(lerp(0.5, impactPose.rx, fall), lerp(-1.25, impactPose.ry, fall), lerp(0.55, impactPose.rz, fall));
+      const look = impacted ? 0 : 1 - fall * fall; // the falling bottle turns toward the cursor, settling before impact
+      rig.rotation.set(lerp(0.5, impactPose.rx, fall) + ptr.y * 0.16 * look, lerp(-1.25, impactPose.ry, fall) + ptr.x * 0.35 * look, lerp(0.55, impactPose.rz, fall));
       intact.visible = !impacted; labelRoot.visible = !impacted;
       cracks.visible = crack > 0 && burst < 0.1;
       crackMat.uniforms.uReach.value = crack * (maxDist + 0.4); crackMat.uniforms.uAlpha.value = 0.9 * (1 - burst / 0.1);
@@ -639,7 +660,11 @@ export async function initStory() {
           pA2.copy(s.rest).lerp(s.scat, e).addScaledVector(s.driftV, drift * 1.6 * e);
           pA2.y += Math.sin(idle * 0.45 + s.rnd[0] * 6.28) * 0.07 * free / L.fit;
           pA2.x += Math.cos(idle * 0.31 + s.rnd[1] * 6.28) * 0.05 * free / L.fit;
-          q1.setFromAxisAngle(s.axis, s.spin * e2 + (drift * 0.9 + idle * 0.05) * (0.4 + s.rnd[2]) * free);
+          // the cursor gently pushes nearby shards aside
+          const dx = pA2.x - ptrL.x, dy = pA2.y - ptrL.y, d2 = (dx * dx + dy * dy) * L.fit * L.fit, w = Math.exp(-d2 / 2.2) * ptr.on * free, dl = Math.sqrt(dx * dx + dy * dy) || 1;
+          pushT.set((dx / dl) * w * 0.7 / L.fit, (dy / dl) * w * 0.7 / L.fit, w * 0.35 / L.fit);
+          s.push.lerp(pushT, 0.09); pA2.add(s.push);
+          q1.setFromAxisAngle(s.axis, s.spin * e2 + s.push.length() * L.fit * 0.9 + (drift * 0.9 + idle * 0.05) * (0.4 + s.rnd[2]) * free);
           q2.setFromAxisAngle(s.axis2, Math.sin(idle * 0.3 + s.rnd[3] * 6.28) * 0.12 * free);
           q1.multiply(q2);
           // assembly onto the RibozHair silhouette
