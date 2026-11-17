@@ -115,29 +115,70 @@ function initBenefits({ desk, reduced }) {
   const track = $(".ben__track", stage);
   const panels = $$(".bpanel", stage);
   const bar = $(".ben__bar i", stage);
-  const icoParts = (p) => $$(".bico path, .bico circle", p);
-  panels.forEach((p) => gsap.set(icoParts(p), { strokeDasharray: 1, strokeDashoffset: 1 }));
+
+  // each card owns a paused "come alive" timeline; its progress is the card's focus (0 = resting, 1 = in focus)
+  const cards = panels.map((p) => {
+    const body = $(".bpanel__body", p), photo = $(".bpanel__photo", p), img = $("img", photo), num = $(".bpanel__n", p), ico = $(".bico", p);
+    const parts = $$("path, circle", ico);
+    const lines = [$("h3", body), $("p", body)].map((el) => {
+      const inner = document.createElement("span"); inner.className = "mline__in";
+      while (el.firstChild) inner.append(el.firstChild);
+      el.classList.add("mline"); el.append(inner);
+      return inner;
+    });
+    const shade = document.createElement("span"); shade.className = "bpanel__lift"; shade.setAttribute("aria-hidden", "true"); p.prepend(shade);
+    const sweep = document.createElement("span"); sweep.className = "bpanel__sweep"; sweep.setAttribute("aria-hidden", "true"); body.append(sweep);
+    gsap.set(parts, { strokeDasharray: 1, strokeDashoffset: 1 });
+    gsap.set(p, { transformPerspective: 1300 });
+
+    const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
+    tl.fromTo(p, { scale: 0.88, y: 26, opacity: 0.55 }, { scale: 1, y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0)
+      .fromTo(shade, { opacity: 0 }, { opacity: 1, duration: 1 }, 0)
+      .fromTo(photo, { scale: 1.22 }, { scale: 1.02, duration: 1, ease: "power1.out" }, 0)
+      .fromTo(num, { xPercent: 55, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.25)
+      .fromTo(body, { y: 34, opacity: 0.35 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.2)
+      .fromTo(ico, { scale: 0.5, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(2.4)" }, 0.38)
+      .to(parts, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut", stagger: 0.05 }, 0.42)
+      .fromTo(lines, { yPercent: 115 }, { yPercent: 0, duration: 0.4, ease: "power3.out", stagger: 0.12 }, 0.45)
+      .fromTo(sweep, { xPercent: -130 }, { xPercent: 330, duration: 0.45, ease: "power1.inOut" }, 0.55);
+    tl.progress(0);
+    return { p, img, tl, c: 0 };
+  });
 
   if (desk) {
-    const dist = () => Math.max(0, track.offsetWidth - window.innerWidth);
-    const move = gsap.to(track, {
-      x: () => -dist(), ease: "none",
-      scrollTrigger: { trigger: stage, start: "top top", end: () => "+=" + (dist() + window.innerHeight * 0.35), pin: true, scrub: 0.7, anticipatePin: 1, invalidateOnRefresh: true },
+    let vw = window.innerWidth, dist = 0;
+    const measure = () => {
+      vw = window.innerWidth;
+      dist = Math.max(0, track.offsetWidth - vw);
+      cards.forEach((c) => (c.c = c.p.offsetLeft + c.p.offsetWidth / 2)); // layout offsets ignore transforms
+    };
+    measure();
+    const paint = (prog) => {
+      const x = -dist * prog;
+      for (const c of cards) {
+        const d = (c.c + x - vw * 0.58) / vw;                 // signed distance from the focus point, in viewport widths
+        const f = 1 - clamp((Math.abs(d) - 0.2) / 0.3);        // plateau around the focus point, then falls away
+        c.tl.progress(f);
+        gsap.set(c.p, { rotationY: clamp(d * 2.2, -1, 1) * -11 * (1 - f) });
+        gsap.set(c.img, { xPercent: clamp(d, -1, 1) * -10 });
+      }
+    };
+    const end = () => "+=" + (dist + window.innerHeight * 0.35);
+    gsap.to(track, {
+      x: () => -dist, ease: "none",
+      scrollTrigger: {
+        trigger: stage, start: "top top", end, pin: true, scrub: 0.7, anticipatePin: 1, invalidateOnRefresh: true,
+        onRefreshInit: measure, onRefresh: (s) => { measure(); paint(s.progress); },
+      },
+      onUpdate() { paint(this.progress()); },
     });
-    gsap.to(bar, { scaleX: 1, ease: "none", scrollTrigger: { trigger: stage, start: "top top", end: () => "+=" + (dist() + window.innerHeight * 0.35), scrub: 0.7 } });
-    // deal the panels in with depth as the stage arrives
-    gsap.from(panels, { x: 120, y: 50, rotationY: -14, autoAlpha: 0, transformPerspective: 1400, transformOrigin: "0% 50%", duration: 1.6, ease: EASE, stagger: 0.12, scrollTrigger: { trigger: stage, start: "top 62%", once: true } });
-    panels.forEach((p) => {
-      gsap.fromTo($(".bpanel__photo img", p), { xPercent: -9 }, { xPercent: 9, ease: "none", scrollTrigger: { trigger: p, containerAnimation: move, start: "left right", end: "right left", scrub: true } });
-      gsap.fromTo($(".bpanel__n", p), { x: 70 }, { x: -40, ease: "none", scrollTrigger: { trigger: p, containerAnimation: move, start: "left right", end: "right left", scrub: true } });
-      gsap.to(icoParts(p), { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut", stagger: 0.12, scrollTrigger: { trigger: p, containerAnimation: move, start: "left 88%", once: true } });
-      tilt(p);
-    });
+    gsap.to(bar, { scaleX: 1, ease: "none", scrollTrigger: { trigger: stage, start: "top top", end, scrub: 0.7 } });
+    gsap.from(track, { y: 90, autoAlpha: 0, duration: 1.5, ease: EASE, scrollTrigger: { trigger: stage, start: "top 65%", once: true } });
+    paint(0);
   } else {
-    panels.forEach((p) => {
-      gsap.from(p, { y: 70, autoAlpha: 0, scale: 0.96, duration: 1.4, ease: EASE, scrollTrigger: { trigger: p, start: "top 88%", once: true } });
-      gsap.fromTo($(".bpanel__photo img", p), { yPercent: -8 }, { yPercent: 8, ease: "none", scrollTrigger: { trigger: p, start: "top bottom", end: "bottom top", scrub: true } });
-      gsap.to(icoParts(p), { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut", stagger: 0.12, scrollTrigger: { trigger: p, start: "top 70%", once: true } });
+    cards.forEach((c) => {
+      gsap.to(c.tl, { progress: 1, ease: "none", scrollTrigger: { trigger: c.p, start: "top 92%", end: "center 58%", scrub: 0.6 } });
+      gsap.fromTo(c.img, { yPercent: -8 }, { yPercent: 8, ease: "none", scrollTrigger: { trigger: c.p, start: "top bottom", end: "bottom top", scrub: true } });
     });
   }
 }

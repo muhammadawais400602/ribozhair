@@ -199,3 +199,26 @@
 .spot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity 0.6s var(--ease);
   background: radial-gradient(240px circle at var(--mx) var(--my), rgba(100, 181, 246, 0.3), transparent 65%); }
 .spot:hover::after { opacity: 1; }
+
+/* benefits: per-card choreography helpers */
+.bpanel__lift { position: absolute; inset: 0; border-radius: inherit; z-index: -3; pointer-events: none; box-shadow: 0 60px 110px rgba(10, 60, 140, 0.42), 0 18px 34px rgba(10, 60, 140, 0.22); }
+.bpanel { overflow: visible; }
+.bpanel__photo { inset: 0; border-radius: inherit; overflow: hidden; }
+.bpanel__photo img { position: absolute; inset: -4% -22%; width: 144%; height: 108%; max-width: none; }
+.bpanel::before, .bpanel::after { border-radius: inherit; }
+.bpanel__n { overflow: hidden; }
+.bpanel__body { overflow: hidden; }
+.mline { display: block; overflow: hidden; }
+.mline__in { display: block; will-change: transform; }
+.bpanel h3.mline { padding-bottom: 0.08em; }
+.bpanel__sweep { position: absolute; top: -20%; bottom: -20%; left: 0; width: 34%; pointer-events: none; transform: skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent); mix-blend-mode: screen; }
+
+/* no backdrop blur available inside sections: plates carry their own frosted fill */
+.bpanel__body { background: linear-gradient(165deg, rgba(255, 255, 255, 0.94), rgba(240, 247, 255, 0.86)); }
+.hstep { background: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(240, 247, 255, 0.82)); }
+.ustep__card { background: linear-gradient(170deg, rgba(255, 255, 255, 0.92), rgba(240, 247, 255, 0.78)); }
+.sci__proof .facts li.sci-fact, .rchart, .rcard { background: linear-gradient(170deg, rgba(255, 255, 255, 0.9), rgba(240, 247, 255, 0.76)); }
+.science .mol-chip { background: rgba(255, 255, 255, 0.9); }
+.ingr em { background: rgba(255, 255, 255, 0.88); }
+@media (max-width: 960px) { .bpanel__photo img { inset: -14% -4%; width: 108%; height: 128%; } }
