@@ -184,7 +184,7 @@
 .news { min-height: 100svh; display: grid; align-items: center; padding: clamp(120px, 18vh, 220px) 0; }
 .news .sec-bg { -webkit-mask-image: none; mask-image: none; will-change: clip-path; }
 .news .sec-bg::after { background: linear-gradient(180deg, rgba(10, 60, 140, 0.4), rgba(21, 101, 192, 0.2) 48%, rgba(10, 60, 140, 0.46)) !important; }
-.news__title { font-size: clamp(2.9rem, 9.4vw, 9.4rem); line-height: 0.92; letter-spacing: -0.05em; text-shadow: 0 20px 80px rgba(0, 10, 40, 0.55); }
+.news__title { font-size: clamp(2.9rem, 9.4vw, 9.4rem); line-height: 0.92; letter-spacing: -0.05em; filter: drop-shadow(0 18px 44px rgba(0, 24, 80, 0.5)); }
 .news__form { position: relative; display: block; max-width: 640px; margin-top: clamp(32px, 6vh, 64px); }
 .news__field { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 999px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08));
