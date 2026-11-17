@@ -21,3 +21,9 @@ footer.webp  ->  https://unsplash.com/photos/DSwBHyWKiVw  by manu schwendener (@
 env/studio_1k.hdr  ->  https://polyhaven.com/a/studio_small_08  (Poly Haven, CC0)
 
 video/sea.mp4, sea.webm, sea-m.mp4, sea-poster.webp  ->  https://mixkit.co/free-stock-video/aerial-view-of-a-huge-calm-blue-sea-51483/  by Mixkit (Mixkit Stock Video Free License, https://mixkit.co/license/#videoFree). Cropped, graded and looped.
+
+Benefit card images are still frames from Mixkit stock videos (Mixkit Stock Video Free License, https://mixkit.co/license/#videoFree), cropped and colour-graded:
+benefit-1.webp  ->  https://mixkit.co/free-stock-video/man-touching-his-hair-close-up-33599/
+benefit-2.webp  ->  https://mixkit.co/free-stock-video/hairstylist-combing-the-hair-of-a-woman-16141/
+benefit-3.webp  ->  https://mixkit.co/free-stock-video/close-up-of-a-woman-blow-drying-her-long-hair-45893/
+benefit-4.webp  ->  https://mixkit.co/free-stock-video/water-spray-on-a-black-background-31435/ (mist composited over a pale blue backdrop)
