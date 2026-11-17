@@ -288,7 +288,6 @@ function footer() {
   const inner = $(".footer__inner", foot);
   // revealed from under the page: content lags behind the edge that uncovers it
   gsap.fromTo(inner, { yPercent: -38 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: foot, start: "top bottom", end: "bottom bottom", scrub: true } });
-  gsap.fromTo($(".sec-bg picture", foot), { scale: 1.25 }, { scale: 1, ease: "none", scrollTrigger: { trigger: foot, start: "top bottom", end: "bottom bottom", scrub: true } });
   gsap.from($$(".footer__grid > *", foot), { y: 44, opacity: 0, duration: 1.3, ease: EASE, stagger: 0.09, scrollTrigger: { trigger: foot, start: "top 78%", once: true } });
   gsap.fromTo($$(".footer__mark span", foot), { yPercent: 105 }, { yPercent: 0, ease: "none", stagger: 0.08, scrollTrigger: { trigger: $(".footer__mark", foot), start: "top 104%", end: "top 62%", scrub: 0.7 } });
 }

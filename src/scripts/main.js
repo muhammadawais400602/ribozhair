@@ -1,5 +1,4 @@
-import "@fontsource-variable/space-grotesk";
-import "@fontsource-variable/inter";
+import "../styles/fonts.css";
 import "../styles/main.css";
 import "../styles/cinema.css";
 import { gsap } from "gsap";

@@ -243,7 +243,7 @@ export async function initScalp(canvas) {
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, matchMedia('(max-width: 960px), (pointer: coarse)').matches ? 1 : 1.25));
     renderer.setSize(w, h, false);
     aspect = w / h; camera.aspect = aspect;
     const t = Math.tan((camera.fov * Math.PI) / 360);

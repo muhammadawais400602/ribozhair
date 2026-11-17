@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RibozHair — Advanced Hair Regeneration Formula</title>
     <meta name="description" content="RibozHair Hair Booster Tonic — a patented formula with 2-Deoxy-D-Ribose that stimulates growth, reduces fall, and improves hair density." />
-    <link rel="icon" href="/src/assets/myi-logo.png" />
+    <link rel="icon" type="image/png" href="/src/assets/favicon.png" />
+    <link rel="preload" as="font" type="font/woff2" href="/src/assets/fonts/space-grotesk-latin-wght-normal.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/src/assets/fonts/inter-latin-wght-normal.woff2" crossorigin />
+    <link rel="preload" as="image" href="/src/assets/video/sea-poster.webp" fetchpriority="high" />
     <script>
       try { if (!sessionStorage.getItem("ribo-intro") && !matchMedia("(prefers-reduced-motion: reduce)").matches) { sessionStorage.setItem("ribo-intro", "1"); document.documentElement.classList.add("intro-on"); } } catch (e) {}
     </script>
@@ -28,7 +31,7 @@
       <button class="intro__skip" type="button">Skip intro</button>
     </div>
     <div class="sea-bg" aria-hidden="true">
-      <video class="sea-bg__video" muted loop playsinline preload="auto" poster="/src/assets/video/sea-poster.webp"></video>
+      <video class="sea-bg__video" muted loop playsinline preload="none" poster="/src/assets/video/sea-poster.webp"></video>
       <div class="sea-bg__frost"></div>
     </div>
     <!-- ============ 1. NAVIGATION ============ -->
@@ -60,8 +63,8 @@
         <div class="hero__stage">
           <div class="hero__product">
             <span class="hero__shadow" aria-hidden="true"></span>
-            <div class="hero__reflect" aria-hidden="true"><img src="/src/assets/bottle.webp" alt="" /></div>
-            <img class="hero__bottle" src="/src/assets/bottle.webp" alt="RibozHair Hair Booster Tonic, 60 ml bottle" />
+            <div class="hero__reflect" aria-hidden="true"><img src="/src/assets/bottle.webp" srcset="/src/assets/bottle-sm.webp 440w, /src/assets/bottle.webp 760w" sizes="(max-width: 960px) 46vw, 230px" width="760" height="2728" alt="" decoding="async" /></div>
+            <img class="hero__bottle" src="/src/assets/bottle.webp" srcset="/src/assets/bottle-sm.webp 440w, /src/assets/bottle.webp 760w" sizes="(max-width: 960px) 46vw, 230px" width="760" height="2728" alt="RibozHair Hair Booster Tonic, 60 ml bottle" fetchpriority="high" />
             <span class="hero__rim" aria-hidden="true"></span>
           </div>
           <span class="callout callout--lt" data-callout data-side="l" data-ax="0.22" data-ay="0.735">Reduces Hair Fall</span>
@@ -105,7 +108,7 @@
             <div class="meet__bottle" data-meet-bottle>
               <span class="meet__bloom" aria-hidden="true"></span>
               <span class="meet__shadow" aria-hidden="true"></span>
-              <img src="/src/assets/bottle.png" alt="RibozHair Hair Booster Tonic bottle" />
+              <img src="/src/assets/bottle.webp" alt="RibozHair Hair Booster Tonic bottle" width="760" height="2728" decoding="async" />
               <div class="liquid" aria-hidden="true">
                 <svg viewBox="0 0 200 400" preserveAspectRatio="none">
                   <path class="liquid__a" fill="rgba(100,181,246,.55)" />
@@ -127,7 +130,6 @@
 
       <!-- ============ 5. THE SCIENCE ============ -->
       <section class="section science" id="science" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/science-m.webp" /><img src="/src/assets/bg/science.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="sci__stage">
           <div class="sci__visual" data-cursor="2dDR">
             <div class="science__glow" aria-hidden="true"></div>
@@ -158,7 +160,6 @@
       <!-- ============ 6. HOW IT WORKS ============ -->
       <section class="how" id="how" data-theme="light">
         <div class="how__stage">
-          <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/how-m.webp" /><img src="/src/assets/bg/how.webp" alt="" loading="lazy" decoding="async" /></picture></div>
           <div class="how__scene"><canvas class="scalp" aria-label="Macro view: spray lands on the scalp, 2dDR reaches the follicle, hair regrows"></canvas></div>
           <div class="how__shade" aria-hidden="true"></div>
           <div class="wrap how__ui">
@@ -178,7 +179,6 @@
 
       <!-- ============ 7. BENEFITS ============ -->
       <section class="section benefits" id="benefits" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/benefits-m.webp" /><img src="/src/assets/bg/benefits.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="ben__stage">
           <div class="ben__track" data-cursor="Scroll">
             <header class="ben__intro">
@@ -224,7 +224,6 @@
 
       <!-- ============ 8. INGREDIENTS ============ -->
       <section class="section ingredients" id="ingredients" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/ingredients-m.webp" /><img src="/src/assets/bg/ingredients.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="ingr__wash" aria-hidden="true"></div>
         <div class="ingr__stage">
           <div class="wrap ingr__grid">
@@ -247,7 +246,6 @@
 
       <!-- ============ 9. RESULTS ============ -->
       <section class="section results" id="results" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/results-m.webp" /><img src="/src/assets/bg/results.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="wrap res__grid">
           <div class="res__copy">
             <p class="eyebrow" data-reveal>Results</p>
@@ -291,7 +289,6 @@
 
       <!-- ============ 10. HOW TO USE ============ -->
       <section class="section use" id="use" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/use-m.webp" /><img src="/src/assets/bg/use.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="wrap">
           <p class="eyebrow" data-reveal>How to Use</p>
           <h2 class="h2" data-split>Spray. Massage. Repeat.</h2>
@@ -325,7 +322,6 @@
 
       <!-- ============ 11. TRUST ============ -->
       <section class="section trust" id="trust" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/trust-m.webp" /><img src="/src/assets/bg/trust.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="wrap trust__grid">
           <div class="trust__head">
             <p class="eyebrow" data-reveal>Trust</p>
@@ -369,7 +365,6 @@
 
       <!-- ============ 12. TESTIMONIALS ============ -->
       <section class="section reviews" id="reviews" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/reviews-m.webp" /><img src="/src/assets/bg/reviews.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="wrap">
           <p class="eyebrow" data-reveal>Reviews</p>
           <h2 class="h2" data-split>What customers say.</h2>
@@ -384,7 +379,6 @@
 
       <!-- ============ 13. FAQ ============ -->
       <section class="section faq" id="faq" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/faq-m.webp" /><img src="/src/assets/bg/faq.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="wrap faq__grid">
           <div class="faq__head">
             <p class="eyebrow" data-reveal>FAQs</p>
@@ -408,7 +402,6 @@
 
       <!-- ============ 14. SHOP ============ -->
       <section class="section shop" id="shop" data-theme="light">
-        <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/shop-m.webp" /><img src="/src/assets/bg/shop.webp" alt="" loading="lazy" decoding="async" /></picture></div>
         <div class="wrap shop__grid">
           <div class="shop__visual">
             <div class="shop__arch" aria-hidden="true">
@@ -463,11 +456,10 @@
 
     <!-- ============ 16. FOOTER ============ -->
     <footer class="footer" id="contact" data-theme="light">
-      <div class="sec-bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/footer-m.webp" /><img src="/src/assets/bg/footer.webp" alt="" loading="lazy" decoding="async" /></picture></div>
       <div class="footer__inner">
       <div class="wrap footer__grid">
         <div class="footer__brand">
-          <img src="/src/assets/myi-logo.png" alt="MYI Health Care Solutions" width="96" height="96" />
+          <img src="/src/assets/myi-logo.webp" alt="MYI Health Care Solutions" width="96" height="96" loading="lazy" decoding="async" />
           <p><b>MYI PVT LTD</b><br />MY Health Care Solutions</p>
           <p class="small">Non-medicated hair care product. For external use only. Keep out of reach of children.</p>
         </div>

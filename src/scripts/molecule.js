@@ -73,7 +73,7 @@ export async function initMolecule(canvas) {
     return;
   }
   const small = matchMedia('(max-width: 960px)').matches;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
@@ -81,7 +81,7 @@ export async function initMolecule(canvas) {
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
   // real studio HDRI so the beads pick up true soft-box reflections; procedural room as a fallback
-  const envUrl = Object.entries(ENV).find(([k]) => k.endsWith('studio_1k.hdr'))?.[1] || Object.values(ENV)[0];
+  const envUrl = Object.entries(ENV).find(([k]) => k.endsWith('studio_512.hdr'))?.[1] || Object.values(ENV)[0];
   const roomEnv = async () => {
     const { RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js');
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
