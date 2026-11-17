@@ -132,7 +132,7 @@ export async function initStory() {
   tl.fromTo(bottleImg, { autoAlpha: 0, filter: `blur(12px) ${DROP}` }, { autoAlpha: 1, filter: `blur(0px) ${DROP}`, duration: 1.0, ease: "power2.out" }, gl ? 9.6 : 7.4);
   tl.to(P, { fade: 1, duration: 0.9, ease: "power1.in" }, 9.8);
   tl.fromTo(shadow, { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 1.0, ease: "power2.out" }, 9.9);
-  tl.to(liquid, { autoAlpha: 1, duration: 1.0, ease: "power1.out" }, 10.4);
+  tl.to(liquid, { autoAlpha: 0.42, duration: 1.0, ease: "power1.out" }, 10.4);
   tl.fromTo(tagline, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power3.out" }, 10.4);
   tl.fromTo(intro, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power3.out" }, 10.65);
   tl.fromTo(badges, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.14 }, 10.9);
@@ -150,8 +150,8 @@ export async function initStory() {
     path.setAttribute("d", d + " L210 480 L-10 480Z");
   }
   function paint() {
-    wave(A, 206, 5.5, 0.052, st.p);
-    wave(B, 214, 4.2, 0.07, -st.p * 1.3 + 1.2);
+    wave(A, 176, 5.5, 0.052, st.p);
+    wave(B, 184, 4.2, 0.07, -st.p * 1.3 + 1.2);
     gsap.set(shine, { x: Math.sin(st.p * 0.5) * 16 });
   }
   paint();
@@ -281,15 +281,13 @@ export async function initStory() {
       : { color: 0xffffff, roughness: 0.035, metalness: 0, transmission: 1, ior: 1.5, thickness: 0.22, attenuationColor: new THREE.Color("#bfeadd"), attenuationDistance: 0.9, dispersion: 2.5, envMapIntensity: 1.5, clearcoat: 1, clearcoatRoughness: 0.03, specularIntensity: 1, transparent: true };
     const shardMat = new THREE.MeshPhysicalMaterial({ ...glassOpts, vertexColors: true });
     const bottleMat = new THREE.MeshPhysicalMaterial(lite
-      ? { color: 0xd9a35a, roughness: 0.06, metalness: 0.1, transparent: true, opacity: 0.62, envMapIntensity: 2.2, clearcoat: 1 }
-      : { color: 0xffffff, roughness: 0.04, metalness: 0, transmission: 1, ior: 1.46, thickness: 1.0, attenuationColor: new THREE.Color("#e3a55a"), attenuationDistance: 2.4, envMapIntensity: 1.4, clearcoat: 1, clearcoatRoughness: 0.04 });
+      ? { color: 0xcfe6f2, roughness: 0.06, metalness: 0.15, transparent: true, opacity: 0.5, envMapIntensity: 2.2, clearcoat: 1 }
+      : { color: 0xffffff, roughness: 0.04, metalness: 0, transmission: 1, ior: 1.46, thickness: 0.9, attenuationColor: new THREE.Color("#a9d8e6"), attenuationDistance: 1.6, envMapIntensity: 1.4, clearcoat: 1, clearcoatRoughness: 0.04 });
     const labelMat = new THREE.MeshStandardMaterial({ color: 0xf1f2f0, roughness: 0.72, metalness: 0, transparent: true, side: THREE.DoubleSide });
-    const blackMat = new THREE.MeshPhysicalMaterial({ color: 0x08090c, roughness: 0.22, metalness: 0.1, clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.3, transparent: true });
-    const tubeMat = new THREE.MeshStandardMaterial({ color: 0xe9eef2, roughness: 0.35, transparent: true });
+    const blackMat = new THREE.MeshPhysicalMaterial({ color: 0x08090c, roughness: 0.22, metalness: 0.1, clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.3 });
+    const tubeMat = new THREE.MeshStandardMaterial({ color: 0xe9eef2, roughness: 0.35 });
     const dustMat = new THREE.MeshPhysicalMaterial({ color: 0xeaf6ff, roughness: 0.03, metalness: 0.55, envMapIntensity: 3, transparent: true, opacity: 0.85, clearcoat: 1 });
-    const dropMat = new THREE.MeshPhysicalMaterial(lite
-      ? { color: 0xdca658, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.7, envMapIntensity: 2.4 }
-      : { color: 0xe8ad55, roughness: 0.04, metalness: 0, transparent: true, opacity: 0.86, envMapIntensity: 2.2, clearcoat: 1, clearcoatRoughness: 0.02, emissive: new THREE.Color("#6b3d0c"), emissiveIntensity: 0.35 });
+    const dropMat = new THREE.MeshPhysicalMaterial({ color: 0xf2f9ff, roughness: 0.02, metalness: 0.2, transparent: true, opacity: 0.6, envMapIntensity: 3, clearcoat: 1, clearcoatRoughness: 0.02, depthWrite: false });
 
     // ---- rig ----
     const rig = new THREE.Group(); scene.add(rig);
@@ -366,7 +364,7 @@ export async function initStory() {
     }
     const tmpA = new V3(), tmpN = new V3(), tmpB = new V3();
     // tessellate a surface-space polygon as concentric rings so big shards follow the bottle's curvature
-    function facePatch(poly, c, off, origin, pos, nrm, col, tint, bevel, flip) {
+    function facePatch(fn, poly, c, off, origin, pos, nrm, col, tint, bevel, flip) {
       const dense = [];
       for (let i = 0; i < poly.length; i++) {
         const a = poly[i], b = poly[(i + 1) % poly.length], n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 0.1));
@@ -377,10 +375,10 @@ export async function initStory() {
       const K = Math.max(1, Math.min(7, Math.ceil(maxR / 0.11))), m = poly.length;
       const P = (k, j) => { const p = poly[j % m], t = k / K; return [lerp(c[0], p[0], t), lerp(c[1], p[1], t)]; };
       const push = (uv, edge) => {
-        surf(uv[0], uv[1], off, tmpA, tmpN);
-        if (edge && bevel) { surf(c[0], c[1], off, tmpB); tmpB.subVectors(tmpA, tmpB).normalize(); tmpN.addScaledVector(tmpB, bevel).normalize(); }
+        fn(uv[0], uv[1], off, tmpA, tmpN);
+        if (edge && bevel) { fn(c[0], c[1], off, tmpB); tmpB.subVectors(tmpA, tmpB).normalize(); tmpN.addScaledVector(tmpB, bevel).normalize(); }
         if (flip) tmpN.negate();
-        pos.push(tmpA.x - origin.x, tmpA.y - origin.y, tmpA.z - origin.z); nrm.push(tmpN.x, tmpN.y, tmpN.z); col.push(tint[0], tint[1], tint[2]);
+        pos.push(tmpA.x - origin.x, tmpA.y - origin.y, tmpA.z - origin.z); nrm.push(tmpN.x, tmpN.y, tmpN.z); if (col) col.push(tint[0], tint[1], tint[2]);
       };
       const tri = (a, ae, b, be, d, de) => { if (flip) { push(a, ae); push(d, de); push(b, be); } else { push(a, ae); push(b, be); push(d, de); } };
       for (let j = 0; j < m; j++) {
@@ -392,6 +390,31 @@ export async function initStory() {
         }
       }
     }
+
+    const WHITE = [1, 1, 1], EDGE = [0.74, 0.97, 0.9];
+    const a3 = new V3(), b3 = new V3(), c3 = new V3(), d3 = new V3(), n3 = new V3();
+    // one closed glass piece: outer face, inner face, side walls — on any surface function
+    function solid(fn, rag, c, pos, nrm, col) {
+      const origin = fn(c[0], c[1], -THICK / 2, new V3());
+      facePatch(fn, rag, c, 0, origin, pos, nrm, col, WHITE, 0.5, false);
+      facePatch(fn, rag, c, -THICK, origin, pos, nrm, col, WHITE, 0.3, true);
+      for (let j = 0; j < rag.length; j++) {
+        const p = rag[j], q = rag[(j + 1) % rag.length];
+        fn(p[0], p[1], 0, a3); fn(q[0], q[1], 0, b3); fn(q[0], q[1], -THICK, c3); fn(p[0], p[1], -THICK, d3);
+        n3.subVectors(b3, a3).cross(tmpA.subVectors(d3, a3)).normalize().negate();
+        for (const v of [a3, d3, b3, b3, d3, c3]) { pos.push(v.x - origin.x, v.y - origin.y, v.z - origin.z); nrm.push(n3.x, n3.y, n3.z); if (col) col.push(EDGE[0], EDGE[1], EDGE[2]); }
+      }
+      return origin;
+    }
+    const morphable = (pos, nrm, col) => {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+      g.setAttribute("normal", new THREE.Float32BufferAttribute(nrm, 3));
+      if (col) g.setAttribute("color", new THREE.Float32BufferAttribute(col, 3));
+      g.morphAttributes.position = [new THREE.Float32BufferAttribute(pos.slice(), 3)];
+      g.morphAttributes.normal = [new THREE.Float32BufferAttribute(nrm.slice(), 3)];
+      return g;
+    };
 
     const labelRect = { x0: LABEL.x0, x1: LABEL.x1, s0: sAtY(LABEL.y0), s1: sAtY(LABEL.y1) };
     const shardRoot = new THREE.Group(); body.add(shardRoot);
@@ -407,51 +430,35 @@ export async function initStory() {
       const rag = ragged(poly);
       const c = centroidOf(rag);
       if (Math.abs(c[2]) < 0.002) continue;
-      const origin = surf(c[0], c[1], -THICK / 2, new V3());
       const pos = [], nrm = [], col = [];
-      facePatch(rag, c, 0, origin, pos, nrm, col, [1, 1, 1], 0.5, false);
-      facePatch(rag, c, -THICK, origin, pos, nrm, col, [1, 1, 1], 0.3, true);
-      const a3 = new V3(), b3 = new V3(), c3 = new V3(), d3 = new V3(), n3 = new V3();
+      const origin = solid(surf, rag, c, pos, nrm, col);
       for (let j = 0; j < rag.length; j++) {
         const p = rag[j], q = rag[(j + 1) % rag.length];
-        surf(p[0], p[1], 0, a3); surf(q[0], q[1], 0, b3); surf(q[0], q[1], -THICK, c3); surf(p[0], p[1], -THICK, d3);
-        n3.subVectors(b3, a3).cross(tmpA.subVectors(d3, a3)).normalize().negate();
-        [a3, d3, b3, b3, d3, c3].forEach((v) => { pos.push(v.x - origin.x, v.y - origin.y, v.z - origin.z); nrm.push(n3.x, n3.y, n3.z); col.push(0.74, 0.97, 0.9); });
-        // crack line on the outer surface
         surf(p[0], p[1], 0.006, a3); surf(q[0], q[1], 0.006, b3);
         crackPos.push(a3.x, a3.y, a3.z, b3.x, b3.y, b3.z);
         const da = Math.hypot(p[0] - imp.x, p[1] - imp.s), db = Math.hypot(q[0] - imp.x, q[1] - imp.s);
         crackDist.push(da, db); maxDist = Math.max(maxDist, da, db);
       }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-      geo.setAttribute("normal", new THREE.Float32BufferAttribute(nrm, 3));
-      geo.setAttribute("color", new THREE.Float32BufferAttribute(col, 3));
-      geo.computeBoundingSphere();
-      const mesh = new THREE.Mesh(geo, shardMat);
+      const mesh = new THREE.Mesh(morphable(pos, nrm, col), shardMat);
+      mesh.frustumCulled = false; mesh.morphTargetInfluences = [0];
       mesh.position.copy(origin); shardRoot.add(mesh);
 
       // the part of the paper label stuck to this shard
-      const lp = clipRect(rag, labelRect);
-      let labelIntact = null;
+      let lp = clipRect(rag, labelRect), lc = null, labelMesh = null;
+      if (lp) { lc = centroidOf(lp); if (Math.abs(lc[2]) <= 0.0015) lp = null; }
       if (lp) {
-        const lc = centroidOf(lp);
-        if (Math.abs(lc[2]) > 0.0015) {
-          const lpos = [], lnrm = [], lcol = [];
-          facePatch(lp, lc, 0.007, origin, lpos, lnrm, lcol, [1, 1, 1], 0, false);
-          const lg = new THREE.BufferGeometry();
-          lg.setAttribute("position", new THREE.Float32BufferAttribute(lpos, 3));
-          lg.setAttribute("normal", new THREE.Float32BufferAttribute(lnrm, 3));
-          mesh.add(new THREE.Mesh(lg, labelMat));
-          labelIntact = new THREE.Mesh(lg, labelMat); labelIntact.position.copy(origin); labelRoot.add(labelIntact);
-        }
+        const lpos = [], lnrm = [];
+        facePatch(surf, lp, lc, 0.007, origin, lpos, lnrm, null, WHITE, 0, false);
+        const lg = morphable(lpos, lnrm, null);
+        labelMesh = new THREE.Mesh(lg, labelMat); labelMesh.frustumCulled = false; labelMesh.morphTargetInfluences = [0]; mesh.add(labelMesh);
+        const intactPatch = new THREE.Mesh(lg, labelMat); intactPatch.morphTargetInfluences = [0]; intactPatch.position.copy(origin); labelRoot.add(intactPatch);
       }
       const pc = prof(c[1]);
       shards.push({
-        mesh, rest: origin.clone(), theta: c[0] / R, y: pc.y, r: Math.max(0.05, pc.r), area: Math.abs(c[2]),
+        mesh, labelMesh, rag, c, lp, lc, rest: origin.clone(), theta: c[0] / R, y: pc.y, f: c[1] / S, area: Math.abs(c[2]),
         dist: Math.hypot(c[0] - imp.x, c[1] - imp.s), rnd: [rand(), rand(), rand(), rand(), rand(), rand()],
         axis: new V3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize(), axis2: new V3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize(),
-        scat: new V3(), driftV: new V3(), asmP: new V3(), asmQ: new Q4(), asmS: new V3(1, 1, 1), delay: 0, stag: 0, spin: 0,
+        scat: new V3(), driftV: new V3(), asmP: new V3(), delay: 0, stag: 0, spin: 0,
       });
     }
     // crack network revealed outward from the impact point just before the pieces separate
@@ -481,12 +488,12 @@ export async function initStory() {
       const d = new V3(rand() - 0.5, rand() - 0.42, (rand() - 0.5) * 0.9).normalize();
       fragData.push({ o, d, reach: 0.8 + Math.pow(rand(), 1.6) * 5.2, size: 0.012 + Math.pow(rand(), 2.4) * 0.05, sx: 0.5 + rand(), sy: 0.3 + rand() * 0.6, axis: new V3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize(), spin: 4 + rand() * 16, fall: 0.3 + rand() * 1.4, life: 0.55 + rand() * 0.45, ph: rand() * 6.28 });
     }
-    const ND = lite ? 36 : 84;
+    const ND = lite ? 50 : 130;
     const drops = new THREE.InstancedMesh(new THREE.SphereGeometry(1, lite ? 8 : 14, lite ? 6 : 10), dropMat, ND); drops.frustumCulled = false; scene.add(drops);
     const dropData = [];
     for (let i = 0; i < ND; i++) {
       const a = rand() * 6.283, up = 0.2 + rand() * 0.9;
-      dropData.push({ o: new V3((rand() - 0.5) * 0.9, (rand() - 0.5) * 2.2 - 0.3, (rand() - 0.5) * 0.6), v: new V3(Math.cos(a) * (1.2 + rand() * 4.2), up * 4.6 - 0.8, Math.sin(a) * 1.6), size: 0.016 + Math.pow(rand(), 2.2) * 0.06, delay: rand() * 0.06 });
+      dropData.push({ o: new V3((rand() - 0.5) * 0.9, (rand() - 0.5) * 2.2 - 0.3, (rand() - 0.5) * 0.6), v: new V3(Math.cos(a) * (1.2 + rand() * 4.2), up * 4.6 - 0.8, Math.sin(a) * 1.6), size: 0.012 + Math.pow(rand(), 2.4) * 0.045, delay: rand() * 0.06 });
     }
     // floating glitter that lingers in the light
     const NG = lite ? 120 : 320;
@@ -498,8 +505,18 @@ export async function initStory() {
     const glitter = new THREE.Points(gGeo, glitterMat); glitter.frustumCulled = false; scene.add(glitter);
 
     // ---- layout-dependent targets ----
-    const sil = silhouetteOf(bottleImg);
+    const silRaw = silhouetteOf(bottleImg), sil = silRaw.map((_, i) => { let a = 0, n = 0; for (let k = -2; k <= 2; k++) { const j = i + k; if (j >= 0 && j < silRaw.length) { a += silRaw[j]; n++; } } return a / n; });
     const silAt = (f) => { const x = clamp01(f) * (sil.length - 1), i = Math.min(sil.length - 2, Math.floor(x)); return lerp(sil[i], sil[i + 1], x - i); };
+    // a thin shell shaped like the real bottle (units: world / rig scale, centred on the photo)
+    const T = { hw: 1, h: 1 };
+    const tsurf = (x, s, off, out, nOut) => {
+      const f = clamp01(s / S), f0 = Math.max(0, f - 0.012), f1 = Math.min(1, f + 0.012);
+      let tr = (silAt(f1) - silAt(f0)) * T.hw, ty = (f1 - f0) * T.h; const l = Math.hypot(tr, ty) || 1; tr /= l; ty /= l;
+      const th = x / R, sn = Math.sin(th), cs = Math.cos(th), r = silAt(f) * T.hw + ty * off;
+      out.set(r * sn, (f - 0.5) * T.h - tr * off, r * cs);
+      if (nOut) nOut.set(ty * sn, -tr, ty * cs);
+      return out;
+    };
     const Mimp = new M4(), MimpInv = new M4(), qImp = new Q4(), qImpInv = new Q4();
     const impactPose = { y: 0.1, rx: 0.05, ry: 0, rz: 0.11 };
     const L = { W: 1, H: 1, visW: 1, impW: new V3(), pumpScat: new V3(), pumpAsm: new V3(), pumpAsmS: 1, bottle: { x: 0, y: 0, w: 1, h: 1 } };
@@ -544,27 +561,39 @@ export async function initStory() {
         s.delay = Math.min(0.2, s.dist * 0.05);
         s.spin = (s.rnd[5] < 0.5 ? -1 : 1) * (2.2 + s.rnd[4] * 5.5) / (0.6 + Math.sqrt(s.area) * 1.6);
       });
-      L.pumpScat.set(hx * 0.5, Math.min(topLim - 0.4, hy * 0.5), 1.2).applyMatrix4(MimpInv);
+      L.pumpScat.set(-hx * 0.1, topLim - 0.95, 0.6).applyMatrix4(MimpInv);
 
       // assembly: each shard maps to the same (angle, height) on a shell shaped like the real bottle
       const sr = stage.getBoundingClientRect(), br = meetBottle.getBoundingClientRect(), px = VH / H;
       const b = L.bottle;
       b.w = br.width * px; b.h = br.height * px;
       b.x = (br.left - sr.left + br.width / 2 - W / 2) * px; b.y = -(br.top - sr.top + br.height / 2 - H / 2) * px;
+      T.hw = b.w / 2 / fit; T.h = b.h / fit;
+      const bW = new V3(b.x, b.y, 0);
       shards.forEach((s) => {
-        const f = clamp01(s.y / SHELL_H), rt = (silAt(f) * b.w) / 2, kx = rt / silC(s.y), rr = s.r * kx;
-        s.asmP.set(b.x + rr * Math.sin(s.theta), b.y + (f - 0.5) * b.h, rr * Math.cos(s.theta)).applyMatrix4(MimpInv);
-        s.asmQ.copy(qImpInv);
-        s.asmS.set(kx / fit, b.h / SHELL_H / fit, kx / fit);
-        s.stag = 0.5 * f + 0.22 * s.rnd[2];
+        const pos = [], nrm = [];
+        const o = solid(tsurf, s.rag, s.c, pos, nrm, null);
+        const g = s.mesh.geometry;
+        g.morphAttributes.position[0].array.set(pos); g.morphAttributes.normal[0].array.set(nrm);
+        if (s.labelMesh) {
+          const lpos = [], lnrm = [];
+          facePatch(tsurf, s.lp, s.lc, 0.007, o, lpos, lnrm, null, WHITE, 0, false);
+          const lg = s.labelMesh.geometry;
+          lg.morphAttributes.position[0].array.set(lpos); lg.morphAttributes.normal[0].array.set(lnrm); lg.dispose();
+        }
+        g.dispose(); // re-upload attributes + morph texture
+        s.asmP.copy(o).multiplyScalar(fit).add(bW).applyMatrix4(MimpInv);
+        s.stag = 0.55 * s.f + 0.2 * s.rnd[2];
       });
-      L.pumpAsm.set(b.x, b.y + b.h * 0.4, 0).applyMatrix4(MimpInv);
-      L.pumpAsmS = (silAt(0.9) * b.w) / 2 / 0.3 / fit;
+      // the pump returns under the clear cap
+      L.pumpAsmS = (b.w / 2 / 0.345 / fit) * 0.97;
+      L.pumpAsm.set(b.x, b.y + b.h * 0.15 + 0.59 * L.pumpAsmS * fit, 0).applyMatrix4(MimpInv);
     }
 
     // ---- per-frame: everything derives from P (+ a little idle float) ----
     const q1 = new Q4(), q2 = new Q4(), pA2 = new V3(), dummy = new THREE.Object3D(), up = new V3(0, 1, 0);
     let clock = 0;
+    const solidOrFade = (mat, a) => { const t = a < 0.999; if (mat.transparent !== t) { mat.transparent = t; mat.needsUpdate = true; } mat.opacity = a; };
     function frame() {
       const { fall, crack, burst, flash, drift, bg, asm, sweep, fade } = P;
       const idle = reduced ? 0 : clock;
@@ -590,7 +619,10 @@ export async function initStory() {
       const vis = impacted && fade < 0.999;
       shardRoot.visible = vis;
       const alpha = 1 - fade;
-      shardMat.opacity = (lite ? 0.42 : 1) * alpha; labelMat.opacity = impacted ? alpha : 1; blackMat.opacity = alpha; tubeMat.opacity = alpha;
+      shardMat.opacity = (lite ? 0.42 : 1) * alpha; labelMat.opacity = alpha;
+      // pump + tube stay opaque (so the glass refracts them) until they have to fade
+      const tubeA = alpha * (1 - smooth(clamp01(asm * 2.2)));
+      solidOrFade(blackMat, alpha); solidOrFade(tubeMat, tubeA);
       if (vis) {
         const asmT = asm * 1.72;
         for (let i = 0; i < shards.length; i++) {
@@ -606,8 +638,10 @@ export async function initStory() {
           q1.multiply(q2);
           // assembly onto the RibozHair silhouette
           m.position.copy(pA2).lerp(s.asmP, a);
-          m.quaternion.copy(q1).slerp(s.asmQ, a);
-          m.scale.set(lerp(1, s.asmS.x, a), lerp(1, s.asmS.y, a), lerp(1, s.asmS.z, a));
+          m.quaternion.copy(q1).slerp(qImpInv, a);
+          const mo = smooth(clamp01((a - 0.35) / 0.65));
+          m.morphTargetInfluences[0] = mo;
+          if (s.labelMesh) s.labelMesh.morphTargetInfluences[0] = mo;
         }
       }
       // pump + dip tube: thrown clear, then return to cap the rebuilt bottle
