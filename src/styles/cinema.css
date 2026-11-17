@@ -179,3 +179,11 @@ main > section:not(.hero):not(.story) *, .footer * { backdrop-filter: none !impo
   .callout--rb { top: 50%; bottom: auto; }
 }
 @media (max-width: 960px) { .hero__tagline { justify-items: center; } }
+
+/* very large / zoomed-out screens: scale the whole UI with the viewport */
+@media (min-width: 1921px) {
+  html { font-size: 0.834vw; }
+  .nav { width: min(66.7vw, 100% - 28px); height: 4rem; top: 0.9rem; }
+  .wrap { width: min(75rem, 100% - 3rem); }
+  .hero__foot { width: min(66.7vw, 100% - 56px); }
+}

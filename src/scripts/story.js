@@ -494,7 +494,7 @@ export async function initStory() {
       return out;
     };
     const Mimp = new M4(), MimpInv = new M4(), qImp = new Q4(), qImpInv = new Q4();
-    const impactPose = { y: 0.1, rx: 0.05, ry: 0, rz: 0.11 };
+    const impactPose = { y: 0.1, rx: 0, ry: 0, rz: 0 }; // upright, so the reshaping pieces stay seamless
     const L = { W: 1, H: 1, visW: 1, fit: 1, impW: new V3(), pumpScat: new V3(), pumpAsm: new V3(), pumpAsmS: new V3(1, 1, 1), bottle: { x: 0, y: 0, w: 1, h: 1 } };
     const order = shards.map((_, i) => i);
     const w3 = new V3();
@@ -627,7 +627,7 @@ export async function initStory() {
           pA2.lerp(s.asmP, a); q1.slerp(qImpInv, a);
           m4.compose(pA2, q1, ONE);
           TEX.set(m4.elements, i * TEXW * 4);
-          TEX[i * TEXW * 4 + 16] = smooth(clamp01((a - 0.35) / 0.65));
+          TEX[i * TEXW * 4 + 16] = Math.max(unbuilt, smooth(clamp01((a - 0.35) / 0.65)));
         }
         shardTex.needsUpdate = true;
       }
