@@ -1,5 +1,7 @@
 import gsap from 'gsap';
 
+const ENV = import.meta.glob('../assets/env/*.hdr', { eager: true, query: '?url', import: 'default' });
+
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
 const easeInOut = (t) => t * t * (3 - 2 * t);
@@ -12,7 +14,7 @@ function rng(seed) {
   };
 }
 
-const SLAB_W = 10, SLAB_D = 4, SLAB_H = 3.2, ZF = SLAB_D / 2;
+const SLAB_W = 34, SLAB_D = 4, SLAB_H = 3.2, ZF = SLAB_D / 2;
 const surfY = (x, z) =>
   0.11 * Math.sin(x * 0.9 + z * 0.7) + 0.07 * Math.sin(x * 1.7 - z * 1.3 + 1.3) + 0.035 * Math.sin(x * 3.1 + z * 2.7 + 0.4);
 
@@ -27,10 +29,9 @@ function canvasTex(THREE, w, h, draw, srgb = true) {
 
 export async function initScalp(canvas) {
   const noop = { setProgress() {}, destroy() {} };
-  let THREE, RoomEnvironment, renderer;
+  let THREE, renderer;
   try {
     THREE = await import('three');
-    ({ RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js'));
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   } catch (e) {
     canvas.parentElement?.classList.add('is-fallback');
@@ -39,20 +40,29 @@ export async function initScalp(canvas) {
 
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.95;
+  renderer.toneMappingExposure = 1.08;
 
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environmentIntensity = 0.55;
-  scene.fog = new THREE.FogExp2(0x07203f, 0.05);
+  try {
+    const url = Object.values(ENV)[0];
+    if (!url) throw new Error('no hdri');
+    const { HDRLoader } = await import('three/examples/jsm/loaders/HDRLoader.js');
+    const hdr = await new HDRLoader().loadAsync(url);
+    scene.environment = pmrem.fromEquirectangular(hdr).texture; hdr.dispose();
+  } catch (e) {
+    const { RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js');
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  }
+  scene.environmentIntensity = 0.9;
+  scene.fog = new THREE.FogExp2(0xeaf3fc, 0.042);
 
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 60);
 
   // lights
-  const key = new THREE.DirectionalLight(0xffffff, 2.3); key.position.set(-4, 6, 5); scene.add(key);
-  const rim = new THREE.DirectionalLight(0x64b5f6, 3.2); rim.position.set(5, 3, -5); scene.add(rim);
-  scene.add(new THREE.HemisphereLight(0x9cc8ff, 0x061a3d, 0.5));
+  const key = new THREE.DirectionalLight(0xffffff, 2.0); key.position.set(-4, 6, 5); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x9fd0ff, 1.6); rim.position.set(5, 3, -5); scene.add(rim);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xcfe4fa, 0.9));
 
   // ---------- textures ----------
   const noiseTex = canvasTex(THREE, 256, 256, (ctx, w, h) => {
@@ -65,12 +75,12 @@ export async function initScalp(canvas) {
 
   const layerTex = canvasTex(THREE, 512, 512, (ctx, w, h) => {
     const g = ctx.createLinearGradient(0, 0, 0, h);
-    g.addColorStop(0, '#f3f8ff'); g.addColorStop(0.05, '#dfecfa'); g.addColorStop(0.07, '#bcd7f3');
-    g.addColorStop(0.22, '#9cc3ee'); g.addColorStop(0.55, '#5c9be0'); g.addColorStop(0.82, '#2a69c0'); g.addColorStop(1, '#103a7c');
+    g.addColorStop(0, '#ffffff'); g.addColorStop(0.05, '#f1f7fe'); g.addColorStop(0.07, '#dcebfb');
+    g.addColorStop(0.22, '#cfe4fa'); g.addColorStop(0.55, '#b4d5f7'); g.addColorStop(0.82, '#9cc8f4'); g.addColorStop(1, '#86bbf0');
     ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
     for (let i = 0; i < 700; i++) {
       const y = Math.random() * h, x = Math.random() * w, l = 20 + Math.random() * 90;
-      ctx.strokeStyle = `rgba(255,255,255,${0.02 + Math.random() * 0.06})`; ctx.lineWidth = 0.6 + Math.random();
+      ctx.strokeStyle = `rgba(255,255,255,${0.06 + Math.random() * 0.14})`; ctx.lineWidth = 0.6 + Math.random();
       ctx.beginPath(); ctx.moveTo(x, y); ctx.bezierCurveTo(x + l * 0.3, y + 2, x + l * 0.7, y - 2, x + l, y); ctx.stroke();
     }
     ctx.fillStyle = 'rgba(255,255,255,0.05)';
@@ -79,7 +89,7 @@ export async function initScalp(canvas) {
 
   const haloTex = canvasTex(THREE, 128, 128, (ctx, w, h) => {
     const g = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
-    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.25, 'rgba(160,215,255,0.55)'); g.addColorStop(1, 'rgba(100,181,246,0)');
+    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.3, 'rgba(255,255,255,0.5)'); g.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
   });
 
@@ -99,14 +109,14 @@ export async function initScalp(canvas) {
     for (let i = 0; i < p.count; i++) {
       const x = p.getX(i), z = p.getZ(i); p.setY(i, surfY(x, z));
       const t = 0.82 + 0.18 * (0.5 + 0.5 * Math.sin(x * 1.3 + z * 0.8) * Math.sin(z * 1.9 - x * 0.6 + 1.1)) - 0.06 * Math.sin(x * 5.3 + z * 4.1);
-      col.set([t * 0.93, t * 0.97, t], i * 3);
+      col.set([0.9 + t * 0.08, 0.93 + t * 0.06, 0.97 + t * 0.03], i * 3);
     }
     topGeo.setAttribute('color', new THREE.BufferAttribute(col, 3)); topGeo.computeVertexNormals();
   }
   const topMat = new THREE.MeshPhysicalMaterial({
-    color: 0xb9d3ee, roughness: 0.4, metalness: 0, clearcoat: 0.7, clearcoatRoughness: 0.32,
-    sheen: 1, sheenColor: new THREE.Color(0x9fd0ff), sheenRoughness: 0.5,
-    bumpMap: noiseTex, bumpScale: 1.6, vertexColors: true, transparent: true, opacity: 0.97,
+    color: 0xf3f8fe, roughness: 0.42, metalness: 0, clearcoat: 0.6, clearcoatRoughness: 0.3,
+    sheen: 0.6, sheenColor: new THREE.Color(0xcfe6ff), sheenRoughness: 0.5,
+    bumpMap: noiseTex, bumpScale: 1.1, vertexColors: true, transparent: true, opacity: 0.97,
   });
   const top = new THREE.Mesh(topGeo, topMat); top.renderOrder = 3; slab.add(top);
 
@@ -125,18 +135,18 @@ export async function initScalp(canvas) {
   faceGeo.setAttribute('uv', new THREE.Float32BufferAttribute(fu, 2));
   faceGeo.setIndex(fi); faceGeo.computeVertexNormals();
   const face = new THREE.Mesh(faceGeo, new THREE.MeshPhysicalMaterial({
-    map: layerTex, roughness: 0.38, clearcoat: 0.6, clearcoatRoughness: 0.25, transparent: true, opacity: 0.72, depthWrite: false,
+    map: layerTex, roughness: 0.3, clearcoat: 0.8, clearcoatRoughness: 0.2, transparent: true, opacity: 0.62, depthWrite: false,
   }));
   face.renderOrder = 6; slab.add(face);
 
-  const wallMat = new THREE.MeshStandardMaterial({ map: layerTex, color: 0x8fb4e0, roughness: 0.7 });
+  const wallMat = new THREE.MeshStandardMaterial({ map: layerTex, color: 0xf0f6fd, roughness: 0.7 });
   const back = new THREE.Mesh(new THREE.PlaneGeometry(SLAB_W, SLAB_H + 0.3), wallMat);
   back.position.set(0, -SLAB_H / 2 + 0.1, -ZF); back.renderOrder = 0; slab.add(back);
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(SLAB_W, SLAB_D), new THREE.MeshStandardMaterial({ color: 0x0c2f69, roughness: 0.6 }));
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(SLAB_W, SLAB_D), new THREE.MeshStandardMaterial({ color: 0xbcd8f5, roughness: 0.6 }));
   floor.rotation.x = -Math.PI / 2; floor.position.y = -SLAB_H; slab.add(floor);
 
   const shadow = new THREE.Mesh(new THREE.PlaneGeometry(15, 7.5), new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, fog: false }));
-  shadow.rotation.x = -Math.PI / 2; shadow.position.set(0, -SLAB_H - 0.25, 0.4); scene.add(shadow);
+  shadow.rotation.x = -Math.PI / 2; shadow.position.set(0, -SLAB_H - 0.25, 0.4);
 
   // ---------- follicles ----------
   const R = rng(7);
@@ -145,18 +155,18 @@ export async function initScalp(canvas) {
   const follGeo = new THREE.LatheGeometry(profile, 32);
   const papGeo = new THREE.SphereGeometry(0.105, 24, 18);
   const mains = [];
-  const mainSpots = [[-2.3, 1.2], [-1.45, 0.3], [-0.55, 1.45], [0.35, 0.5], [1.15, 1.35], [1.9, 0.2], [2.45, 1.05]];
+  const mainSpots = [[-5.6, 0.7], [-4.5, 1.3], [-3.4, 0.4], [3.5, 0.6], [4.6, 1.25], [5.7, 0.5], [-2.3, 1.2], [-1.45, 0.3], [-0.55, 1.45], [0.35, 0.5], [1.15, 1.35], [1.9, 0.2], [2.45, 1.05]];
   mainSpots.forEach(([x, z], i) => {
     const s = 0.86 + R() * 0.28, y = surfY(x, z);
     const g = new THREE.Group(); g.position.set(x, y, z); g.scale.set(s * (0.8 + R() * 0.45), s, s * (0.8 + R() * 0.45)); g.rotation.z = (R() - 0.5) * 0.12; slab.add(g);
     const bulbMat = new THREE.MeshPhysicalMaterial({
-      color: 0xa9cdee, roughness: 0.4, clearcoat: 0.6, transparent: true, opacity: 0.4, side: THREE.DoubleSide,
+      color: 0xd9eafb, roughness: 0.3, clearcoat: 0.8, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
       emissive: new THREE.Color(0x1e88e5), emissiveIntensity: 0.05, depthWrite: false,
     });
     const bulb = new THREE.Mesh(follGeo, bulbMat); bulb.renderOrder = 2; g.add(bulb);
     const papMat = new THREE.MeshStandardMaterial({ color: 0x5fb0f2, emissive: new THREE.Color(0x2f8fe8), emissiveIntensity: 0.15, roughness: 0.35 });
     const pap = new THREE.Mesh(papGeo, papMat); pap.position.set(0, -1.88, 0); pap.scale.set(1, 0.8, 1); pap.renderOrder = 2; g.add(pap);
-    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, color: 0x6fc0ff, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0.0, fog: false }));
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, color: 0x2f9bff, transparent: true, depthWrite: false, opacity: 0.0, fog: false }));
     halo.position.set(x, y - 1.88 * s, z + 0.05); halo.renderOrder = 7; scene.add(halo);
     mains.push({ x, z, y, s, bulbMat, papMat, halo, papY: y - 1.88 * s });
   });
@@ -185,33 +195,33 @@ export async function initScalp(canvas) {
     geo.setDrawRange(0, Math.floor(f0 * TUB) * RAD * 6);
   }
   mains.forEach((m) => addHair(m.x, m.z, m.y - 1.7 * m.s, 2.1 + R() * 0.7, 0.026, hairMat, false, R() * 0.6));
-  for (let i = 0; i < 26; i++) {
-    const x = (R() - 0.5) * 5.2, z = (R() - 0.5) * 3.6;
+  for (let i = 0; i < 62; i++) {
+    const x = (R() - 0.5) * 13, z = (R() - 0.5) * 3.6;
     addHair(x, z, surfY(x, z) - 0.12, 1.7 + R() * 1.1, 0.022, hairMat, false, R() * 0.6);
   }
-  for (let i = 0; i < 16; i++) {
-    const x = (R() - 0.5) * 5.2, z = (R() - 0.5) * 3.3;
+  for (let i = 0; i < 40; i++) {
+    const x = (R() - 0.5) * 13, z = (R() - 0.5) * 3.3;
     addHair(x, z, surfY(x, z) - 0.1, 1.3 + R() * 0.9, 0.015, extraMat, true, R() * 0.7);
   }
 
   // ---------- droplets ----------
-  const DN = 260;
-  const dropMat = new THREE.MeshPhysicalMaterial({ color: 0xe3f2ff, roughness: 0.04, metalness: 0, clearcoat: 1, transparent: true, opacity: 0.6, envMapIntensity: 1.6 });
+  const DN = 420;
+  const dropMat = new THREE.MeshPhysicalMaterial({ color: 0xd6eaff, roughness: 0.03, metalness: 0, clearcoat: 1, transparent: true, opacity: 0.72, envMapIntensity: 1.8 });
   const drops = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 14, 10), dropMat, DN);
   drops.frustumCulled = false; drops.renderOrder = 5; slab.add(drops);
   const dd = [];
   for (let i = 0; i < DN; i++) {
-    const ex = (R() - 0.5) * 6.2, ez = (R() - 0.5) * 3.6, r = 0.022 + R() * 0.03;
+    const ex = (R() - 0.5) * 13, ez = (R() - 0.5) * 3.6, r = 0.022 + R() * 0.03;
     dd.push({
-      sx: -4.8 + R() * 2.6, sy: 3.8 + R() * 1.4, sz: -1.2 + R() * 2.8,
+      sx: ex * 0.55 - 3.6 + R() * 2.6, sy: 3.8 + R() * 1.4, sz: -1.2 + R() * 2.8,
       ex, ey: surfY(ex, ez) + r * 0.5, ez, r, delay: R() * 0.55, dur: 0.35 + R() * 0.15, abs: R() * 0.6, keep: R() < 0.25,
     });
   }
   const dummy = new THREE.Object3D();
 
   // ---------- 2dDR particles ----------
-  const PN = 18;
-  const partMat = new THREE.MeshBasicMaterial({ color: 0xa8dcff, toneMapped: false });
+  const PN = 39;
+  const partMat = new THREE.MeshBasicMaterial({ color: 0x1e88e5, toneMapped: false });
   const parts = new THREE.InstancedMesh(new THREE.SphereGeometry(0.055, 16, 12), partMat, PN);
   parts.frustumCulled = false; parts.renderOrder = 6; slab.add(parts);
   const pp = [];
@@ -223,7 +233,7 @@ export async function initScalp(canvas) {
       new THREE.Vector3(m.x - jx * 0.4, m.y - 0.8 * s, m.z + 0.02),
       new THREE.Vector3(m.x, m.papY, m.z),
     ]);
-    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, color: 0x7cc4ff, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0.9, fog: false }));
+    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, color: 0x3da2ff, transparent: true, depthWrite: false, opacity: 0.9, fog: false }));
     spr.renderOrder = 8; slab.add(spr);
     pp.push({ curve, spr, delay: (i / PN) * 0.55, dur: 0.38 + R() * 0.1 });
   }
@@ -238,6 +248,7 @@ export async function initScalp(canvas) {
     aspect = w / h; camera.aspect = aspect;
     const t = Math.tan((camera.fov * Math.PI) / 360);
     baseDist = Math.max(3.0 / t, 3.3 / (t * aspect));
+    if (aspect > 1.25) camera.setViewOffset(w, h, -w * 0.15, 0, w, h); else camera.clearViewOffset();
     camera.updateProjectionMatrix();
   }
   const ro = new ResizeObserver(resize); ro.observe(canvas); resize();

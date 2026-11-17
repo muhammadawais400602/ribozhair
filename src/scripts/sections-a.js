@@ -23,6 +23,20 @@ export function initSectionsA() {
   initResults(ctx);
   initUse(ctx);
   initBackdropSettle(ctx);
+  initSpots(ctx);
+}
+
+/* cursor light spot on glass cards + gentle tilt toward the pointer */
+function initSpots({ reduced }) {
+  if (reduced || !matchMedia("(hover: hover)").matches) return;
+  $$("#science .spot, #how .spot, #benefits .spot, #results .spot, #use .spot").forEach((el) => {
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", e.clientX - r.left + "px");
+      el.style.setProperty("--my", e.clientY - r.top + "px");
+    }, { passive: true });
+  });
+  $$(".sci-fact, .rcard, .ustep__card").forEach(tilt);
 }
 
 /* backdrop photos scale-settle into place as their section arrives (never a hard cut) */
@@ -52,7 +66,7 @@ function initScience({ desk, reduced }) {
   }
   if (reduced) return;
   const proof = $(".sci__proof");
-  gsap.from($$(".sci-fact", proof), { y: 70, autoAlpha: 0, rotationX: -18, transformPerspective: 900, transformOrigin: "50% 100%", duration: 1.4, ease: EASE, stagger: 0.13, clearProps: "transform", scrollTrigger: { trigger: proof, start: "top 86%", once: true } });
+  gsap.from($$(".sci-fact", proof), { y: 70, autoAlpha: 0, rotationX: -18, transformPerspective: 900, transformOrigin: "50% 100%", duration: 1.4, ease: EASE, stagger: 0.13, scrollTrigger: { trigger: proof, start: "top 86%", once: true } });
   gsap.from($(".sci__seal", proof), { rotation: -160, scale: 0.4, autoAlpha: 0, duration: 1.9, ease: EASE, scrollTrigger: { trigger: proof, start: "top 82%", once: true } });
 }
 
@@ -230,7 +244,7 @@ function initResults({ reduced }) {
     tl.to(n, { scale: 1, duration: 0.09, ease: "back.out(2.6)" }, at)
       .to([ticks[i], guides[i]], { autoAlpha: 1, duration: 0.08, ease: "power1.out" }, at);
   });
-  gsap.from(cards, { y: 80, autoAlpha: 0, rotationX: -22, transformPerspective: 900, transformOrigin: "50% 100%", duration: 1.4, ease: EASE, stagger: 0.14, clearProps: "transform", scrollTrigger: { trigger: ".res__cards", start: "top 92%", once: true } });
+  gsap.from(cards, { y: 80, autoAlpha: 0, rotationX: -22, transformPerspective: 900, transformOrigin: "50% 100%", duration: 1.4, ease: EASE, stagger: 0.14, scrollTrigger: { trigger: ".res__cards", start: "top 92%", once: true } });
 }
 
 /* ---------- 10. How to Use ---------- */
