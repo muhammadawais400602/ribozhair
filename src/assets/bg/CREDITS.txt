@@ -19,3 +19,5 @@ news.webp  ->  https://unsplash.com/photos/o9eV8adqOoY  by Jackie Chou (@jackiec
 footer.webp  ->  https://unsplash.com/photos/DSwBHyWKiVw  by manu schwendener (@manuschwendener)
 
 env/studio_1k.hdr  ->  https://polyhaven.com/a/studio_small_08  (Poly Haven, CC0)
+
+video/sea.mp4, sea.webm, sea-m.mp4, sea-poster.webp  ->  https://mixkit.co/free-stock-video/aerial-view-of-a-huge-calm-blue-sea-51483/  by Mixkit (Mixkit Stock Video Free License, https://mixkit.co/license/#videoFree). Cropped, graded and looped.
