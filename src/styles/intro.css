@@ -1,0 +1,51 @@
+/* Opening intro: plays once per visit; timings are pure CSS so it can never get stuck */
+.intro { display: none; }
+html.intro-lock { overflow: hidden; }
+html.intro-on .intro { display: block; position: fixed; inset: 0; z-index: 2000; animation: introGone 0s linear 3.3s forwards; }
+@keyframes introGone { to { visibility: hidden; pointer-events: none; } }
+
+.intro__panel, .intro__center { will-change: transform; backface-visibility: hidden; }
+.intro__panel { position: absolute; left: 0; right: 0; height: 50.2%; }
+.intro__panel--top { top: 0; background: linear-gradient(180deg, #ffffff, #eaf3fc); animation: ipTop 0.95s cubic-bezier(0.76, 0, 0.24, 1) 2.15s forwards; }
+.intro__panel--bot { bottom: 0; background: linear-gradient(180deg, #eaf3fc, #dcebfa); animation: ipBot 0.95s cubic-bezier(0.76, 0, 0.24, 1) 2.15s forwards; }
+@keyframes ipTop { to { transform: translateY(-101%); } }
+@keyframes ipBot { to { transform: translateY(101%); } }
+
+.intro__center { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 20px; animation: icOut 0.45s ease 1.9s forwards; }
+@keyframes icOut { to { opacity: 0; transform: translateY(-14px) scale(0.98); } }
+
+.intro__mark { position: relative; width: 132px; height: 132px; display: grid; place-items: center; margin-bottom: 10px; }
+.intro__mark svg { position: relative; z-index: 1; width: 92px; height: 60px; overflow: visible; animation: imDrop 0.95s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both; }
+@keyframes imDrop { from { opacity: 0; transform: translateY(-46px) scale(0.7); } to { opacity: 1; transform: none; } }
+.intro__mark path { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: imDraw 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.intro__mark path:nth-child(1) { animation-delay: 0.25s; }
+.intro__mark path:nth-child(2) { animation-delay: 0.4s; }
+.intro__mark path:nth-child(3) { animation-delay: 0.55s; }
+@keyframes imDraw { to { stroke-dashoffset: 0; } }
+/* water ripple */
+.intro__ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid #1e88e5; opacity: 0; animation: imRing 1.5s ease-out 0.7s both; }
+.intro__ring--2 { border-color: #64b5f6; animation-delay: 0.95s; }
+@keyframes imRing { 0% { opacity: 0.55; transform: scale(0.35); } 100% { opacity: 0; transform: scale(1.5); } }
+
+.intro__word { display: flex; justify-content: center; overflow: hidden; padding: 0.06em 0.1em 0.14em; font: 700 clamp(40px, 7vw, 84px) / 1 "Space Grotesk Variable", system-ui, sans-serif; letter-spacing: -0.045em; color: #0a2a5e; }
+.intro__word span { display: inline-block; transform: translateY(118%); animation: imLetter 0.75s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(0.55s + var(--i) * 0.055s); }
+.intro__word span:nth-child(n + 6) { color: #1e88e5; }
+.intro__word sup { font-size: 0.3em; align-self: flex-start; margin: 0.35em 0 0 0.12em; color: #1e88e5; opacity: 0; animation: imFade 0.5s ease 1.2s forwards; }
+@keyframes imLetter { to { transform: none; } }
+.intro__tag { margin-top: 12px; font: 600 12px/1.4 "Space Grotesk Variable", system-ui, sans-serif; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(13, 27, 42, 0.62); opacity: 0; animation: imFade 0.6s ease 1.25s forwards; }
+@keyframes imFade { to { opacity: 1; } }
+.intro__bar { width: min(260px, 62vw); height: 3px; border-radius: 3px; background: rgba(10, 42, 94, 0.1); margin: 26px auto 0; overflow: hidden; }
+.intro__bar i { display: block; height: 100%; transform: scaleX(0); transform-origin: left; background: linear-gradient(90deg, #0a2a5e, #1e88e5 55%, #64b5f6); animation: imBar 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards; }
+@keyframes imBar { to { transform: scaleX(1); } }
+
+.intro__skip { position: absolute; right: 24px; bottom: 24px; z-index: 3; font: 600 13px/1 "Inter Variable", system-ui, sans-serif; padding: 11px 17px; border-radius: 999px; border: 1px solid rgba(10, 42, 94, 0.22); background: #fff; color: #0a2a5e; cursor: pointer; opacity: 0; animation: imFade 0.4s ease 0.5s forwards, imSkipOut 0.3s ease 1.85s forwards; transition: background 0.2s, color 0.2s; }
+@keyframes imSkipOut { to { opacity: 0; visibility: hidden; } }
+.intro__skip:hover { background: #0a2a5e; color: #fff; }
+
+/* skipped: open the curtain right away */
+.intro.is-out .intro__center { animation: icOut 0.25s ease forwards; }
+.intro.is-out .intro__skip { display: none; }
+.intro.is-out .intro__panel--top { animation: ipTop 0.65s cubic-bezier(0.76, 0, 0.24, 1) 0.1s forwards; }
+.intro.is-out .intro__panel--bot { animation: ipBot 0.65s cubic-bezier(0.76, 0, 0.24, 1) 0.1s forwards; }
+
+@media (prefers-reduced-motion: reduce) { .intro { display: none !important; } }

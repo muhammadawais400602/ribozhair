@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 
+import { initIntro } from "./intro.js";
 import { initNav } from "./nav.js";
 import { initHero } from "./hero.js";
 import { initCursor } from "./cursor.js";
@@ -27,6 +28,7 @@ if (!reduced) {
 }
 
 async function boot() {
+  initIntro(lenis);
   initSeals();
   initStars();
   initNav(lenis);

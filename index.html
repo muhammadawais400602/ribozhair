@@ -6,8 +6,27 @@
     <title>RibozHair — Advanced Hair Regeneration Formula</title>
     <meta name="description" content="RibozHair Hair Booster Tonic — a patented formula with 2-Deoxy-D-Ribose that stimulates growth, reduces fall, and improves hair density." />
     <link rel="icon" href="/src/assets/myi-logo.png" />
+    <script>
+      try { if (!sessionStorage.getItem("ribo-intro") && !matchMedia("(prefers-reduced-motion: reduce)").matches) { sessionStorage.setItem("ribo-intro", "1"); document.documentElement.classList.add("intro-on"); } } catch (e) {}
+    </script>
   </head>
   <body>
+    <div class="intro" id="intro">
+      <div class="intro__panel intro__panel--top"></div><div class="intro__panel intro__panel--bot"></div>
+      <div class="intro__center">
+        <div class="intro__mark"><span class="intro__ring"></span><span class="intro__ring intro__ring--2"></span>
+          <svg viewBox="0 0 92 60" aria-hidden="true">
+            <path pathLength="1" d="M6 44 C26 46 46 34 62 20 C70 13 78 9 88 8" stroke="#0a2a5e" stroke-width="7" />
+            <path pathLength="1" d="M10 52 C32 53 52 42 68 29 C75 23 81 20 88 19" stroke="#1e88e5" stroke-width="6" />
+            <path pathLength="1" d="M20 57 C40 57 58 49 72 39 C78 35 83 32 88 31" stroke="#64b5f6" stroke-width="5" />
+          </svg>
+        </div>
+        <div class="intro__word" role="img" aria-label="RibozHair"><span style="--i:0">R</span><span style="--i:1">i</span><span style="--i:2">b</span><span style="--i:3">o</span><span style="--i:4">z</span><span style="--i:5">H</span><span style="--i:6">a</span><span style="--i:7">i</span><span style="--i:8">r</span><sup>&trade;</sup></div>
+        <div class="intro__tag">Advanced Hair Regeneration Formula</div>
+        <div class="intro__bar"><i></i></div>
+      </div>
+      <button class="intro__skip" type="button">Skip intro</button>
+    </div>
     <div class="sea-bg" aria-hidden="true">
       <video class="sea-bg__video" muted loop playsinline preload="auto" poster="/src/assets/video/sea-poster.webp"></video>
       <div class="sea-bg__frost"></div>

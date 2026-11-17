@@ -68,6 +68,12 @@ export function initHero() {
       .from(dots[1], { opacity: 0, scale: 0, transformOrigin: "50% 50%", duration: 0.5 }, ">-0.35");
   });
 
+  // when the opening intro is playing, hold the entrance until its curtain parts
+  if (document.documentElement.classList.contains("intro-on")) {
+    tl.pause();
+    addEventListener("ribo:intro-open", () => tl.play(), { once: true });
+  }
+
   // depth: the product turns slightly toward the pointer, the sea shifts the other way
   if (matchMedia("(hover: hover)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const ry = gsap.quickTo(product, "rotationY", { duration: 1.2, ease: "power3.out" });
