@@ -5,151 +5,370 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RibozHair — Advanced Hair Regeneration Formula</title>
     <meta name="description" content="RibozHair Hair Booster Tonic — a patented formula with 2-Deoxy-D-Ribose that stimulates growth, reduces fall, and improves hair density." />
-    <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="icon" href="/src/assets/myi-logo.png" />
   </head>
   <body>
-    <!-- SECTION 1 — Navigation -->
+    <!-- ============ 1. NAVIGATION ============ -->
     <nav class="nav" aria-label="Primary">
-      <a class="nav__logo" href="#top" aria-label="RibozHair home">
-        <span class="nav__logo-mark">RibozHair</span>
-      </a>
+      <a class="nav__logo" href="#top" data-scroll aria-label="RibozHair home">RibozHair<sup>™</sup></a>
       <ul class="nav__links" role="list">
-        <li><a href="#top" data-nav-link>Home</a></li>
-        <li><a href="#science" data-nav-link>The Science</a></li>
-        <li><a href="#how" data-nav-link>How It Works</a></li>
-        <li><a href="#ingredients" data-nav-link>Ingredients</a></li>
-        <li><a href="#shop" data-nav-link>Shop</a></li>
-        <li><a href="#contact" data-nav-link>Contact</a></li>
+        <li><a href="#science" data-scroll data-nav-link>The Science</a></li>
+        <li><a href="#how" data-scroll data-nav-link>How It Works</a></li>
+        <li><a href="#ingredients" data-scroll data-nav-link>Ingredients</a></li>
+        <li><a href="#results" data-scroll data-nav-link>Results</a></li>
+        <li><a href="#shop" data-scroll data-nav-link>Shop</a></li>
+        <li><a href="#contact" data-scroll data-nav-link>Contact</a></li>
         <span class="nav__pill" aria-hidden="true"></span>
       </ul>
-      <a class="nav__cta" href="#shop">Shop Now</a>
+      <a class="nav__cta" href="#shop" data-scroll aria-label="Shop now, cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 4h2l2.2 11h10.6L20 7H6.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="19.5" r="1.4" fill="currentColor"/><circle cx="17" cy="19.5" r="1.4" fill="currentColor"/></svg>
+        <span>Shop Now</span>
+        <b class="nav__count" data-cart-count hidden>0</b>
+      </a>
     </nav>
 
-    <!-- SECTION 2 — Hero -->
-    <section class="hero" id="top">
-      <h1 class="hero__wordmark" aria-label="RibozHair">RIBOZHAIR</h1>
+    <main>
+      <!-- ============ 2. HERO ============ -->
+      <section class="hero" id="top" data-theme="dark">
+        <div class="hero__bg" aria-hidden="true"></div>
+        <div class="grain" aria-hidden="true"></div>
+        <h1 class="hero__wordmark">RIBOZHAIR</h1>
 
-      <div class="hero__stage">
-        <div class="hero__bottle" data-bottle>
-          <!-- Placeholder until the real transparent-background bottle PNG is provided -->
-          <div class="bottle-placeholder" aria-label="RibozHair bottle (asset pending)">
-            <span>BOTTLE<br/><small>asset pending</small></span>
+        <div class="hero__stage">
+          <img class="hero__bottle" src="/src/assets/bottle.png" alt="RibozHair Hair Booster Tonic, 60 ml bottle" width="325" height="1065" />
+          <span class="callout callout--lt" data-callout data-side="l" data-ax="0.5" data-ay="0.905">60 ml</span>
+          <span class="callout callout--lb" data-callout data-side="l" data-ax="0.46" data-ay="0.72">Reduces Hair Fall</span>
+          <span class="callout callout--rt" data-callout data-side="r" data-ax="0.5" data-ay="0.855">Patented 2dDR</span>
+          <span class="callout callout--rb" data-callout data-side="r" data-ax="0.69" data-ay="0.03">Stimulates Growth</span>
+          <svg class="hero__lines" aria-hidden="true"></svg>
+        </div>
+
+        <div class="hero__foot">
+          <p class="hero__promise">Advanced Hair Regeneration Formula</p>
+          <a class="btn btn--light" href="#shop" data-scroll>Shop Now
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <ul class="trust-strip" role="list">
+            <li>Patented</li><li>Non-medicated</li><li>Dermatologist-tested</li><li>Made in Pakistan</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ 3 + 4. PROBLEM → MEET RIBOZHAIR (one shared pinned timeline) ============ -->
+      <section class="story" id="problem" data-theme="dark">
+        <div class="story__stage">
+          <div class="story__bg story__bg--dark" aria-hidden="true"></div>
+          <div class="story__bg story__bg--blue" aria-hidden="true"></div>
+          <div class="grain" aria-hidden="true"></div>
+
+          <!-- Scene 3 text -->
+          <div class="scene scene--problem">
+            <h2 class="problem__heading">Why most hair<br />products fail</h2>
+            <span class="statement" data-stmt style="--x:9%;--y:24%;--rot:-6deg;--size:1.15rem">Temporary results only</span>
+            <span class="statement" data-stmt style="--x:74%;--y:19%;--rot:4deg;--size:1.35rem">Harsh chemicals</span>
+            <span class="statement" data-stmt style="--x:5%;--y:62%;--rot:3deg;--size:1.05rem">No clinical backing</span>
+            <span class="statement" data-stmt style="--x:77%;--y:60%;--rot:-5deg;--size:1.25rem">Greasy residue</span>
+            <span class="statement" data-stmt style="--x:17%;--y:82%;--rot:2deg;--size:1.1rem">One-size-fits-all formulas</span>
+            <span class="statement" data-stmt style="--x:60%;--y:84%;--rot:-3deg;--size:1.15rem">Expensive without results</span>
+          </div>
+
+          <!-- Shared shards layer (competitor bottle → shards → reassembled bottle) -->
+          <div class="story__fx" aria-hidden="true">
+            <img class="fx__competitor" src="/src/assets/competitor.png" alt="" />
+            <div class="fx__shards"></div>
+          </div>
+
+          <!-- Scene 4 -->
+          <div class="scene scene--meet">
+            <div class="meet__bottle" data-meet-bottle>
+              <img src="/src/assets/bottle.png" alt="RibozHair Hair Booster Tonic bottle" width="325" height="1065" />
+              <div class="liquid" aria-hidden="true">
+                <svg viewBox="0 0 200 400" preserveAspectRatio="none">
+                  <path class="liquid__a" fill="rgba(100,181,246,.55)" />
+                  <path class="liquid__b" fill="rgba(30,136,229,.6)" />
+                  <ellipse class="liquid__shine" cx="60" cy="230" rx="6" ry="46" fill="#fff" opacity=".25" />
+                </svg>
+              </div>
+            </div>
+            <h2 class="meet__tagline">Advanced Hair Regeneration</h2>
+            <p class="meet__intro">A patented formula with 2-Deoxy-D-Ribose that stimulates growth, reduces fall, and improves hair density. Lightweight, non-greasy, and safe for daily use on all hair types.</p>
+            <ul class="badges" role="list">
+              <li class="glass-badge">Stimulates Growth</li>
+              <li class="glass-badge">Reduces Hair Fall</li>
+              <li class="glass-badge">Improves Density</li>
+            </ul>
           </div>
         </div>
+      </section>
 
-        <!-- Callout labels -->
-        <div class="callout callout--lt" data-callout="lt">
-          <span class="callout__pill">60 ml</span>
+      <!-- ============ 5. THE SCIENCE ============ -->
+      <section class="section science" id="science" data-theme="dark">
+        <div class="wrap science__grid">
+          <div class="science__copy">
+            <p class="eyebrow" data-reveal>The Science</p>
+            <h2 class="h2" data-split>2-Deoxy-D-Ribose.<br />The hero molecule.</h2>
+            <p class="lead" data-reveal>At the core of RibozHair is 2-Deoxy-D-Ribose (2dDR) — a patented molecule behind our Advanced Hair Regeneration Formula.</p>
+            <ul class="facts" data-stagger role="list">
+              <li><b>Patented</b><span>Pakistan Patents 153/2018 &amp; 382/2026</span></li>
+              <li><b>Non-medicated</b><span>A hair care product for external use</span></li>
+              <li><b>Three benefits</b><span>Stimulates growth · Reduces fall · Improves density</span></li>
+            </ul>
+            <div class="seal-wrap" data-reveal><div data-seal></div></div>
+          </div>
+          <div class="science__visual" data-reveal>
+            <div class="science__glow" aria-hidden="true"></div>
+            <canvas class="science__canvas" aria-label="Rotating 3D model of the 2-Deoxy-D-Ribose molecule"></canvas>
+            <div class="mol-chip"><b>2-Deoxy-D-Ribose</b><span>C₅H₁₀O₄ · 2dDR</span></div>
+            <ul class="mol-legend" role="list"><li><i style="--c:#cfe3ff"></i>Carbon</li><li><i style="--c:#2f9bff"></i>Oxygen</li><li><i style="--c:#ffffff"></i>Hydrogen</li></ul>
+          </div>
         </div>
-        <div class="callout callout--lb" data-callout="lb">
-          <span class="callout__pill">Reduces Hair Fall</span>
+      </section>
+
+      <!-- ============ 6. HOW IT WORKS ============ -->
+      <section class="how" id="how" data-theme="light">
+        <div class="how__stage">
+          <div class="wrap how__grid">
+            <div class="how__copy">
+              <p class="eyebrow">How It Works</p>
+              <h2 class="h2" data-split>Three steps.<br />One formula.</h2>
+              <ol class="steps" role="list">
+                <li class="step" data-step>
+                  <span class="step__n">01</span>
+                  <div><h3>Spray on scalp</h3><p>Spray evenly on the desired area.</p></div>
+                </li>
+                <li class="step" data-step>
+                  <span class="step__n">02</span>
+                  <div><h3>2dDR penetrates the follicle</h3><p>The patented 2-Deoxy-D-Ribose reaches the hair follicle.</p></div>
+                </li>
+                <li class="step" data-step>
+                  <span class="step__n">03</span>
+                  <div><h3>Stimulates regeneration</h3><p>Stimulates hair growth, reduces hair fall and improves hair density.</p></div>
+                </li>
+              </ol>
+              <div class="step-bar" aria-hidden="true"><i></i></div>
+            </div>
+            <div class="how__visual">
+              <canvas class="scalp" aria-label="Macro view: spray lands on the scalp, 2dDR reaches the follicle, hair regrows"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="callout callout--rt" data-callout="rt">
-          <span class="callout__pill">Patented 2dDR</span>
+      </section>
+
+      <!-- ============ 7. BENEFITS ============ -->
+      <section class="section benefits" id="benefits" data-theme="light">
+        <div class="wrap">
+          <p class="eyebrow" data-reveal>Why RibozHair</p>
+          <h2 class="h2" data-split>Built around four benefits.</h2>
+          <div class="cards cards--4" data-stagger>
+            <article class="card tilt">
+              <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M24 42V20"/><path pathLength="1" d="M24 28c-8 0-12-6-12-12 8 0 12 5 12 12Z"/><path pathLength="1" d="M24 22c0-7 4-12 12-13 0 7-4 12-12 13Z"/></svg>
+              <h3>Stimulates Hair Growth</h3><p>Our patented 2dDR formula is designed to stimulate hair growth.</p>
+            </article>
+            <article class="card tilt">
+              <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M24 6l15 5v11c0 9-6 16-15 20C15 38 9 31 9 22V11Z"/><path pathLength="1" d="m17 24 5 5 9-10"/></svg>
+              <h3>Reduces Hair Fall</h3><p>Helps reduce hair fall with regular, twice-daily use.</p>
+            </article>
+            <article class="card tilt">
+              <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M12 40c0-10 2-20 0-28"/><path pathLength="1" d="M24 40c0-12 2-22 0-32"/><path pathLength="1" d="M36 40c0-10 2-20 0-28"/></svg>
+              <h3>Improves Hair Density</h3><p>Supports fuller-looking hair for improved density.</p>
+            </article>
+            <article class="card tilt">
+              <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M24 6c8 10 12 16 12 23a12 12 0 0 1-24 0c0-7 4-13 12-23Z"/><path pathLength="1" d="M18 30a6 6 0 0 0 6 6"/></svg>
+              <h3>Lightweight &amp; Non-greasy</h3><p>A lightweight, non-greasy formula suitable for daily use and all hair types.</p>
+            </article>
+          </div>
         </div>
-        <div class="callout callout--rb" data-callout="rb">
-          <span class="callout__pill">Stimulates Growth</span>
+      </section>
+
+      <!-- ============ 8. INGREDIENTS ============ -->
+      <section class="section ingredients" id="ingredients" data-theme="dark">
+        <div class="wrap ingredients__grid">
+          <div class="ingredients__head">
+            <p class="eyebrow" data-reveal>Ingredients</p>
+            <h2 class="h2" data-split>Five ingredients.<br />Nothing extra.</h2>
+            <p class="lead" data-reveal>Aqua, Glycerin, 2-Phenoxy ethanol, 2-Deoxy-D-Ribose, Lavandula angustifolia oil.</p>
+          </div>
+          <ol class="ing-list" role="list">
+            <li class="ing" data-ing><span class="ing__n">01</span><div><h3>Aqua</h3><p>The water base that carries the formula.</p></div><em>Base</em></li>
+            <li class="ing" data-ing><span class="ing__n">02</span><div><h3>Glycerin</h3><p>A humectant that helps keep the formula smooth and moisturising.</p></div><em>Humectant</em></li>
+            <li class="ing" data-ing><span class="ing__n">03</span><div><h3>2-Phenoxy ethanol</h3><p>A preservative that keeps the formula stable.</p></div><em>Preservative</em></li>
+            <li class="ing ing--hero" data-ing><span class="ing__n">04</span><div><h3>2-Deoxy-D-Ribose</h3><p>The patented hero molecule (2dDR) behind RibozHair’s Advanced Hair Regeneration Formula.</p></div><em>Hero · Patented</em></li>
+            <li class="ing" data-ing><span class="ing__n">05</span><div><h3><i>Lavandula angustifolia</i> oil</h3><p>Lavender oil, lending the tonic its fragrance.</p></div><em>Botanical</em></li>
+          </ol>
         </div>
+      </section>
 
-        <!-- SVG anchor lines -->
-        <svg class="hero__lines" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true">
-          <g stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none">
-            <path data-line="lt" d="M 180 200 L 500 420" />
-            <path data-line="lb" d="M 180 500 L 500 500" />
-            <path data-line="rt" d="M 820 200 L 500 380" />
-            <path data-line="rb" d="M 820 500 L 500 450" />
-          </g>
-          <g fill="rgba(255,255,255,0.7)">
-            <circle data-dot="lt-a" cx="180" cy="200" r="3" />
-            <circle data-dot="lt-b" cx="500" cy="420" r="3" />
-            <circle data-dot="lb-a" cx="180" cy="500" r="3" />
-            <circle data-dot="lb-b" cx="500" cy="500" r="3" />
-            <circle data-dot="rt-a" cx="820" cy="200" r="3" />
-            <circle data-dot="rt-b" cx="500" cy="380" r="3" />
-            <circle data-dot="rb-a" cx="820" cy="500" r="3" />
-            <circle data-dot="rb-b" cx="500" cy="450" r="3" />
-          </g>
-        </svg>
-      </div>
-
-      <a class="hero__cta" href="#shop">
-        Shop Now
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </section>
-
-    <!-- SECTION 3 — The Problem -->
-    <section class="problem" id="problem">
-      <div class="problem__pin">
-        <!-- Falling competitor bottle -->
-        <div class="problem__competitor" data-competitor aria-hidden="true">
-          <svg viewBox="0 0 120 240" width="100" height="200">
-            <rect x="35" y="0" width="50" height="30" rx="4" fill="#4a5568"/>
-            <rect x="25" y="30" width="70" height="20" fill="#718096"/>
-            <path d="M 15 60 Q 15 50 25 50 L 95 50 Q 105 50 105 60 L 105 230 Q 105 240 95 240 L 25 240 Q 15 240 15 230 Z" fill="#a0aec0"/>
-            <rect x="25" y="90" width="70" height="80" fill="#4a5568" opacity="0.6"/>
-          </svg>
-        </div>
-
-        <!-- Shards -->
-        <svg class="problem__shards" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <g data-shards></g>
-        </svg>
-
-        <h2 class="problem__heading">Why most hair<br/>products fail</h2>
-
-        <div class="problem__statements">
-          <span class="statement" data-stmt style="--x:12%;--y:22%;--rot:-6deg;--size:1.1rem">Temporary results only</span>
-          <span class="statement" data-stmt style="--x:78%;--y:18%;--rot:4deg;--size:1.25rem">Harsh chemicals</span>
-          <span class="statement" data-stmt style="--x:8%;--y:60%;--rot:3deg;--size:1rem">No clinical backing</span>
-          <span class="statement" data-stmt style="--x:82%;--y:62%;--rot:-5deg;--size:1.15rem">Greasy residue</span>
-          <span class="statement" data-stmt style="--x:20%;--y:80%;--rot:2deg;--size:1.05rem">One-size-fits-all formulas</span>
-          <span class="statement" data-stmt style="--x:68%;--y:82%;--rot:-3deg;--size:1.1rem">Expensive without results</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4 — Meet RibozHair -->
-    <section class="meet" id="meet">
-      <div class="meet__pin">
-        <div class="meet__bottle" data-meet-bottle>
-          <div class="bottle-placeholder bottle-placeholder--large" aria-label="RibozHair bottle (asset pending)">
-            <span>RIBOZHAIR<br/><small>asset pending</small></span>
-            <!-- Liquid sloshing -->
-            <svg class="liquid" viewBox="0 0 200 300" preserveAspectRatio="none" aria-hidden="true">
-              <defs>
-                <clipPath id="bottleClip">
-                  <rect x="10" y="80" width="180" height="200" rx="12"/>
-                </clipPath>
-              </defs>
-              <g clip-path="url(#bottleClip)">
-                <path data-wave-a d="M 0 180 Q 50 170 100 180 T 200 180 L 200 300 L 0 300 Z" fill="rgba(100,181,246,0.55)"/>
-                <path data-wave-b d="M 0 190 Q 50 200 100 190 T 200 190 L 200 300 L 0 300 Z" fill="rgba(30,136,229,0.65)"/>
+      <!-- ============ 9. RESULTS ============ -->
+      <section class="section results" id="results" data-theme="light">
+        <div class="wrap">
+          <p class="eyebrow" data-reveal>Results</p>
+          <h2 class="h2" data-split>Consistency over weeks.</h2>
+          <p class="lead" data-reveal>A 12-week view of the routine. Milestone details are placeholders until clinical or customer data is supplied.</p>
+          <div class="chart" data-reveal>
+            <svg viewBox="0 0 800 300" role="img" aria-label="Illustrative progression curve over 12 weeks">
+              <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1E88E5" stop-opacity=".28"/><stop offset="1" stop-color="#1E88E5" stop-opacity="0"/></linearGradient></defs>
+              <g stroke="currentColor" stroke-opacity=".12"><path d="M40 260H780M40 195H780M40 130H780M40 65H780"/></g>
+              <path class="chart__area" d="M40 250 C 160 246, 230 232, 330 200 S 560 90, 780 50 L780 260 L40 260Z" fill="url(#area)" opacity="0"/>
+              <path class="chart__line" pathLength="1" d="M40 250 C 160 246, 230 232, 330 200 S 560 90, 780 50" fill="none" stroke="#1E88E5" stroke-width="4" stroke-linecap="round"/>
+              <g class="chart__nodes" fill="#fff" stroke="#1E88E5" stroke-width="4">
+                <circle cx="153" cy="244" r="9"/><circle cx="300" cy="209" r="9"/><circle cx="520" cy="116" r="9"/><circle cx="780" cy="50" r="9"/>
               </g>
             </svg>
+            <p class="chart__note">Illustrative only — not measured data.</p>
+          </div>
+          <div class="cards cards--4 milestones" data-stagger>
+            <article class="card"><b class="wk">Week 2</b><p class="pending">[Milestone copy to be provided]</p></article>
+            <article class="card"><b class="wk">Week 4</b><p class="pending">[Milestone copy to be provided]</p></article>
+            <article class="card"><b class="wk">Week 8</b><p class="pending">[Milestone copy to be provided]</p></article>
+            <article class="card"><b class="wk">Week 12</b><p class="pending">[Milestone copy to be provided]</p></article>
           </div>
         </div>
+      </section>
 
-        <h2 class="meet__tagline">Advanced Hair Regeneration</h2>
-        <p class="meet__intro">
-          A patented formula with 2-Deoxy-D-Ribose that stimulates growth,
-          reduces fall, and improves hair density. Lightweight, non-greasy,
-          and safe for daily use on all hair types.
-        </p>
-
-        <div class="meet__badges">
-          <span class="badge">Stimulates Growth</span>
-          <span class="badge">Reduces Hair Fall</span>
-          <span class="badge">Improves Density</span>
+      <!-- ============ 10. HOW TO USE ============ -->
+      <section class="section use" id="use" data-theme="dark">
+        <div class="wrap">
+          <p class="eyebrow" data-reveal>How to Use</p>
+          <h2 class="h2" data-split>Spray. Massage. Repeat.</h2>
+          <div class="use__row" data-stagger>
+            <article class="use__step">
+              <svg class="ico ico--lg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M22 28h20v26a3 3 0 0 1-3 3H25a3 3 0 0 1-3-3Z"/><path pathLength="1" d="M26 28V18h12v10"/><path pathLength="1" d="M38 22h10M50 16l-3 3M52 24h-4M50 32l-3-3"/></svg>
+              <span class="use__n">1</span><h3>Spray</h3><p>Spray evenly on the desired area.</p>
+            </article>
+            <article class="use__step">
+              <svg class="ico ico--lg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle pathLength="1" cx="32" cy="32" r="8"/><circle pathLength="1" cx="32" cy="32" r="18" stroke-dasharray=".12 .08"/><path pathLength="1" d="M32 6v6M32 52v6M6 32h6M52 32h6"/></svg>
+              <span class="use__n">2</span><h3>Massage</h3><p>Massage into scalp with fingers.</p>
+            </article>
+            <article class="use__step">
+              <svg class="ico ico--lg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle pathLength="1" cx="22" cy="30" r="7"/><path pathLength="1" d="M22 14v5M22 41v5M8 30h5M31 30h5M12 20l3 3M29 37l3 3M12 40l3-3M29 23l3-3"/><path pathLength="1" d="M52 36a11 11 0 1 1-9-16 9 9 0 0 0 9 16Z"/></svg>
+              <span class="use__n">3</span><h3>Repeat twice daily</h3><p>Use twice a day.</p>
+            </article>
+          </div>
+          <p class="note" data-reveal>For external use only. Keep out of reach of children.</p>
         </div>
+      </section>
+
+      <!-- ============ 11. TRUST ============ -->
+      <section class="section trust" id="trust" data-theme="light">
+        <div class="wrap trust__grid">
+          <div>
+            <p class="eyebrow" data-reveal>Trust</p>
+            <h2 class="h2" data-split>Patented. Tested.<br />Non-medicated.</h2>
+            <div class="seal-wrap seal-wrap--lg" data-reveal><div data-seal></div></div>
+            <p class="small" data-reveal>Pakistan Patents Nos. 153/2018 &amp; 382/2026</p>
+          </div>
+          <ul class="badge-grid" data-stagger role="list">
+            <li class="card"><svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M24 5l5 10 11 1.6-8 7.7 2 11L24 30l-10 5.3 2-11-8-7.7L19 15Z"/></svg><h3>Patented</h3><p>Pakistan Patents 153/2018 &amp; 382/2026</p></li>
+            <li class="card"><svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M24 42s-13-10-13-21a13 13 0 0 1 26 0c0 11-13 21-13 21Z"/><circle pathLength="1" cx="24" cy="21" r="4.5"/></svg><h3>Made in Pakistan</h3><p>MYI PVT LTD · MY Health Care Solutions</p></li>
+            <li class="card"><svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M19 5h10M21 5v14L9 40a3 3 0 0 0 3 4h24a3 3 0 0 0 3-4L27 19V5"/><path pathLength="1" d="M15 31h18"/></svg><h3>Lab-tested</h3><p>Formulated and tested in the lab.</p></li>
+            <li class="card"><svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle pathLength="1" cx="24" cy="24" r="17"/><path pathLength="1" d="M12 36 36 12"/></svg><h3>Non-medicated</h3><p>A non-medicated hair care product.</p></li>
+            <li class="card"><svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M24 6l15 5v11c0 9-6 16-15 20C15 38 9 31 9 22V11Z"/><path pathLength="1" d="M24 17v12M18 23h12"/></svg><h3>Dermatologically safe</h3><p>For external use only.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ 12. TESTIMONIALS ============ -->
+      <section class="section reviews" id="reviews" data-theme="dark">
+        <div class="wrap">
+          <p class="eyebrow" data-reveal>Reviews</p>
+          <h2 class="h2" data-split>What customers say.</h2>
+          <!-- Replace placeholders with real, verified reviews. data-rating = 1–5 filled stars. -->
+          <div class="cards cards--3" data-stagger>
+            <figure class="card quote"><div class="stars" data-rating="0" aria-label="Rating pending"></div><blockquote class="pending">[Customer review to be provided]</blockquote><figcaption>Customer name · City</figcaption></figure>
+            <figure class="card quote"><div class="stars" data-rating="0" aria-label="Rating pending"></div><blockquote class="pending">[Customer review to be provided]</blockquote><figcaption>Customer name · City</figcaption></figure>
+            <figure class="card quote"><div class="stars" data-rating="0" aria-label="Rating pending"></div><blockquote class="pending">[Customer review to be provided]</blockquote><figcaption>Customer name · City</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 13. FAQ ============ -->
+      <section class="section faq" id="faq" data-theme="light">
+        <div class="wrap faq__grid">
+          <div class="faq__head">
+            <p class="eyebrow" data-reveal>FAQs</p>
+            <h2 class="h2" data-split>Questions,<br />answered.</h2>
+          </div>
+          <div class="faq__list" data-stagger>
+            <div class="qa"><button class="qa__q" aria-expanded="false">What is RibozHair?<i></i></button><div class="qa__a"><p>RibozHair is a non-medicated Hair Booster Tonic with the patented molecule 2-Deoxy-D-Ribose (2dDR) — an Advanced Hair Regeneration Formula.</p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">How do I use it?<i></i></button><div class="qa__a"><p>Spray evenly on the desired area and massage into the scalp with your fingers. Use twice a day.</p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">What is in it?<i></i></button><div class="qa__a"><p>Aqua, Glycerin, 2-Phenoxy ethanol, 2-Deoxy-D-Ribose, Lavandula angustifolia oil.</p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">Is it a medicine?<i></i></button><div class="qa__a"><p>No. RibozHair is a non-medicated hair care product.</p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">Is it safe?<i></i></button><div class="qa__a"><p>For external use only. Keep out of reach of children. <span class="tag">Safety &amp; testing details to be confirmed</span></p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">How long until I see results?<i></i></button><div class="qa__a"><p><span class="tag">Answer to be confirmed by MYI</span></p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">Are there any side effects?<i></i></button><div class="qa__a"><p><span class="tag">Answer to be confirmed by MYI</span></p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">Is it for men and women?<i></i></button><div class="qa__a"><p>It is lightweight, non-greasy and suitable for daily use on all hair types. <span class="tag">Gender guidance to be confirmed</span></p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">Can I use it while pregnant or breastfeeding?<i></i></button><div class="qa__a"><p><span class="tag">Answer to be confirmed by MYI</span></p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">Can I use it with other products?<i></i></button><div class="qa__a"><p><span class="tag">Answer to be confirmed by MYI</span></p></div></div>
+            <div class="qa"><button class="qa__q" aria-expanded="false">What is the shelf life?<i></i></button><div class="qa__a"><p>Use within 2 years of the manufacturing date printed on the bottle.</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 14. SHOP ============ -->
+      <section class="section shop" id="shop" data-theme="dark">
+        <div class="wrap shop__grid">
+          <div class="shop__visual" data-reveal>
+            <div class="science__glow" aria-hidden="true"></div>
+            <img src="/src/assets/bottle.png" alt="RibozHair Hair Booster Tonic" width="325" height="1065" />
+          </div>
+          <div class="shop__card" data-reveal>
+            <p class="eyebrow">Shop</p>
+            <h2 class="h2">RibozHair™<br />Hair Booster Tonic</h2>
+            <p class="lead">Advanced Hair Regeneration Formula · 60 ml</p>
+            <p class="price" data-price>Price to be confirmed</p>
+            <fieldset class="bundles">
+              <legend class="sr">Choose a supply</legend>
+              <label class="bundle"><input type="radio" name="bundle" value="1" checked /><span><b>1 Bottle</b><small data-bundle-price="1">—</small></span></label>
+              <label class="bundle"><input type="radio" name="bundle" value="3" /><span><b>3-Month Supply</b><small data-bundle-price="3">—</small></span></label>
+              <label class="bundle"><input type="radio" name="bundle" value="6" /><span><b>6-Month Supply</b><small data-bundle-price="6">—</small></span></label>
+            </fieldset>
+            <div class="buy-row">
+              <div class="qty" role="group" aria-label="Quantity"><button type="button" data-qty="-1" aria-label="Decrease">−</button><output data-qty-out>1</output><button type="button" data-qty="1" aria-label="Increase">+</button></div>
+              <button class="btn btn--light" type="button" data-add-cart>Add to Cart</button>
+            </div>
+            <p class="note">For external use only. Keep out of reach of children.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 15. NEWSLETTER ============ -->
+      <section class="section news" id="newsletter" data-theme="blue">
+        <div class="grain" aria-hidden="true"></div>
+        <div class="wrap news__inner">
+          <h2 class="h2" data-split>Get 10% off<br />your first order.</h2>
+          <form class="news__form" novalidate data-reveal>
+            <label class="sr" for="email">Email address</label>
+            <input id="email" type="email" placeholder="Your email address" autocomplete="email" required />
+            <button class="btn btn--light" type="submit">Subscribe</button>
+            <p class="news__msg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============ 16. FOOTER ============ -->
+    <footer class="footer" id="contact" data-theme="deep">
+      <div class="wrap footer__grid">
+        <div class="footer__brand">
+          <img src="/src/assets/myi-logo.png" alt="MYI Health Care Solutions" width="96" height="96" />
+          <p><b>MYI PVT LTD</b><br />MY Health Care Solutions</p>
+          <p class="small">Non-medicated hair care product. For external use only. Keep out of reach of children.</p>
+        </div>
+        <nav aria-label="Quick links"><h4>Explore</h4><ul role="list">
+          <li><a href="#science" data-scroll>The Science</a></li><li><a href="#how" data-scroll>How It Works</a></li><li><a href="#ingredients" data-scroll>Ingredients</a></li><li><a href="#results" data-scroll>Results</a></li><li><a href="#shop" data-scroll>Shop</a></li></ul></nav>
+        <div><h4>Contact</h4><ul role="list"><li><a href="https://www.ribozhair.com">www.ribozhair.com</a></li><li class="pending">[Email to be provided]</li><li class="pending">[Phone / address to be provided]</li></ul>
+          <h4>Follow</h4><ul class="social" role="list"><li><a href="#" aria-label="Facebook">Facebook</a></li><li><a href="#" aria-label="Instagram">Instagram</a></li><li><a href="#" aria-label="YouTube">YouTube</a></li></ul></div>
+        <div><h4>We accept</h4><ul class="pay" role="list"><li>Visa</li><li>Mastercard</li><li>Cash on Delivery</li></ul>
+          <p class="small pending">[Confirm accepted payment methods]</p></div>
       </div>
-    </section>
+      <div class="wrap footer__bar">
+        <p>Pakistan Patents Nos. 153/2018 &amp; 382/2026</p>
+        <ul role="list"><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li></ul>
+        <p>© 2026 MYI PVT LTD. All rights reserved.</p>
+      </div>
+    </footer>
 
-    <!-- Placeholders for sections 5–16 (not yet specced) -->
-    <section class="placeholder" id="science" aria-hidden="true"></section>
-
+    <div class="toast" role="status" aria-live="polite"></div>
     <script type="module" src="/src/scripts/main.js"></script>
   </body>
 </html>
