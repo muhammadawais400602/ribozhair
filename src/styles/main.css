@@ -158,7 +158,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .scene--meet { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(10px, 1.8svh, 20px); padding: calc(var(--nav-h) + 4px) 20px 16px; text-align: center; }
 .meet__bottle { position: relative; height: clamp(220px, 38svh, 420px); aspect-ratio: 325 / 1065; flex: none; }
 .meet__bottle img { width: 100%; height: 100%; filter: drop-shadow(0 40px 36px rgba(2, 10, 30, 0.5)); }
-.liquid { position: absolute; inset: 0; -webkit-mask: url("/src/assets/bottle.webp") center / 100% 100% no-repeat; mask: url("/src/assets/bottle.webp") center / 100% 100% no-repeat; mix-blend-mode: multiply; }
+.liquid { position: absolute; inset: 0; -webkit-mask: url("/src/assets/bottle-sm.webp") center / 100% 100% no-repeat; mask: url("/src/assets/bottle-sm.webp") center / 100% 100% no-repeat; mix-blend-mode: multiply; }
 .liquid svg { width: 100%; height: 100%; overflow: visible; }
 .meet__tagline { font: 700 clamp(2rem, 5.2vw, 4.2rem) / 1 var(--font-d); letter-spacing: -0.04em; }
 .meet__intro { max-width: 62ch; color: rgba(255, 255, 255, 0.82); font-size: clamp(0.95rem, 1.3vw, 1.12rem); }
