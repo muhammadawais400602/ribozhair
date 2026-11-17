@@ -9,6 +9,7 @@ import Lenis from "lenis";
 import { initNav } from "./nav.js";
 import { initHero } from "./hero.js";
 import { initCursor } from "./cursor.js";
+import { initSea } from "./sea.js";
 import { initStory } from "./story.js";
 import { initSectionsA } from "./sections-a.js";
 import { initSectionsB } from "./sections-b.js";
@@ -36,6 +37,7 @@ async function boot() {
   initSectionsA({ lenis }); // sections 5-10 (owns the How It Works pin)
   initSectionsB({ lenis }); // sections 11-16
 
+  initSea();
   initThemes();
   initBackdrops();
   initReveals();

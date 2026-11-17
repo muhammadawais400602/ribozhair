@@ -56,8 +56,7 @@ export function initHero() {
 
   // entrance: heading → bottle drop (overshoot) → labels one by one with lines drawing label → bottle
   const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 0.25 });
-  tl.from(".hero__bg img", { opacity: 0, duration: 1.8, ease: "power2.out" }, 0)
-    .from(".hero__wordmark", { opacity: 0, y: 70, scale: 0.9, duration: 1.9 }, 0.1)
+  tl.from(".hero__wordmark", { opacity: 0, y: 70, scale: 0.9, duration: 1.9 }, 0.1)
     .from(bottle, { yPercent: -120, opacity: 0, duration: 1.6, ease: "back.out(1.15)" }, "-=1.15")
     .from([".hero__shadow", ".hero__reflect", ".hero__rim"], { opacity: 0, duration: 1.2, ease: "power2.out" }, "-=0.7")
     .from(".hero__foot > *", { opacity: 0, y: 24, duration: 1.1, stagger: 0.12 }, "-=1.0");
@@ -73,16 +72,14 @@ export function initHero() {
   if (matchMedia("(hover: hover)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const ry = gsap.quickTo(product, "rotationY", { duration: 1.2, ease: "power3.out" });
     const rx = gsap.quickTo(product, "rotationX", { duration: 1.2, ease: "power3.out" });
-    const bgx = gsap.quickTo(".hero__bg picture", "x", { duration: 1.6, ease: "power3.out" });
     hero.addEventListener("pointermove", (e) => {
       const r = hero.getBoundingClientRect();
       const nx = (e.clientX - r.left) / r.width - 0.5, ny = (e.clientY - r.top) / r.height - 0.5;
-      ry(nx * 9); rx(-ny * 5); bgx(-nx * 18);
+      ry(nx * 9); rx(-ny * 5);
     });
-    hero.addEventListener("pointerleave", () => { ry(0); rx(0); bgx(0); });
+    hero.addEventListener("pointerleave", () => { ry(0); rx(0); });
   }
 
   // scroll: sea and product separate in depth as the hero leaves
-  gsap.to(".hero__bg picture", { yPercent: 10, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } });
   gsap.to(".hero__wordmark", { yPercent: 40, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } });
 }

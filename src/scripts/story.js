@@ -757,6 +757,7 @@ export async function initStory() {
     let running = false;
     const tick = (time, dt) => { clock += Math.min(dt, 50) / 1000; adapt(dt); frame(); };
     const api = {
+      calls: () => renderer.info.render.calls,
       layout,
       frame,
       start() { if (!running) { running = true; gsap.ticker.add(tick); } },

@@ -8,6 +8,10 @@
     <link rel="icon" href="/src/assets/myi-logo.png" />
   </head>
   <body>
+    <div class="sea-bg" aria-hidden="true">
+      <video class="sea-bg__video" muted loop playsinline preload="auto" poster="/src/assets/video/sea-poster.webp"></video>
+      <div class="sea-bg__frost"></div>
+    </div>
     <!-- ============ 1. NAVIGATION ============ -->
     <nav class="nav" aria-label="Primary">
       <a class="nav__logo" href="#top" data-scroll aria-label="RibozHair home">RibozHair<sup>™</sup></a>
@@ -30,7 +34,7 @@
     <main>
       <!-- ============ 2. HERO ============ -->
       <section class="hero" id="top" data-theme="dark">
-        <div class="hero__bg" aria-hidden="true"><picture><source media="(max-width: 700px)" srcset="/src/assets/bg/hero-sea-m.webp" /><img src="/src/assets/bg/hero-sea.webp" alt="" fetchpriority="high" /></picture></div>
+        <div class="hero__bg" aria-hidden="true"></div>
         <div class="grain" aria-hidden="true"></div>
         <h1 class="hero__wordmark">RIBOZHAIR</h1>
 
@@ -49,7 +53,7 @@
         </div>
 
         <div class="hero__foot">
-          <p class="hero__promise">Advanced Hair Regeneration Formula</p>
+          <div class="hero__tagline"><p class="hero__headline">Advanced Hair<br />Regeneration Formula</p><p class="hero__promise">Stimulates growth · Reduces hair fall · Improves density</p></div>
           <a class="btn btn--light" href="#shop" data-scroll>Shop Now
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
