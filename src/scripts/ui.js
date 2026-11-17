@@ -15,7 +15,7 @@ THEMES.deep = THEMES.dark;
 
 export function initThemes() {
   const root = document.documentElement;
-  let current = "dark";
+  let current = "light";
   const set = (name) => {
     if (name === current) return;
     current = name;

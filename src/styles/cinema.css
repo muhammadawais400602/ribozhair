@@ -103,3 +103,25 @@
 @media (prefers-reduced-motion: reduce) { .hero__bg img { animation: none; } }
 
 .hero__bg picture, .sec-bg picture { display: block; width: 100%; height: 100%; will-change: transform; }
+
+/* ============ LIGHT BY DEFAULT ============ */
+:root { --bg: #f5f8fc; --fg: #0d1b2a; --soft: rgba(13, 27, 42, 0.68); --card: rgba(255, 255, 255, 0.58); --line: rgba(10, 42, 94, 0.12); --accent: #1e88e5; --pill: rgba(10, 42, 94, 0.08); }
+
+/* ============ CURSOR ============ */
+.has-cursor, .has-cursor a, .has-cursor button, .has-cursor label { cursor: none; }
+.cursor-dot, .cursor-ring, .cursor-light { position: fixed; left: 0; top: 0; pointer-events: none; opacity: 0; visibility: hidden; will-change: transform; }
+.cursor-dot { z-index: 1002; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85); transition: scale 0.35s var(--ease), opacity 0.3s; }
+.cursor-ring { z-index: 1001; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 999px;
+  border: 1px solid rgba(30, 136, 229, 0.55); background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(3px) saturate(160%); -webkit-backdrop-filter: blur(3px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 6px 18px rgba(10, 42, 94, 0.14);
+  transition: width 0.45s var(--ease), height 0.45s var(--ease), background 0.45s var(--ease), border-color 0.45s var(--ease); }
+.cursor-ring span { font: 600 0.72rem/1 var(--font-d); letter-spacing: 0.08em; text-transform: uppercase; color: #fff; opacity: 0; white-space: nowrap; transition: opacity 0.3s; }
+.cursor-ring[data-state="link"] { width: 68px; height: 68px; background: rgba(30, 136, 229, 0.14); border-color: rgba(30, 136, 229, 0.8); }
+.cursor-ring[data-state="text"] { width: 4px; height: 34px; border-radius: 2px; background: var(--blue); border-color: transparent; }
+.cursor-ring[data-state="label"] { width: 92px; height: 92px; background: rgba(30, 136, 229, 0.92); border-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.cursor-ring[data-state="label"] span { opacity: 1; }
+.cursor-dot[data-state="link"], .cursor-dot[data-state="label"], .cursor-dot[data-state="text"] { scale: 0; }
+/* soft daylight that follows the pointer across the page */
+.cursor-light { z-index: 3; width: 620px; height: 620px; border-radius: 50%; mix-blend-mode: soft-light;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.5), rgba(180, 220, 255, 0.18) 45%, transparent 70%); }

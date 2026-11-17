@@ -12,7 +12,6 @@ const VH = 10; // world units visible vertically at z = 0
 const FOV = 22;
 const DIST = VH / 2 / Math.tan((FOV * Math.PI) / 360);
 const R = 0.72; // competitor body radius
-const SHELL_H = 3.5;
 const BODY_Y = -2.3; // bottle pivot offset
 const THICK = 0.05;
 const PROFILE = [[0.1, 0.016], [0.5, 0], [0.66, 0.03], [0.72, 0.15], [0.72, 0.8], [0.72, 1.6], [0.72, 2.38], [0.705, 2.58], [0.62, 2.79], [0.45, 2.96], [0.31, 3.07], [0.27, 3.2], [0.27, 3.5]];
@@ -84,13 +83,19 @@ export async function initStory() {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lite = matchMedia("(pointer: coarse)").matches || innerWidth < 820 || (navigator.deviceMemory || 8) <= 2;
   const small = innerWidth <= 820;
+  // real refraction everywhere it is affordable; reflective glass only on low-end devices
+  const forced = import.meta.env.DEV ? new URLSearchParams(location.search).get("glass") : null;
+  let cheap = forced ? forced === "cheap" : (navigator.hardwareConcurrency || 8) < 6 || (navigator.deviceMemory || 8) <= 3;
   const urls = {
     problem: pick(BG, small ? "problem-m.webp" : "problem.webp") || pick(BG, "problem.webp"),
     meet: pick(BG, small ? "meet-m.webp" : "meet.webp") || pick(BG, "meet.webp"),
     env: pick(ENV, "studio_1k.hdr") || Object.values(ENV)[0] || null,
   };
-  if (urls.problem) darkBg.style.backgroundImage = `url("${urls.problem}")`;
-  if (urls.meet) blueBg.style.backgroundImage = `url("${urls.meet}")`;
+  // DOM photo layers are only painted when WebGL is not drawing them
+  const photoFallback = () => {
+    if (urls.problem) darkBg.style.backgroundImage = `url("${urls.problem}")`;
+    if (urls.meet) blueBg.style.backgroundImage = `url("${urls.meet}")`;
+  };
 
   if (!(bottleImg.complete && bottleImg.naturalWidth)) await new Promise((r) => { bottleImg.addEventListener("load", r, { once: true }); bottleImg.addEventListener("error", r, { once: true }); });
   const bottleAR = bottleImg.naturalWidth ? bottleImg.naturalWidth / bottleImg.naturalHeight : 0.305;
@@ -102,7 +107,7 @@ export async function initStory() {
   const P = { fall: 0, crack: 0, burst: 0, flash: 0, drift: 0, bg: 0, asm: 0, sweep: 0, fade: 0 };
   let gl = null;
   try { gl = await buildScene(); } catch (e) { console.warn("[story] WebGL unavailable, using photo fallback", e); }
-  if (!gl) canvas.style.display = "none";
+  if (!gl) { canvas.style.display = "none"; photoFallback(); }
 
   gsap.set([heading, ...stmts, tagline, intro, ...badges, bottleImg, liquid], { autoAlpha: 0 });
   const DROP = "drop-shadow(0px 34px 30px rgba(2,10,30,0.45))";
@@ -266,8 +271,7 @@ export async function initStory() {
       return { r: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), nr: ty, ny: -tr };
     }
     const sAtY = (y) => { for (let i = 30; i <= NP; i++) if (pts[i].y >= y) return (i / NP) * S; return S; };
-    const silC = (y) => (y < 0.15 ? R : prof(sAtY(y)).r);
-    const C = 2 * Math.PI * R;
+        const C = 2 * Math.PI * R;
     const surf = (x, s, off, out, nOut) => {
       const p = prof(s), th = x / R, sn = Math.sin(th), cs = Math.cos(th), r = p.r + p.nr * off;
       out.set(r * sn, p.y + p.ny * off, r * cs);
@@ -276,15 +280,16 @@ export async function initStory() {
     };
 
     // ---- materials ----
-    const glassOpts = lite
-      ? { color: 0xe4f3ff, roughness: 0.06, metalness: 0.15, transparent: true, opacity: 0.42, envMapIntensity: 2.4, clearcoat: 1, clearcoatRoughness: 0.04, depthWrite: false }
-      : { color: 0xffffff, roughness: 0.035, metalness: 0, transmission: 1, ior: 1.5, thickness: 0.22, attenuationColor: new THREE.Color("#bfeadd"), attenuationDistance: 0.9, dispersion: 2.5, envMapIntensity: 1.5, clearcoat: 1, clearcoatRoughness: 0.03, specularIntensity: 1, transparent: true };
+    const CHEAP_GLASS = { roughness: 0.04, metalness: 0.9, transmission: 0, dispersion: 0, opacity: 0.3, envMapIntensity: 2.6, depthWrite: false };
+    const glassOpts = cheap
+      ? { color: 0xffffff, ...CHEAP_GLASS, transparent: true, clearcoat: 1, clearcoatRoughness: 0.04 }
+      : { color: 0xffffff, roughness: 0.035, metalness: 0, transmission: 1, ior: 1.5, thickness: 0.22, attenuationColor: new THREE.Color("#bfeadd"), attenuationDistance: 0.9, dispersion: lite ? 0 : 2.5, envMapIntensity: 1.5, clearcoat: 1, clearcoatRoughness: 0.03, specularIntensity: 1, transparent: true };
     const shardMat = new THREE.MeshPhysicalMaterial({ ...glassOpts, vertexColors: true });
-    const bottleMat = new THREE.MeshPhysicalMaterial(lite
+    const bottleMat = new THREE.MeshPhysicalMaterial(cheap
       ? { color: 0xcfe6f2, roughness: 0.06, metalness: 0.15, transparent: true, opacity: 0.5, envMapIntensity: 2.2, clearcoat: 1 }
       : { color: 0xffffff, roughness: 0.04, metalness: 0, transmission: 1, ior: 1.46, thickness: 0.9, attenuationColor: new THREE.Color("#a9d8e6"), attenuationDistance: 1.6, envMapIntensity: 1.4, clearcoat: 1, clearcoatRoughness: 0.04 });
     const labelMat = new THREE.MeshStandardMaterial({ color: 0xf1f2f0, roughness: 0.72, metalness: 0, transparent: true, side: THREE.DoubleSide });
-    const blackMat = new THREE.MeshPhysicalMaterial({ color: 0x08090c, roughness: 0.22, metalness: 0.1, clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.3 });
+    const blackMat = new THREE.MeshPhysicalMaterial({ color: 0x07080b, roughness: 0.34, metalness: 0, clearcoat: 0.7, clearcoatRoughness: 0.12, envMapIntensity: 0.75 });
     const tubeMat = new THREE.MeshStandardMaterial({ color: 0xe9eef2, roughness: 0.35 });
     const dustMat = new THREE.MeshPhysicalMaterial({ color: 0xeaf6ff, roughness: 0.03, metalness: 0.55, envMapIntensity: 3, transparent: true, opacity: 0.85, clearcoat: 1 });
     const dropMat = new THREE.MeshPhysicalMaterial({ color: 0xf2f9ff, roughness: 0.02, metalness: 0.2, transparent: true, opacity: 0.6, envMapIntensity: 3, clearcoat: 1, clearcoatRoughness: 0.02, depthWrite: false });
@@ -519,7 +524,7 @@ export async function initStory() {
     };
     const Mimp = new M4(), MimpInv = new M4(), qImp = new Q4(), qImpInv = new Q4();
     const impactPose = { y: 0.1, rx: 0.05, ry: 0, rz: 0.11 };
-    const L = { W: 1, H: 1, visW: 1, impW: new V3(), pumpScat: new V3(), pumpAsm: new V3(), pumpAsmS: 1, bottle: { x: 0, y: 0, w: 1, h: 1 } };
+    const L = { W: 1, H: 1, visW: 1, impW: new V3(), pumpScat: new V3(), pumpAsm: new V3(), pumpAsmS: new V3(1, 1, 1), bottle: { x: 0, y: 0, w: 1, h: 1 } };
     const order = shards.map((_, i) => i);
     const w3 = new V3();
 
@@ -561,7 +566,8 @@ export async function initStory() {
         s.delay = Math.min(0.2, s.dist * 0.05);
         s.spin = (s.rnd[5] < 0.5 ? -1 : 1) * (2.2 + s.rnd[4] * 5.5) / (0.6 + Math.sqrt(s.area) * 1.6);
       });
-      L.pumpScat.set(-hx * 0.1, topLim - 0.95, 0.6).applyMatrix4(MimpInv);
+      if (W < 700) L.pumpScat.set(hx * 0.62, botLim + 0.2, -2.5).multiplyScalar((DIST + 2.5) / DIST).setZ(-2.5).applyMatrix4(MimpInv);
+      else L.pumpScat.set(-hx * 0.1, topLim - 0.95, 0.6).applyMatrix4(MimpInv);
 
       // assembly: each shard maps to the same (angle, height) on a shell shaped like the real bottle
       const sr = stage.getBoundingClientRect(), br = meetBottle.getBoundingClientRect(), px = VH / H;
@@ -586,8 +592,8 @@ export async function initStory() {
         s.stag = 0.55 * s.f + 0.2 * s.rnd[2];
       });
       // the pump returns under the clear cap
-      L.pumpAsmS = (b.w / 2 / 0.345 / fit) * 0.97;
-      L.pumpAsm.set(b.x, b.y + b.h * 0.15 + 0.59 * L.pumpAsmS * fit, 0).applyMatrix4(MimpInv);
+      L.pumpAsmS.set((b.w / 2 / 0.345 / fit) * 0.96, (b.h * 0.27) / 1.21 / fit, (b.w / 2 / 0.345 / fit) * 0.96);
+      L.pumpAsm.set(b.x, b.y + b.h * 0.15 + 0.59 * L.pumpAsmS.y * fit, 0).applyMatrix4(MimpInv);
     }
 
     // ---- per-frame: everything derives from P (+ a little idle float) ----
@@ -619,7 +625,7 @@ export async function initStory() {
       const vis = impacted && fade < 0.999;
       shardRoot.visible = vis;
       const alpha = 1 - fade;
-      shardMat.opacity = (lite ? 0.42 : 1) * alpha; labelMat.opacity = alpha;
+      shardMat.opacity = (cheap ? CHEAP_GLASS.opacity : 1) * alpha; labelMat.opacity = alpha;
       // pump + tube stay opaque (so the glass refracts them) until they have to fade
       const tubeA = alpha * (1 - smooth(clamp01(asm * 2.2)));
       solidOrFade(blackMat, alpha); solidOrFade(tubeMat, tubeA);
@@ -651,7 +657,7 @@ export async function initStory() {
         pump.position.copy(pA2).lerp(L.pumpAsm, a);
         q1.setFromAxisAngle(up.set(0.35, 0.2, 0.9).normalize(), -2.6 * outCubic(tau) - (drift * 0.7 + idle * 0.04) * free);
         pump.quaternion.copy(q1).slerp(qImpInv, a);
-        pump.scale.setScalar(lerp(1, L.pumpAsmS, a));
+        pump.scale.set(lerp(1, L.pumpAsmS.x, a), lerp(1, L.pumpAsmS.y, a), lerp(1, L.pumpAsmS.z, a));
         pump.visible = fade < 0.999;
       }
       // tiny fragments: explosive spray that thins out and sinks away
@@ -710,13 +716,18 @@ export async function initStory() {
       renderer.render(scene, camera);
     }
 
-    canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); canvas.style.display = "none"; api.stop(); });
+    canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); canvas.style.display = "none"; photoFallback(); api.stop(); });
     // keep it smooth on slower GPUs: step the pixel ratio down if frames run long
     let pr = renderer.getPixelRatio(), slow = 0, seen = 0;
     function adapt(dt) {
-      if (pr <= 1 || P.burst <= 0 || P.fade >= 1) return;
+      if ((pr <= 1 && cheap) || P.burst <= 0 || P.fade >= 1) return;
       seen++; if (dt > 24) slow++;
-      if (seen >= 45) { if (slow > 30) { pr = Math.max(1, pr - 0.25); renderer.setPixelRatio(pr); renderer.setSize(L.W, L.H, false); } seen = 0; slow = 0; }
+      if (seen < 45) return;
+      if (slow > 30) {
+        if (pr > 1) { pr = Math.max(1, pr - 0.25); renderer.setPixelRatio(pr); renderer.setSize(L.W, L.H, false); }
+        else { cheap = true; Object.assign(shardMat, CHEAP_GLASS); shardMat.needsUpdate = true; } // last resort: drop refraction
+      }
+      seen = 0; slow = 0;
     }
     let running = false;
     const tick = (time, dt) => { clock += Math.min(dt, 50) / 1000; adapt(dt); frame(); };

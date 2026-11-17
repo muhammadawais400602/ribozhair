@@ -8,6 +8,7 @@ import Lenis from "lenis";
 
 import { initNav } from "./nav.js";
 import { initHero } from "./hero.js";
+import { initCursor } from "./cursor.js";
 import { initStory } from "./story.js";
 import { initSectionsA } from "./sections-a.js";
 import { initSectionsB } from "./sections-b.js";
@@ -44,6 +45,7 @@ async function boot() {
   initFaq();
   initShop();
   initNewsletter();
+  initCursor();
 
   // 3D scenes load lazily so the first paint stays light
   import("./molecule.js").then((m) => m.initMolecule(document.querySelector(".science__canvas"), document.querySelector(".science"))).catch(console.error);
