@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RibozHair — Advanced Hair Regeneration Formula</title>
+    <meta name="description" content="RibozHair Hair Booster Tonic — a patented formula with 2-Deoxy-D-Ribose that stimulates growth, reduces fall, and improves hair density." />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/src/assets/favicon.png" />
+    <link rel="preload" as="image" href="/src/assets/bg/hero-sea.webp" fetchpriority="high" />
+    <script type="module" src="./v3.js"></script>
+  </head>
+  <body class="bg-surface font-body-md text-body-md text-on-surface antialiased selection:bg-surface-container-highest selection:text-primary">
+    <!-- icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></symbol>
+      <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 8h12l1 12H5L6 8Z" /><path d="M9 8a3 3 0 0 1 6 0" /></symbol>
+      <symbol id="i-spray" viewBox="0 0 24 24"><path d="M8 11h8v9a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-9Z" /><path d="M10 11V6h4v5" /><path d="M14 8h4M19.5 5.5 18 7M20 9.5h-2M19.5 13.5 18 12" /></symbol>
+      <symbol id="i-massage" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><circle cx="12" cy="12" r="8" stroke-dasharray="2.2 2.6" /><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3" /></symbol>
+      <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 3l3 3-3 3" /><path d="M20 6H9a5 5 0 0 0-5 5" /><path d="M7 21l-3-3 3-3" /><path d="M4 18h11a5 5 0 0 0 5-5" /></symbol>
+      <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 10a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-10V3" /><path d="M7.5 15h9" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3Z" /><path d="m8.5 12 2.5 2.5 4.5-5" /></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11Z" /><circle cx="12" cy="10" r="2.5" /></symbol>
+      <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M5.6 18.4 18.4 5.6" /></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.7 6.3.8-4.6 4.3 1.2 6.2L12 17l-5.6 3 1.2-6.2L3 9.5l6.3-.8L12 3Z" /></symbol>
+      <symbol id="i-hub" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.6" /><circle cx="5" cy="6" r="2" /><circle cx="19" cy="6" r="2" /><circle cx="12" cy="20" r="2" /><path d="m6.6 7.3 3.4 3M17.4 7.3l-3.4 3M12 14.6V18" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m8 12.5 2.8 2.8L16 9.5" /></symbol>
+    </svg>
+
+    <!-- ================= HEADER ================= -->
+    <header class="fixed top-0 left-0 z-50 w-full bg-surface-container-lowest/90 shadow-[0_1px_8px_rgba(10,42,94,0.08)] backdrop-blur-md">
+      <div class="w-full border-b border-surface-container bg-primary px-margin-mobile py-space-xs text-center lg:px-margin">
+        <p class="font-label-caps text-label-caps uppercase tracking-[0.18em] text-white">Get 10% off your first order<span class="hidden sm:inline">&nbsp;&nbsp;|&nbsp;&nbsp;Patented 2-Deoxy-D-Ribose&nbsp;&nbsp;|&nbsp;&nbsp;Non-medicated hair care</span></p>
+      </div>
+      <div class="mx-auto flex h-20 max-w-[1320px] items-center justify-between gap-gutter px-margin-mobile lg:px-margin">
+        <nav class="hidden flex-1 items-center gap-space-lg lg:flex" aria-label="Primary">
+          <a class="font-button-text text-button-text uppercase tracking-[0.2em] text-on-surface-variant transition-colors duration-200 hover:text-secondary" href="#shop">Shop</a>
+          <a class="font-button-text text-button-text uppercase tracking-[0.2em] text-on-surface-variant transition-colors duration-200 hover:text-secondary" href="#science">The Science</a>
+          <a class="font-button-text text-button-text uppercase tracking-[0.2em] text-on-surface-variant transition-colors duration-200 hover:text-secondary" href="#benefits">Benefits</a>
+          <a class="font-button-text text-button-text uppercase tracking-[0.2em] text-on-surface-variant transition-colors duration-200 hover:text-secondary" href="#ritual">The Ritual</a>
+        </nav>
+        <a class="flex shrink-0 items-center justify-center" href="#top" aria-label="RibozHair home">
+          <span class="font-headline-md text-headline-md uppercase tracking-tight text-primary">Riboz<span class="text-secondary">Hair</span><sup class="ml-0.5 align-super text-[10px] text-outline">™</sup></span>
+        </a>
+        <div class="flex flex-1 items-center justify-end gap-space-lg">
+          <nav class="hidden items-center gap-space-lg xl:flex" aria-label="Secondary">
+            <a class="font-button-text text-button-text uppercase tracking-[0.2em] text-on-surface-variant transition-colors duration-200 hover:text-secondary" href="#about">About Us</a>
+            <a class="font-button-text text-button-text uppercase tracking-[0.2em] text-on-surface-variant transition-colors duration-200 hover:text-secondary" href="#contact">Contact</a>
+          </nav>
+          <a class="flex items-center gap-space-xs p-space-xs font-button-text text-button-text uppercase text-on-surface transition-colors hover:text-secondary" href="#shop" aria-label="Bag">
+            <svg class="ico text-[20px]" aria-hidden="true"><use href="#i-bag" /></svg>
+            <span class="tracking-[0.18em]">BAG (<span data-bag>0</span>)</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="w-full bg-surface pt-28" id="top">
+      <div class="flex w-full flex-col">
+        <!-- ================= 1. HERO ================= -->
+        <section class="relative w-full overflow-hidden bg-primary-container text-on-primary">
+          <div class="relative flex min-h-[640px] w-full items-center justify-center lg:min-h-[760px]">
+            <img class="absolute inset-0 h-full w-full object-cover" src="/src/assets/bg/hero-sea.webp" srcset="/src/assets/bg/hero-sea-m.webp 1100w, /src/assets/bg/hero-sea.webp 2400w" sizes="100vw" width="2400" height="1350" alt="" fetchpriority="high" />
+            <div class="absolute inset-0 bg-gradient-to-t from-primary-container via-primary-container/60 to-primary-container/50"></div>
+            <div class="relative z-10 mx-auto flex max-w-[960px] flex-col items-center px-margin-mobile py-space-2xl text-center lg:px-margin">
+              <span class="fade mb-space-md font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.25em] text-tertiary-fixed [text-shadow:0_1px_12px_rgba(7,29,68,0.7)]">Patented 2-Deoxy-D-Ribose (2dDR)</span>
+              <h1 class="fade mb-space-md font-display-hero text-display-hero text-surface-container-lowest" data-delay="1">
+                ADVANCED HAIR REGENERATION <span class="font-subheading-serif italic text-tertiary-fixed [text-shadow:0_1px_14px_rgba(7,29,68,0.55)]">for your</span> SCALP
+              </h1>
+              <p class="fade mx-auto mb-space-xl max-w-2xl font-subheading-serif text-subheading-serif font-light text-surface-container-highest" data-delay="2">
+                A patented formula with 2-Deoxy-D-Ribose that stimulates growth, reduces fall, and improves hair density.
+              </p>
+              <div class="fade flex flex-col items-center gap-space-md sm:flex-row" data-delay="3">
+                <a class="bg-surface-container-lowest px-space-xl py-space-md font-button-text text-button-text uppercase tracking-[0.25em] text-primary shadow-md transition-all duration-300 hover:bg-surface-container-high hover:shadow-xl" href="#shop">Shop Now</a>
+                <a class="flex items-center gap-space-xs px-space-md py-space-sm font-button-text text-button-text uppercase tracking-[0.2em] text-tertiary-fixed transition-colors duration-200 hover:text-surface-container-lowest" href="#science">
+                  <span>Explore The Science</span><svg class="ico text-[16px]" aria-hidden="true"><use href="#i-arrow" /></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 2. PRODUCT GRID (supply options) ================= -->
+        <section class="w-full bg-surface py-space-2xl" id="shop">
+          <div class="mx-auto max-w-[1320px] px-margin-mobile lg:px-margin">
+            <div class="fade mx-auto mb-space-2xl max-w-2xl text-center">
+              <h2 class="mb-space-xs font-headline-lg text-headline-lg tracking-tight text-primary">Hair Booster Tonic</h2>
+              <p class="font-subheading-serif text-subheading-serif italic text-on-surface-variant">Advanced Hair Regeneration Formula · 60 mL</p>
+            </div>
+            <div class="grid grid-cols-1 gap-gutter md:grid-cols-3 lg:gap-space-xl">
+              <!-- Card 1 -->
+              <article class="fade group flex flex-col rounded bg-surface-container-lowest p-space-lg shadow-sm transition-shadow duration-500 hover:shadow-xl">
+                <div class="mb-space-sm flex items-start justify-between">
+                  <span class="font-label-caps text-label-caps uppercase tracking-[0.18em] text-secondary">1 Bottle</span>
+                  <span class="inline-flex items-center gap-space-xs rounded-full bg-surface-container-low px-space-xs py-0.5 font-label-caps text-[9px] uppercase tracking-wider text-on-surface"><span class="h-1.5 w-1.5 rounded-full bg-secondary"></span> Patented 2dDR</span>
+                </div>
+                <div class="my-space-md text-center">
+                  <h3 class="mb-1 font-headline-md text-headline-md text-primary transition-colors group-hover:text-secondary">Hair Booster Tonic™</h3>
+                  <span class="mb-2 block font-label-caps text-label-caps uppercase tracking-[0.15em] text-outline">60 mL</span>
+                  <p class="min-h-[44px] font-body-md text-body-md text-on-surface-variant">Stimulates Hair Growth · Reduces Hair Fall · Improves Hair Density</p>
+                </div>
+                <div class="relative mb-space-lg flex aspect-square w-full items-center justify-center overflow-hidden rounded bg-surface-container-low p-space-md">
+                  <img class="h-full w-auto object-contain" src="/src/assets/bottle-sm.webp" width="440" height="1579" alt="RibozHair Hair Booster Tonic, 60 mL bottle" loading="lazy" decoding="async" />
+                </div>
+                <div class="mt-auto flex flex-col items-center pt-space-sm">
+                  <span class="mb-space-sm font-body-lg text-body-lg font-medium text-primary">Price to be confirmed</span>
+                  <button class="w-full bg-primary px-space-lg py-space-sm font-button-text text-button-text uppercase tracking-[0.2em] text-on-primary transition-colors duration-300 hover:bg-secondary" data-add="1">Add to Bag</button>
+                </div>
+              </article>
+              <!-- Card 2 -->
+              <article class="fade group flex flex-col rounded bg-surface-container-lowest p-space-lg shadow-sm transition-shadow duration-500 hover:shadow-xl" data-delay="1">
+                <div class="mb-space-sm flex items-start justify-between">
+                  <span class="font-label-caps text-label-caps uppercase tracking-[0.18em] text-secondary">3-Month Supply</span>
+                  <span class="inline-flex items-center gap-space-xs rounded-full bg-surface-container-low px-space-xs py-0.5 font-label-caps text-[9px] uppercase tracking-wider text-on-surface"><span class="h-1.5 w-1.5 rounded-full bg-secondary"></span> Non-medicated</span>
+                </div>
+                <div class="my-space-md text-center">
+                  <h3 class="mb-1 font-headline-md text-headline-md text-primary transition-colors group-hover:text-secondary">Three-Bottle Ritual</h3>
+                  <span class="mb-2 block font-label-caps text-label-caps uppercase tracking-[0.15em] text-outline">3 × 60 mL</span>
+                  <p class="min-h-[44px] font-body-md text-body-md text-on-surface-variant">Spray, massage and repeat twice daily.</p>
+                </div>
+                <div class="relative mb-space-lg flex aspect-square w-full items-center justify-center overflow-hidden rounded bg-surface-container-low p-space-md">
+                  <div class="flex h-full items-end justify-center">
+                    <img class="-mr-6 h-[88%] w-auto object-contain" src="/src/assets/bottle-sm.webp" width="440" height="1579" alt="" loading="lazy" decoding="async" />
+                    <img class="relative z-10 h-full w-auto object-contain" src="/src/assets/bottle-sm.webp" width="440" height="1579" alt="Three RibozHair Hair Booster Tonic bottles" loading="lazy" decoding="async" />
+                    <img class="-ml-6 h-[88%] w-auto object-contain" src="/src/assets/bottle-sm.webp" width="440" height="1579" alt="" loading="lazy" decoding="async" />
+                  </div>
+                </div>
+                <div class="mt-auto flex flex-col items-center pt-space-sm">
+                  <span class="mb-space-sm font-body-lg text-body-lg font-medium text-primary">Price to be confirmed</span>
+                  <button class="w-full bg-primary px-space-lg py-space-sm font-button-text text-button-text uppercase tracking-[0.2em] text-on-primary transition-colors duration-300 hover:bg-secondary" data-add="3">Add to Bag</button>
+                </div>
+              </article>
+              <!-- Card 3 -->
+              <article class="fade group flex flex-col rounded bg-surface-container-lowest p-space-lg shadow-sm transition-shadow duration-500 hover:shadow-xl" data-delay="2">
+                <div class="mb-space-sm flex items-start justify-between">
+                  <span class="font-label-caps text-label-caps uppercase tracking-[0.18em] text-secondary">6-Month Supply</span>
+                  <span class="inline-flex items-center gap-space-xs rounded-full bg-surface-container-low px-space-xs py-0.5 font-label-caps text-[9px] uppercase tracking-wider text-on-surface"><span class="h-1.5 w-1.5 rounded-full bg-secondary"></span> External use</span>
+                </div>
+                <div class="my-space-md text-center">
+                  <h3 class="mb-1 font-headline-md text-headline-md text-primary transition-colors group-hover:text-secondary">Six-Bottle Ritual</h3>
+                  <span class="mb-2 block font-label-caps text-label-caps uppercase tracking-[0.15em] text-outline">6 × 60 mL</span>
+                  <p class="min-h-[44px] font-body-md text-body-md text-on-surface-variant">A longer supply for a consistent daily routine.</p>
+                </div>
+                <div class="relative mb-space-lg flex aspect-square w-full items-center justify-center overflow-hidden rounded bg-surface-container-low p-space-md">
+                  <div class="flex h-full items-end justify-center">
+                    <img class="-mr-7 h-[80%] w-auto object-contain" src="/src/assets/bottle-sm.webp" width="440" height="1579" alt="" loading="lazy" decoding="async" />
+                    <img class="relative z-10 -mr-7 h-[92%] w-auto object-contain" src="/src/assets/bottle-sm.webp" width="440" height="1579" alt="" loading="lazy" decoding="async" />
+                    <img class="relative z-20 h-full w-auto object-contain" src="/src/assets/bottle-sm.webp" width="440" height="1579" alt="Six RibozHair Hair Booster Tonic bottles" loading="lazy" decoding="async" />
+                  </div>
+                  <span class="absolute right-3 top-3 flex h-12 w-12 flex-col items-center justify-center rounded-full bg-surface-container-lowest/90 p-1 text-center shadow-sm backdrop-blur-md">
+                    <span class="font-label-caps text-[10px] font-bold uppercase tracking-widest text-primary">× 6</span>
+                    <span class="font-label-caps text-[7px] text-secondary">BOTTLES</span>
+                  </span>
+                </div>
+                <div class="mt-auto flex flex-col items-center pt-space-sm">
+                  <span class="mb-space-sm font-body-lg text-body-lg font-medium text-primary">Price to be confirmed</span>
+                  <button class="w-full bg-primary px-space-lg py-space-sm font-button-text text-button-text uppercase tracking-[0.2em] text-on-primary transition-colors duration-300 hover:bg-secondary" data-add="6">Add to Bag</button>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 3. FEATURE BANNER (the hero molecule) ================= -->
+        <section class="w-full bg-surface-container-low py-space-xl">
+          <div class="mx-auto max-w-[1320px] px-margin-mobile lg:px-margin">
+            <div class="relative flex min-h-[480px] w-full items-center justify-center overflow-hidden rounded-lg shadow-xl lg:min-h-[560px]">
+              <img class="absolute inset-0 h-full w-full object-cover" src="/src/assets/bg/ingredients.webp" srcset="/src/assets/bg/ingredients-m.webp 1100w, /src/assets/bg/ingredients.webp 2400w" sizes="(max-width: 1320px) 100vw, 1320px" width="2400" height="1350" alt="" loading="lazy" decoding="async" />
+              <div class="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/20 to-transparent"></div>
+              <div class="fade relative z-10 mx-auto max-w-xl rounded border-t-2 border-secondary bg-surface-container-lowest/90 p-space-lg text-center shadow-2xl backdrop-blur-md">
+                <span class="mb-space-xs block font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.2em] text-secondary">The Hero Molecule</span>
+                <h2 class="mb-space-xs font-headline-lg text-headline-lg text-primary">2-Deoxy-D-Ribose (2dDR)</h2>
+                <p class="mb-space-md font-body-md text-body-md text-on-surface-variant">Our patented molecule, paired with Lavandula angustifolia oil in a lightweight, non-greasy formula.</p>
+                <a class="inline-flex items-center gap-space-xs border-b border-primary pb-0.5 font-button-text text-button-text uppercase tracking-[0.2em] text-primary transition-colors hover:border-secondary hover:text-secondary" href="#science">
+                  <span>Read The Science</span><svg class="ico text-[16px]" aria-hidden="true"><use href="#i-arrow" /></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 4. MANIFESTO ================= -->
+        <section class="w-full bg-surface py-space-2xl" id="about">
+          <div class="mx-auto max-w-[840px] px-margin-mobile text-center lg:px-margin">
+            <span class="fade mb-space-sm block font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.2em] text-secondary">Our Formula</span>
+            <h2 class="fade mb-space-lg font-headline-lg text-headline-lg tracking-tight text-primary" data-delay="1">This Is Not Haircare as Usual</h2>
+            <div class="fade flex flex-col gap-space-md text-left font-body-lg text-body-lg leading-relaxed text-on-surface-variant" data-delay="2">
+              <p>Every RibozHair tonic is built around 2-Deoxy-D-Ribose (2dDR), the patented molecule behind our Advanced Hair Regeneration Formula. One lightweight, non-greasy formula, made for daily use on all hair types.</p>
+              <p><span class="font-semibold text-primary">Ingredients:</span> Aqua, Glycerin, 2-Phenoxy ethanol, 2-Deoxy-D-Ribose, Lavandula angustifolia oil. RibozHair is a non-medicated hair care product, for external use only.</p>
+            </div>
+            <div class="fade mt-space-xl flex flex-col items-center pt-space-lg" data-delay="3">
+              <div class="mb-space-md flex flex-col items-center">
+                <img class="mb-space-sm h-16 w-16 rounded bg-white object-contain p-1" src="/src/assets/myi-logo.webp" width="96" height="96" alt="MYI Health Care Solutions" loading="lazy" decoding="async" />
+                <p class="font-headline-md text-headline-md italic text-primary">MYI PVT LTD</p>
+                <span class="font-label-caps text-label-caps uppercase tracking-[0.18em] text-secondary">MY Health Care Solutions</span>
+              </div>
+              <a class="bg-primary px-space-xl py-space-sm font-button-text text-button-text uppercase tracking-[0.2em] text-on-primary transition-colors duration-300 hover:bg-secondary" href="#science">Learn The Science</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 5. THE SCIENCE (dark) ================= -->
+        <section class="relative w-full overflow-hidden bg-primary-container py-space-2xl text-on-primary" id="science">
+          <div class="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-secondary-container/25 blur-3xl"></div>
+          <div class="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-tertiary-fixed/15 blur-3xl"></div>
+          <div class="relative z-10 mx-auto max-w-[1320px] px-margin-mobile lg:px-margin">
+            <div class="grid grid-cols-1 items-center gap-space-xl lg:grid-cols-12">
+              <div class="pr-0 lg:col-span-7 lg:pr-space-lg">
+                <span class="fade mb-space-xs block font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.2em] text-tertiary-fixed">The Science</span>
+                <h2 class="fade mb-space-md font-headline-lg text-headline-lg text-surface-container-lowest" data-delay="1">Powered by <span class="font-subheading-serif italic text-tertiary-fixed">2-Deoxy-D-Ribose</span></h2>
+                <p class="fade mb-space-xl font-body-lg text-body-lg leading-relaxed text-surface-container-high" data-delay="2">RibozHair’s patented 2dDR reaches the hair follicle to stimulate hair growth, reduce hair fall and improve hair density. Spray on the scalp, massage in, and use twice a day.</p>
+                <div class="grid grid-cols-1 gap-space-md sm:grid-cols-3">
+                  <div class="fade rounded border-t border-surface-container-highest/30 bg-surface-container-lowest/10 p-space-md backdrop-blur-md" data-delay="2">
+                    <span class="mb-1 block font-headline-lg text-[26px] font-bold leading-tight text-tertiary-fixed">Patented</span>
+                    <p class="font-label-caps text-label-caps uppercase tracking-wider text-surface-container-high">Pakistan Patents 153/2018 &amp; 382/2026</p>
+                  </div>
+                  <div class="fade rounded border-t border-surface-container-highest/30 bg-surface-container-lowest/10 p-space-md backdrop-blur-md" data-delay="3">
+                    <span class="mb-1 block font-headline-lg text-[26px] font-bold leading-tight text-tertiary-fixed">Non-medicated</span>
+                    <p class="font-label-caps text-label-caps uppercase tracking-wider text-surface-container-high">A hair care product for external use</p>
+                  </div>
+                  <div class="fade rounded border-t border-surface-container-highest/30 bg-surface-container-lowest/10 p-space-md backdrop-blur-md" data-delay="4">
+                    <span class="mb-1 block font-headline-lg text-[26px] font-bold leading-tight text-tertiary-fixed">Three Benefits</span>
+                    <p class="font-label-caps text-label-caps uppercase tracking-wider text-surface-container-high">Growth · Less fall · Density</p>
+                  </div>
+                </div>
+              </div>
+              <div class="fade flex justify-center lg:col-span-5" data-delay="2">
+                <div class="relative flex aspect-square w-full max-w-md flex-col justify-between rounded-2xl bg-surface-container-lowest/5 p-space-lg shadow-2xl backdrop-blur-lg">
+                  <div class="flex items-center justify-between font-label-caps text-xs uppercase tracking-widest text-tertiary-fixed"><span>2dDR</span><span>C₅H₁₀O₄</span></div>
+                  <div class="flex min-h-0 flex-1 items-center justify-center py-space-sm">
+                    <img class="max-h-full w-full rounded-xl object-cover" src="/src/assets/lite/molecule.webp" width="900" height="900" alt="3D model of the 2-Deoxy-D-Ribose molecule" loading="lazy" decoding="async" />
+                  </div>
+                  <p class="text-center font-label-caps text-label-caps uppercase tracking-[0.18em] text-surface-container-highest">Fig. 1 — 2-Deoxy-D-Ribose</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 6. FOUR BENEFITS (in the press-card layout) ================= -->
+        <section class="w-full bg-surface py-space-2xl" id="benefits">
+          <div class="mx-auto max-w-[1320px] px-margin-mobile lg:px-margin">
+            <div class="fade mb-space-2xl text-center">
+              <h2 class="font-headline-lg text-headline-lg tracking-tight text-primary">Built Around Four Benefits</h2>
+            </div>
+            <div class="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-4">
+              <article class="fade flex flex-col bg-surface-container-lowest p-space-md shadow-sm transition-shadow duration-300 hover:shadow-md">
+                <div class="mb-space-sm flex h-10 items-center"><span class="font-headline-md text-headline-md uppercase tracking-tighter text-primary">Growth</span></div>
+                <p class="mb-space-md min-h-[84px] font-subheading-serif text-subheading-serif italic text-on-surface">Our patented 2dDR formula is designed to stimulate hair growth.</p>
+                <div class="mt-auto aspect-[4/5] w-full overflow-hidden rounded bg-surface-container-low"><img class="h-full w-full object-cover" src="/src/assets/bg/benefit-1.webp" srcset="/src/assets/bg/benefit-1-m.webp 700w, /src/assets/bg/benefit-1.webp 1200w" sizes="(max-width: 768px) 90vw, 25vw" width="1200" height="800" alt="A hand running through thick, healthy hair at the roots" loading="lazy" decoding="async" /></div>
+              </article>
+              <article class="fade flex flex-col bg-surface-container-lowest p-space-md shadow-sm transition-shadow duration-300 hover:shadow-md" data-delay="1">
+                <div class="mb-space-sm flex h-10 items-center"><span class="font-headline-md text-headline-md uppercase tracking-tighter text-primary">Less Fall</span></div>
+                <p class="mb-space-md min-h-[84px] font-subheading-serif text-subheading-serif italic text-on-surface">Helps reduce hair fall with regular, twice-daily use.</p>
+                <div class="mt-auto aspect-[4/5] w-full overflow-hidden rounded bg-surface-container-low"><img class="h-full w-full object-cover" src="/src/assets/bg/benefit-2.webp" srcset="/src/assets/bg/benefit-2-m.webp 700w, /src/assets/bg/benefit-2.webp 1200w" sizes="(max-width: 768px) 90vw, 25vw" width="1200" height="800" alt="A comb gliding through sleek straight hair" loading="lazy" decoding="async" /></div>
+              </article>
+              <article class="fade flex flex-col bg-surface-container-lowest p-space-md shadow-sm transition-shadow duration-300 hover:shadow-md" data-delay="2">
+                <div class="mb-space-sm flex h-10 items-center"><span class="font-headline-md text-headline-md uppercase tracking-tighter text-primary">Density</span></div>
+                <p class="mb-space-md min-h-[84px] font-subheading-serif text-subheading-serif italic text-on-surface">Supports fuller-looking hair for improved density.</p>
+                <div class="mt-auto aspect-[4/5] w-full overflow-hidden rounded bg-surface-container-low"><img class="h-full w-full object-cover" src="/src/assets/bg/benefit-3.webp" srcset="/src/assets/bg/benefit-3-m.webp 700w, /src/assets/bg/benefit-3.webp 1200w" sizes="(max-width: 768px) 90vw, 25vw" width="1200" height="800" alt="Full, dense long hair seen from behind" loading="lazy" decoding="async" /></div>
+              </article>
+              <article class="fade flex flex-col bg-surface-container-lowest p-space-md shadow-sm transition-shadow duration-300 hover:shadow-md" data-delay="3">
+                <div class="mb-space-sm flex h-10 items-center"><span class="font-headline-md text-headline-md uppercase tracking-tighter text-primary">Lightweight</span></div>
+                <p class="mb-space-md min-h-[84px] font-subheading-serif text-subheading-serif italic text-on-surface">A lightweight, non-greasy formula suitable for daily use and all hair types.</p>
+                <div class="mt-auto aspect-[4/5] w-full overflow-hidden rounded bg-surface-container-low"><img class="h-full w-full object-cover" src="/src/assets/bg/benefit-4.webp" srcset="/src/assets/bg/benefit-4-m.webp 700w, /src/assets/bg/benefit-4.webp 1200w" sizes="(max-width: 768px) 90vw, 25vw" width="1200" height="800" alt="Light brown hair swinging loose as a hand lifts it" loading="lazy" decoding="async" /></div>
+              </article>
+            </div>
+            <div class="fade mt-space-xl text-center">
+              <a class="inline-flex items-center gap-space-xs font-button-text text-button-text uppercase tracking-[0.2em] text-primary transition-colors hover:text-secondary" href="#ritual">
+                <span>See How To Use</span><svg class="ico text-[16px]" aria-hidden="true"><use href="#i-arrow" /></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 7. THE RITUAL ================= -->
+        <section class="w-full bg-surface-container-low py-space-2xl" id="ritual">
+          <div class="mx-auto max-w-[1080px] px-margin-mobile lg:px-margin">
+            <div class="fade mx-auto mb-space-xl max-w-xl text-center">
+              <span class="mb-space-xs block font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.2em] text-secondary">How To Use</span>
+              <h2 class="font-headline-lg text-headline-lg tracking-tight text-primary">Spray. Massage. Repeat.</h2>
+              <p class="mt-1 font-subheading-serif text-subheading-serif italic text-on-surface-variant">Use twice a day</p>
+            </div>
+            <div class="grid grid-cols-1 gap-gutter md:grid-cols-3">
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-lg text-center shadow-sm">
+                <div class="mb-space-md flex h-12 w-12 items-center justify-center rounded-full bg-surface-container text-secondary"><svg class="ico text-[24px]" aria-hidden="true"><use href="#i-spray" /></svg></div>
+                <span class="mb-space-xs font-label-caps text-label-caps uppercase tracking-[0.18em] text-secondary">Step 01</span>
+                <h3 class="mb-space-xs font-headline-md text-[20px] text-primary">Spray</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Spray evenly on the desired area.</p>
+              </div>
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-lg text-center shadow-sm" data-delay="1">
+                <div class="mb-space-md flex h-12 w-12 items-center justify-center rounded-full bg-surface-container text-secondary"><svg class="ico text-[24px]" aria-hidden="true"><use href="#i-massage" /></svg></div>
+                <span class="mb-space-xs font-label-caps text-label-caps uppercase tracking-[0.18em] text-secondary">Step 02</span>
+                <h3 class="mb-space-xs font-headline-md text-[20px] text-primary">Massage</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Massage into the scalp with your fingers.</p>
+              </div>
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-lg text-center shadow-sm" data-delay="2">
+                <div class="mb-space-md flex h-12 w-12 items-center justify-center rounded-full bg-surface-container text-secondary"><svg class="ico text-[24px]" aria-hidden="true"><use href="#i-repeat" /></svg></div>
+                <span class="mb-space-xs font-label-caps text-label-caps uppercase tracking-[0.18em] text-secondary">Step 03</span>
+                <h3 class="mb-space-xs font-headline-md text-[20px] text-primary">Repeat twice daily</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Use twice a day. For external use only. Keep out of reach of children.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 8. ACCREDITATIONS ================= -->
+        <section class="w-full bg-surface py-space-2xl">
+          <div class="mx-auto max-w-[1320px] px-margin-mobile text-center lg:px-margin">
+            <span class="fade mb-space-xs block font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.2em] text-secondary">Standard of Excellence</span>
+            <h2 class="fade mb-space-sm font-headline-lg text-headline-lg tracking-tight text-primary" data-delay="1">Patented. Tested. Non-medicated.</h2>
+            <p class="fade mx-auto mb-space-2xl max-w-2xl font-body-lg text-body-lg text-on-surface-variant" data-delay="2">Made by MYI PVT LTD (MY Health Care Solutions) in Pakistan.</p>
+            <div class="grid grid-cols-2 gap-space-md md:grid-cols-3 lg:grid-cols-6 lg:gap-gutter">
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-md shadow-sm"><div class="mb-space-sm flex h-14 w-14 items-center justify-center rounded-full bg-surface-container-low text-secondary"><svg class="ico text-[28px]" aria-hidden="true"><use href="#i-star" /></svg></div><h3 class="font-label-caps text-label-caps font-bold uppercase tracking-wider text-primary">Patented</h3><span class="mt-0.5 font-body-sm text-[11px] text-on-surface-variant">153/2018 &amp; 382/2026</span></div>
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-md shadow-sm" data-delay="1"><div class="mb-space-sm flex h-14 w-14 items-center justify-center rounded-full bg-surface-container-low text-secondary"><svg class="ico text-[28px]" aria-hidden="true"><use href="#i-ban" /></svg></div><h3 class="font-label-caps text-label-caps font-bold uppercase tracking-wider text-primary">Non-medicated</h3><span class="mt-0.5 font-body-sm text-[11px] text-on-surface-variant">Hair care only</span></div>
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-md shadow-sm" data-delay="2"><div class="mb-space-sm flex h-14 w-14 items-center justify-center rounded-full bg-surface-container-low text-secondary"><svg class="ico text-[28px]" aria-hidden="true"><use href="#i-hub" /></svg></div><h3 class="font-label-caps text-label-caps font-bold uppercase tracking-wider text-primary">2dDR Molecule</h3><span class="mt-0.5 font-body-sm text-[11px] text-on-surface-variant">The hero ingredient</span></div>
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-md shadow-sm" data-delay="3"><div class="mb-space-sm flex h-14 w-14 items-center justify-center rounded-full bg-surface-container-low text-secondary"><svg class="ico text-[28px]" aria-hidden="true"><use href="#i-pin" /></svg></div><h3 class="font-label-caps text-label-caps font-bold uppercase tracking-wider text-primary">Made in Pakistan</h3><span class="mt-0.5 font-body-sm text-[11px] text-on-surface-variant">MYI PVT LTD</span></div>
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-md shadow-sm" data-delay="4"><div class="mb-space-sm flex h-14 w-14 items-center justify-center rounded-full bg-surface-container-low text-secondary"><svg class="ico text-[28px]" aria-hidden="true"><use href="#i-flask" /></svg></div><h3 class="font-label-caps text-label-caps font-bold uppercase tracking-wider text-primary">Lab-tested</h3><span class="mt-0.5 font-body-sm text-[11px] text-on-surface-variant">Formulated in the lab</span></div>
+              <div class="fade flex flex-col items-center rounded bg-surface-container-lowest p-space-md shadow-sm" data-delay="5"><div class="mb-space-sm flex h-14 w-14 items-center justify-center rounded-full bg-surface-container-low text-secondary"><svg class="ico text-[28px]" aria-hidden="true"><use href="#i-shield" /></svg></div><h3 class="font-label-caps text-label-caps font-bold uppercase tracking-wider text-primary">Derm Safe</h3><span class="mt-0.5 font-body-sm text-[11px] text-on-surface-variant">For external use</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 9. FINAL CALL TO ACTION ================= -->
+        <section class="w-full bg-surface-container-highest/50 py-space-xl">
+          <div class="mx-auto max-w-[1320px] px-margin-mobile text-center lg:px-margin">
+            <div class="fade mx-auto flex max-w-xl flex-col items-center">
+              <span class="mb-space-xs font-label-caps text-label-caps uppercase tracking-[0.2em] text-secondary">Begin Your Ritual</span>
+              <h2 class="mb-space-sm font-headline-lg text-headline-lg text-primary">Begin With RibozHair</h2>
+              <p class="mb-space-lg font-body-md text-body-md text-on-surface-variant">Advanced Hair Regeneration Formula, with patented 2-Deoxy-D-Ribose. Spray, massage, repeat.</p>
+              <a class="bg-primary px-space-xl py-space-sm font-button-text text-button-text uppercase tracking-[0.2em] text-on-primary transition-colors duration-300 hover:bg-secondary" href="#shop">Shop Hair Booster Tonic</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="w-full border-t border-surface-container bg-surface-container-lowest text-on-surface" id="contact">
+      <div class="mx-auto max-w-[1320px] px-margin-mobile pb-space-xl pt-space-2xl lg:px-margin">
+        <div class="grid grid-cols-1 gap-space-xl border-b border-surface-container pb-space-2xl lg:grid-cols-12">
+          <div class="pr-0 lg:col-span-5 lg:pr-space-xl">
+            <span class="mb-space-sm block font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.15em] text-secondary">Stay in touch</span>
+            <h2 class="mb-space-md font-headline-lg text-headline-lg text-primary">Get 10% off your first order</h2>
+            <p class="mb-space-lg max-w-md font-body-md text-body-md text-on-surface-variant">Join the list for news from RibozHair.</p>
+            <form class="flex max-w-md flex-col gap-space-sm sm:flex-row" data-news novalidate>
+              <label class="sr-only" for="v3-email">Email address</label>
+              <input id="v3-email" class="flex-1 border border-surface-container bg-surface-container-low px-space-md py-space-sm font-button-text text-button-text uppercase text-on-surface placeholder:text-outline focus:border-secondary focus:outline-none" placeholder="ENTER YOUR EMAIL ADDRESS" type="email" autocomplete="email" />
+              <button class="bg-primary px-space-lg py-space-sm font-button-text text-button-text uppercase tracking-[0.2em] text-on-primary transition-colors hover:bg-secondary" type="submit">Subscribe</button>
+            </form>
+            <p class="mt-space-sm min-h-[1.5em] font-body-sm text-body-sm text-secondary" role="status" aria-live="polite" data-news-msg></p>
+          </div>
+          <div class="grid grid-cols-2 gap-gutter md:grid-cols-3 lg:col-span-7">
+            <div class="flex flex-col gap-space-sm">
+              <h3 class="mb-space-xs font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.15em] text-primary">Shop</h3>
+              <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#shop">Hair Booster Tonic</a>
+              <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#shop">3-Month Supply</a>
+              <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#shop">6-Month Supply</a>
+            </div>
+            <div class="flex flex-col gap-space-sm">
+              <h3 class="mb-space-xs font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.15em] text-primary">Explore</h3>
+              <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#science">The Science</a>
+              <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#benefits">Benefits</a>
+              <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#ritual">How To Use</a>
+              <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#about">About</a>
+            </div>
+            <div class="flex flex-col gap-space-sm">
+              <h3 class="mb-space-xs font-eyebrow-caps text-eyebrow-caps uppercase tracking-[0.15em] text-primary">Contact</h3>
+              <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="https://www.ribozhair.com">www.ribozhair.com</a>
+              <span class="font-body-sm text-body-sm italic text-outline">[Email to be provided]</span>
+              <span class="font-body-sm text-body-sm italic text-outline">[Phone / address to be provided]</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-space-md border-b border-surface-container py-space-lg">
+          <span class="flex items-center gap-space-xs font-label-caps text-label-caps uppercase tracking-[0.18em] text-on-surface"><svg class="ico text-[16px] text-secondary" aria-hidden="true"><use href="#i-star" /></svg> Patented 153/2018 &amp; 382/2026</span>
+          <span class="flex items-center gap-space-xs font-label-caps text-label-caps uppercase tracking-[0.18em] text-on-surface"><svg class="ico text-[16px] text-secondary" aria-hidden="true"><use href="#i-ban" /></svg> Non-medicated</span>
+          <span class="flex items-center gap-space-xs font-label-caps text-label-caps uppercase tracking-[0.18em] text-on-surface"><svg class="ico text-[16px] text-secondary" aria-hidden="true"><use href="#i-pin" /></svg> Made in Pakistan</span>
+          <span class="flex items-center gap-space-xs font-label-caps text-label-caps uppercase tracking-[0.18em] text-on-surface"><svg class="ico text-[16px] text-secondary" aria-hidden="true"><use href="#i-shield" /></svg> External use only</span>
+        </div>
+        <div class="flex flex-col items-center justify-between gap-space-sm pt-space-md text-center md:flex-row md:text-left">
+          <p class="font-body-sm text-body-sm text-on-surface-variant">© 2026 MYI PVT LTD · MY Health Care Solutions. RibozHair™. Keep out of reach of children.</p>
+          <div class="flex items-center gap-space-md">
+            <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#">Privacy</a>
+            <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#">Terms</a>
+            <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#">Shipping</a>
+            <a class="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-secondary" href="#">Returns</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
