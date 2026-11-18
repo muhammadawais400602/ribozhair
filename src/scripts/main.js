@@ -10,6 +10,7 @@ import { initNav } from "./nav.js";
 import { initHero } from "./hero.js";
 import { initCursor } from "./cursor.js";
 import { initSea } from "./sea.js";
+import { initFaqGlass } from "./faq-glass.js";
 import { initStory } from "./story.js";
 import { initSectionsA } from "./sections-a.js";
 import { initSectionsB } from "./sections-b.js";
@@ -46,6 +47,7 @@ async function boot() {
   initIngredients();
   initChart();
   initFaq();
+  initFaqGlass();
   initShop();
   initNewsletter();
   initCursor();
@@ -58,3 +60,7 @@ async function boot() {
 }
 
 boot();
+
+// Pinned desktop layouts and stacked mobile layouts are chosen at load; if a resize crosses
+// the breakpoint, reload so every section is rebuilt for the new layout.
+matchMedia("(min-width: 961px)").addEventListener("change", () => location.reload());

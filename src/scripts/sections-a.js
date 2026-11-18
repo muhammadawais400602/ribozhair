@@ -166,16 +166,19 @@ function initBenefits({ desk, reduced }) {
         gsap.set(c.img, { xPercent: clamp(d, -1, 1) * -10 });
       }
     };
-    const end = () => "+=" + (dist + window.innerHeight * 0.35);
-    gsap.to(track, {
-      x: () => -dist, ease: "none",
+    // The track finishes travelling at MOVE of the pinned scroll; the rest is a hold, so the last
+    // card is fully open and stays put before the page moves on.
+    const MOVE = 0.72;
+    const end = () => "+=" + Math.round(dist / MOVE + window.innerHeight * 0.2);
+    const slide = gsap.fromTo(track, { x: 0 }, { x: () => -dist, ease: "none", duration: MOVE, onUpdate() { paint(this.progress()); } });
+    gsap.timeline({
+      defaults: { ease: "none" },
       scrollTrigger: {
         trigger: stage, start: "top top", end, pin: true, scrub: 0.7, anticipatePin: 1, invalidateOnRefresh: true,
-        onRefreshInit: measure, onRefresh: (s) => { measure(); paint(s.progress); },
+        onRefreshInit: measure, onRefresh: () => { measure(); paint(slide.progress()); },
       },
-      onUpdate() { paint(this.progress()); },
-    });
-    gsap.to(bar, { scaleX: 1, ease: "none", scrollTrigger: { trigger: stage, start: "top top", end, scrub: 0.7 } });
+    }).add(slide, 0).to({}, { duration: 1 - MOVE }, MOVE);
+    gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, ease: "none", scrollTrigger: { trigger: stage, start: "top top", end: () => "+=" + Math.round(dist), scrub: 0.7 } });
     gsap.from(track, { y: 90, autoAlpha: 0, duration: 1.5, ease: EASE, scrollTrigger: { trigger: stage, start: "top 65%", once: true } });
     paint(0);
   } else {

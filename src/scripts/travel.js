@@ -40,10 +40,16 @@ export function initTravel(getEnd) {
     scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true, invalidateOnRefresh: true, onUpdate: (self) => toggle(self.progress > 0.0015) },
   });
   tl.fromTo(wrap, { x: 0, y: 0, scale: 1 }, { x: () => D.x, y: () => D.y, scale: () => D.s, duration: 1, ease: "power1.inOut" }, 0)
-    .to(wrap, { rotation: -4, duration: 0.5, ease: "sine.inOut" }, 0)
-    .to(wrap, { rotation: 0, duration: 0.5, ease: "sine.inOut" }, 0.5);
+    .fromTo(wrap, { rotation: 0 }, { rotation: -4, duration: 0.5, ease: "sine.inOut" }, 0)
+    .fromTo(wrap, { rotation: -4 }, { rotation: 0, duration: 0.5, ease: "sine.inOut", immediateRender: false }, 0.5);
 
-  ScrollTrigger.addEventListener("refreshInit", measure);
+  // The end rect lives inside the pinned story stage, which keeps its old pixel width until
+  // ScrollTrigger has finished refreshing — so measure after the refresh, not at refreshInit.
+  ScrollTrigger.addEventListener("refresh", () => {
+    measure();
+    const t = tl.time();
+    tl.invalidate().time(0, true).time(t, true);
+  });
   if (!(src.complete && src.naturalWidth)) src.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
   measure();
   return { img, measure };

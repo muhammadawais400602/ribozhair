@@ -26,4 +26,4 @@ Benefit card images are still frames from Mixkit stock videos (Mixkit Stock Vide
 benefit-1.webp  ->  https://mixkit.co/free-stock-video/man-touching-his-hair-close-up-33599/
 benefit-2.webp  ->  https://mixkit.co/free-stock-video/hairstylist-combing-the-hair-of-a-woman-16141/
 benefit-3.webp  ->  https://mixkit.co/free-stock-video/close-up-of-a-woman-blow-drying-her-long-hair-45893/
-benefit-4.webp  ->  https://mixkit.co/free-stock-video/water-spray-on-a-black-background-31435/ (mist composited over a pale blue backdrop)
+benefit-4.webp  ->  https://mixkit.co/free-stock-video/woman-brushing-her-hair-with-a-comb-11610/ (green-screen backdrop replaced with a neutral grey-blue)
