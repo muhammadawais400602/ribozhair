@@ -14,13 +14,19 @@ import { initFaqGlass } from "./faq-glass.js";
 import { initStory } from "./story.js";
 import { initSectionsA } from "./sections-a.js";
 import { initSectionsB } from "./sections-b.js";
+import { bootLite } from "./lite.js";
 import { initThemes, initBackdrops, initReveals, initTilt, initIngredients, initChart, initStars, initSeals, initFaq, initShop, initNewsletter } from "./ui.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Motion version, set on <html data-mode> (see vite.config.js): 1 = everything below,
+// 2 = a little motion, 3 = fades only. Versions 2 and 3 boot from lite.js and never start the
+// pinned scenes, WebGL, video or cursor code.
+const MODE = +document.documentElement.dataset.mode || 1;
+
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let lenis = null;
-if (!reduced) {
+if (!reduced && MODE !== 3) {
   lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.95 });
   lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
@@ -59,8 +65,9 @@ async function boot() {
   ScrollTrigger.refresh();
 }
 
-boot();
+if (MODE === 1) boot();
+else bootLite({ mode: MODE, lenis });
 
 // Pinned desktop layouts and stacked mobile layouts are chosen at load; if a resize crosses
 // the breakpoint, reload so every section is rebuilt for the new layout.
-matchMedia("(min-width: 961px)").addEventListener("change", () => location.reload());
+if (MODE === 1) matchMedia("(min-width: 961px)").addEventListener("change", () => location.reload());

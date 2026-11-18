@@ -1,0 +1,161 @@
+/* Versions 2 and 3 of the page (html[data-mode="2" | "3"], see vite.config.js and lite.js).
+   Version 1 never matches anything in this file.
+   Both replace the pinned scroll scenes, WebGL and video with clean static layouts;
+   version 3 additionally removes every movement so that only opacity animates. */
+
+:root:is([data-mode="2"], [data-mode="3"]) {
+  /* ---------- backdrop: the sea as a still, frosted behind the reading sections ---------- */
+  .sea-bg__frost { display: none; }
+  main > section:not(.hero):not(.story), .footer { background: rgba(243, 247, 252, 0.8); }
+  main > section.science:not(.hero):not(.story) { background: linear-gradient(180deg, rgba(243, 247, 252, 0) 0, rgba(243, 247, 252, 0.8) 200px); }
+  .cursor-dot, .cursor-ring, .cursor-light { display: none; }
+
+  /* ---------- 3 + 4. the problem, then Meet RibozHair ---------- */
+  .story__stage { height: auto; overflow: visible; overflow-x: clip; }
+  .story__tint, .story__gl, .story__vignette { display: none; }
+  .scene { position: relative; inset: auto; pointer-events: auto; }
+  .scene--problem {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 300px)); justify-content: center; gap: 14px 16px;
+    padding: clamp(120px, 22vh, 240px) 24px clamp(120px, 20vh, 220px);
+    /* first layer continues the hero's edge shading so the two sections meet without a line */
+    background: linear-gradient(to bottom, rgba(10, 42, 94, 0.2), rgba(10, 42, 94, 0) 140px), linear-gradient(to bottom, rgba(74, 98, 124, 0) 0%, rgba(74, 98, 124, 0.6) 20%, rgba(58, 82, 110, 0.7) 60%, rgba(58, 82, 110, 0) 100%);
+  }
+  .problem__heading { position: static; grid-column: 1 / -1; margin: 0 auto clamp(28px, 5.5vh, 60px); padding: 0; font-size: clamp(2.5rem, 6.2vw, 6.2rem); }
+  .statement { position: static; rotate: none; white-space: normal; font-size: clamp(0.98rem, 1.15vw, 1.2rem) !important; padding: 1.05em 1.2em 1.05em 1.1em; border-radius: 16px; display: flex; align-items: center; }
+
+  .scene--meet { --scrim: 1; gap: clamp(12px, 2vh, 22px); padding: clamp(30px, 6vh, 80px) 20px clamp(120px, 20vh, 220px); }
+  .meet__bottle { height: clamp(330px, 60svh, 660px); aspect-ratio: 760 / 2728; margin-bottom: clamp(14px, 2.4vh, 28px); }
+  .meet__bottle img { visibility: visible; }
+  .meet__shadow { opacity: 1; }
+  .meet__bloom { opacity: 0.4; }
+  .liquid { opacity: 0.42; -webkit-mask-image: url("../assets/bottle-sm.webp"); mask-image: url("../assets/bottle-sm.webp"); }
+  .meet__tagline { font-size: clamp(1.9rem, 4.6vw, 4.4rem); }
+  .meet__intro { font-size: clamp(0.98rem, 1.25vw, 1.2rem); }
+  .story .glass-badge { font-size: clamp(0.85rem, 1vw, 1rem); }
+
+  /* ---------- 5. science: a still of the molecule ---------- */
+  .sci__stage { min-height: clamp(520px, 88svh, 880px); }
+  .science__canvas { display: none; }
+  .sci__still { position: absolute; inset: 0;
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 54% 50%, #000 52%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 54% 50%, #000 52%, transparent 100%); }
+  .sci__still img { width: 100%; height: 100%; max-width: none; object-fit: cover; }
+
+  /* ---------- 6. how it works: three step cards ---------- */
+  .how__stage { height: auto; min-height: 0; overflow: visible; background: none; padding: clamp(96px, 15vh, 190px) 0; }
+  .how__scene, .how__shade, .how__rail { display: none; }
+  .how__stage > .how__ui { position: relative; inset: auto; display: block; padding: 0; }
+  .how__head { position: static; }
+  .hsteps { width: 100%; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 26px); margin-top: clamp(32px, 6vh, 64px); }
+  .hstep { grid-area: auto; visibility: visible; opacity: 1; padding: 0 0 clamp(22px, 2.4vw, 30px); overflow: hidden; }
+  .hstep__img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; margin-bottom: clamp(20px, 2.2vw, 28px); }
+  .hstep > :not(.hstep__img) { margin-inline: clamp(20px, 2.2vw, 30px); }
+  .hstep h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); }
+
+  /* ---------- 7. benefits: a grid of photo cards ---------- */
+  .ben__stage { height: auto; min-height: 0; display: block; overflow: visible; padding: clamp(96px, 15vh, 190px) 0; }
+  .ben__track { width: min(1200px, 100% - 48px); margin-inline: auto; padding-inline: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(16px, 1.8vw, 24px); align-items: stretch; }
+  .ben__intro { grid-column: 1 / -1; flex: none; margin-bottom: clamp(16px, 3.5vh, 36px); }
+  .ben__bar { display: none; }
+  .bpanel { flex: none; height: clamp(320px, 30vw, 400px); min-height: 0; }
+  .bpanel__photo img { inset: 0; width: 100%; height: 100%; }
+  .bpanel__body { right: auto; width: min(370px, calc(100% - 24px)); }
+  .bpanel h3 { font-size: clamp(1.4rem, 2vw, 1.85rem); }
+
+  /* ---------- 8. ingredients: all five, 2dDR highlighted ---------- */
+  .ingr__stage { min-height: 0; display: block; overflow: visible; padding: clamp(96px, 15vh, 190px) 0; }
+  .ingr__wash, .ingr__rail { display: none; }
+  .ingr__grid { align-items: start; margin-inline: auto; }
+  .ingr__list { display: grid; gap: 14px; margin-top: 0; }
+  .ingr { grid-area: auto; isolation: isolate; overflow: hidden; opacity: 1; padding: clamp(20px, 2.4vw, 30px); border: 1px solid var(--line); border-radius: 26px;
+    background: linear-gradient(170deg, rgba(255, 255, 255, 0.92), rgba(240, 247, 255, 0.78));
+    box-shadow: inset 0 1px 0 #fff, 0 24px 56px -28px rgba(30, 110, 200, 0.4); }
+  .ingr h3 { font-size: clamp(1.5rem, 2.6vw, 2.3rem); margin: 0.8rem 0 0.4rem; }
+  .ingr p { font-size: 1rem; max-width: 46ch; }
+  .ingr__ghost { right: 16px; font-size: clamp(5rem, 9vw, 8rem); -webkit-text-stroke-width: 1.5px; }
+  .ingr--hero { border-color: rgba(30, 136, 229, 0.5); background: linear-gradient(150deg, #ffffff, rgba(207, 230, 253, 0.92)); box-shadow: inset 0 1px 0 #fff, 0 34px 70px -26px rgba(30, 136, 229, 0.6); }
+  .ingr--hero h3 { filter: none; }
+
+  /* ---------- 9, 10 ---------- */
+  .rchart__head { display: none; }
+
+  /* ---------- 14. shop: the selected supply is marked on the option itself ---------- */
+  .bundles__glow { display: none; }
+  .shop .bundle input:checked + span { background: linear-gradient(160deg, rgba(30, 136, 229, 0.18), rgba(100, 181, 246, 0.08)); border-color: rgba(30, 136, 229, 0.85); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 16px 34px -14px rgba(30, 136, 229, 0.55); }
+
+  /* ---------- 15. newsletter: the ocean as a rounded panel ---------- */
+  .news { min-height: 0; padding: clamp(120px, 17vh, 200px) 0; }
+  .news .sec-bg { inset: clamp(30px, 5vh, 56px) clamp(14px, 3vw, 48px); border-radius: clamp(28px, 3vw, 44px); box-shadow: 0 50px 100px -44px rgba(10, 60, 140, 0.65); }
+  .news__title { font-size: clamp(2.6rem, 7vw, 6.4rem); }
+  .news__inner { padding-inline: clamp(8px, 3vw, 40px); }
+
+  @media (max-width: 960px) {
+    .scene--problem { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-inline: 18px; }
+    .statement { font-size: clamp(0.84rem, 3.4vw, 1.05rem) !important; padding: 0.9em 0.9em; }
+    .hsteps { grid-template-columns: 1fr; }
+    .hstep__img { aspect-ratio: 16 / 8; }
+    .ben__track { grid-template-columns: 1fr; width: auto; margin-inline: 24px; }
+    .bpanel { height: 340px; }
+    .bpanel__body { right: 12px; width: auto; }
+    .ingr__list { margin-top: 18px; }
+    .ingr { border-top: 1px solid var(--line); }
+    .ingr__ghost { top: 12px; right: 14px; translate: none; font-size: 3.4rem; -webkit-text-stroke-width: 1.2px; }
+  }
+}
+
+/* ============ VERSION 2: a little motion ============ */
+:root[data-mode="2"] {
+  .sci__still img { animation: liteFloat 11s ease-in-out infinite alternate; }
+  @media (min-width: 961px) { .ingr__head { position: sticky; top: calc(var(--nav-h) + 56px); } }
+}
+@keyframes liteFloat { from { transform: translate3d(0, -1.1%, 0) scale(1.03); } to { transform: translate3d(0, 1.1%, 0) scale(1.03); } }
+@media (prefers-reduced-motion: reduce) { :root[data-mode="2"] .sci__still img { animation: none; } }
+
+/* ============ VERSION 3: fades only ============ */
+:root[data-mode="3"] {
+  /* arrive / leave */
+  .fx { opacity: 0; transition: opacity 0.8s ease 0s; }
+  .fx.is-in { opacity: 1; transition-delay: var(--fd, 0s); }
+
+  /* nothing loops or drifts */
+  .grain, .seal__ring, .shop__rays { animation: none; }
+  .nav__pill { display: none; }
+  .news .sec-bg img { scale: 1; }
+  .usteps__line i { transform: none; }
+
+  /* hover changes tone, never position */
+  .btn--light:hover, .nav__cta:hover, .sci-fact:hover, .rcard:hover, .badge-grid .tile:hover, .deck .quote:hover { translate: none; }
+  .btn:hover svg, .bundle:hover span { transform: none; }
+  .bpanel:hover .bpanel__photo img { scale: none; }
+  .tile__sweep, .bpanel__sweep { display: none; }
+  .footer li a::after { transform: none; opacity: 0; transition: opacity 0.4s ease; }
+  .footer li a:hover::after { transform: none; opacity: 1; }
+  .shop .bundle span::after { transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; }
+  .shop .bundle input:checked + span::after { scale: none; }
+  .bundle span { transition: border-color 0.4s ease, background 0.4s ease; }
+
+  /* FAQ: answers fade; the toggle swaps without turning */
+  .faq .qa__q i { transition: background 0.4s ease; }
+  .faq .qa__q[aria-expanded="true"] i { transform: none; }
+  .faq .qa__q i::before, .faq .qa__q i::after { transition: none; }
+  .faq .qa__a p { transform: none; transition: opacity 0.5s ease; }
+
+  /* add to cart: label and confirmation cross-fade */
+  .shop [data-add-cart] .btn__label, .shop [data-add-cart] .btn__done { transform: none; transition: opacity 0.4s ease; }
+  .shop [data-add-cart].is-added .btn__label { transform: none; }
+  .shop [data-add-cart]::before { transform: none; opacity: 0; transition: opacity 0.4s ease; }
+  .shop [data-add-cart].is-added::before { transform: none; opacity: 1; }
+  .shop [data-add-cart] .btn__done path { stroke-dashoffset: 0; transition: none; }
+
+  /* small confirmations set by shared code: keep their fades, drop their movement */
+  .toast, [data-qty-out], .nav__count, .news__msg { transform: none !important; }
+
+  /* intro: the logo fades in, holds, and the page fades in behind it */
+  &.intro-on .intro { background: linear-gradient(180deg, #ffffff, #dcebfa); animation: introFadeOut 0.5s ease 1s forwards; }
+  &.intro-on .intro.is-out { animation: introFadeOut 0.3s ease forwards; }
+  .intro__panel, .intro__ring, .intro__bar { display: none; }
+  .intro__center { opacity: 0; animation: imFade 0.45s ease 0.05s forwards; }
+  .intro__mark svg, .intro__mark path, .intro__word span { animation: none; transform: none; stroke-dashoffset: 0; }
+  .intro__word sup, .intro__tag { animation: none; opacity: 1; }
+  .intro__skip { animation: imFade 0.3s ease 0.2s forwards; }
+}
+@keyframes introFadeOut { to { opacity: 0; visibility: hidden; } }

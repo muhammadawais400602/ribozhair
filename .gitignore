@@ -1,2 +1,4 @@
 node_modules
 dist
+/v2
+/v3

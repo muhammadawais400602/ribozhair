@@ -3,7 +3,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const NS = "http://www.w3.org/2000/svg";
 
-export function initHero() {
+// entrance: "full" = drop-in with overshoot (version 1 and 2), "fade" = opacity only (version 3); tilt = pointer-driven 3D turn
+export function initHero({ entrance = "full", tilt = true, parallax = true } = {}) {
   const hero = document.querySelector(".hero");
   const stage = hero.querySelector(".hero__stage");
   const product = stage.querySelector(".hero__product");
@@ -56,6 +57,10 @@ export function initHero() {
 
   // entrance: heading → bottle drop (overshoot) → labels one by one with lines drawing label → bottle
   const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 0.25 });
+  if (entrance === "fade") {
+    parts.forEach(({ path }) => (path.style.strokeDashoffset = "0"));
+    tl.from([".hero__wordmark", product, ".hero__foot > *", ...callouts, svg], { opacity: 0, duration: 0.9, ease: "power1.out", stagger: 0.12 }, 0);
+  } else {
   tl.from(".hero__wordmark", { opacity: 0, y: 70, scale: 0.9, duration: 1.9 }, 0.1)
     .from(bottle, { yPercent: -120, opacity: 0, duration: 1.6, ease: "back.out(1.15)" }, "-=1.15")
     .from([".hero__shadow", ".hero__reflect", ".hero__rim"], { opacity: 0, duration: 1.2, ease: "power2.out" }, "-=0.7")
@@ -67,6 +72,7 @@ export function initHero() {
       .fromTo(path, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.1, ease: "power2.inOut" }, "<0.1")
       .from(dots[1], { opacity: 0, scale: 0, transformOrigin: "50% 50%", duration: 0.5 }, ">-0.35");
   });
+  }
 
   // when the opening intro is playing, hold the entrance until its curtain parts
   if (document.documentElement.classList.contains("intro-on")) {
@@ -75,7 +81,7 @@ export function initHero() {
   }
 
   // depth: the product turns slightly toward the pointer, the sea shifts the other way
-  if (matchMedia("(hover: hover)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (tilt && matchMedia("(hover: hover)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const ry = gsap.quickTo(product, "rotationY", { duration: 1.2, ease: "power3.out" });
     const rx = gsap.quickTo(product, "rotationX", { duration: 1.2, ease: "power3.out" });
     hero.addEventListener("pointermove", (e) => {
@@ -87,5 +93,5 @@ export function initHero() {
   }
 
   // scroll: sea and product separate in depth as the hero leaves
-  gsap.to(".hero__wordmark", { yPercent: 40, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } });
+  if (parallax) gsap.to(".hero__wordmark", { yPercent: 40, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } });
 }
