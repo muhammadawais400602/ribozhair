@@ -12,7 +12,6 @@ export function initSectionsB() {
   const canHover = matchMedia("(hover: hover)").matches;
 
   initFaqState(); // state sync only — works with or without motion
-  initBundleGlow();
   initAddToCart();
 
   mm.add({ motion: "(prefers-reduced-motion: no-preference)", desktop: "(min-width: 961px)" }, (ctx) => {
@@ -158,116 +157,92 @@ function faq(canHover) {
   if (canHover) spotlight(rows);
 }
 
-/* ---------- 14. Shop ---------- */
+/* ---------- 14. Shop: three product cards ---------- */
 function shop(canHover) {
   const sec = $(".shop");
-  const visual = $(".shop__visual", sec);
-  const turn = $(".shop__turn", sec);
-  const product = $(".shop__product", sec);
-  const float = $(".shop__float", sec);
-  const shadow = $(".shop__shadow", sec);
-  const halo = $(".shop__halo", sec);
-  const card = $(".shop__card", sec);
-  const arch = $(".shop__arch", sec);
+  const head = $(".shop__head", sec);
+  const list = $(".pcards", sec);
+  const cards = $$("[data-pcard]", sec);
 
-  gsap.set([turn, product], { transformPerspective: 1500 });
+  gsap.from(head.children, { y: 34, opacity: 0, duration: 1.3, ease: EASE, stagger: 0.1, clearProps: "transform,opacity", scrollTrigger: { trigger: head, start: "top 86%", once: true } });
 
-  // entrance: the bottle rises into the light, the purchase card unfolds beside it
-  const tl = gsap.timeline({ scrollTrigger: { trigger: visual, start: "top 78%", once: true } });
-const ARCH = "round 999px 999px 44px 44px";
-  tl.fromTo(arch, { clipPath: `inset(100% 12% 0% 12% ${ARCH})` }, { clipPath: `inset(0% 0% 0% 0% ${ARCH})`, duration: 1.8, ease: EASE }, 0)
-    .from(float, { y: 220, opacity: 0, scale: 0.86, duration: 2.1, ease: EASE }, 0.35)
-    .from(halo, { scale: 0.5, opacity: 0, duration: 2.2, ease: EASE }, 0.35)
-    .from(shadow, { opacity: 0, scaleX: 0.4, duration: 1.8, ease: EASE }, 0.7)
-    .from($(".shop__rays", sec), { opacity: 0, duration: 2.4, ease: "power2.out" }, 0.5);
-  gsap.fromTo($(".shop__arch-img", sec), { yPercent: -8 }, { yPercent: 8, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } });
-  gsap.from(card, { y: 90, opacity: 0, rotationX: -8, transformPerspective: 1400, transformOrigin: "50% 100%", duration: 1.7, ease: EASE, clearProps: "transform", scrollTrigger: { trigger: card, start: "top 86%", once: true } });
-  gsap.from(card.children, { y: 30, opacity: 0, duration: 1.2, ease: EASE, stagger: 0.07, delay: 0.25, clearProps: "transform,opacity", scrollTrigger: { trigger: card, start: "top 86%", once: true } });
+  // the cards rise in one after another; their bottles settle in behind them
+  const tl = gsap.timeline({ scrollTrigger: { trigger: list, start: "top 84%", once: true } });
+  tl.from(cards, { y: 90, opacity: 0, rotationX: -7, transformPerspective: 1400, transformOrigin: "50% 100%", duration: 1.6, ease: EASE, stagger: 0.16, clearProps: "transform,opacity" }, 0);
+  cards.forEach((card, i) => {
+    tl.from($$(".pcard__bottle", card), { y: 120, opacity: 0, scale: 0.9, duration: 1.8, ease: EASE, stagger: 0.09 }, 0.3 + i * 0.16)
+      .from($(".pcard__shadow", card), { opacity: 0, scaleX: 0.4, duration: 1.6, ease: EASE }, 0.7 + i * 0.16);
+  });
 
-  // slow weightless float; the contact shadow breathes with it
-  const idle = gsap.timeline({ repeat: -1, yoyo: true, paused: true, defaults: { duration: 3.4, ease: "sine.inOut" } });
-  idle.fromTo(product, { y: 7 }, { y: -9 }, 0).fromTo(shadow, { scaleX: 1, opacity: 1 }, { scaleX: 0.84, opacity: 0.7 }, 0);
-  ScrollTrigger.create({ trigger: sec, start: "top bottom", end: "bottom top", onToggle: (s) => (s.isActive ? idle.play() : idle.pause()) });
+  cards.forEach((card, i) => {
+    const frame = $(".pcard__frame", card);
+    const turn = $(".pcard__turn", card);
+    const bottles = $(".pcard__bottles", card);
+    const shadow = $(".pcard__shadow", card);
+    gsap.set(turn, { transformPerspective: 900 });
 
-  // the bottle turns slightly through the scroll, and toward the pointer
-  gsap.fromTo(turn, { rotationY: -13 }, { rotationY: 13, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: 0.8 } });
-  gsap.fromTo(halo, { yPercent: 8 }, { yPercent: -8, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } });
-  if (canHover) {
-    const ry = gsap.quickTo(float, "rotationY", { duration: 1.2, ease: "power3.out" });
-    const rx = gsap.quickTo(float, "rotationX", { duration: 1.2, ease: "power3.out" });
-    const hx = gsap.quickTo(halo, "x", { duration: 1.6, ease: "power3.out" });
-    sec.addEventListener("pointermove", (e) => {
-      const r = visual.getBoundingClientRect();
-      const nx = gsap.utils.clamp(-1, 1, (e.clientX - (r.left + r.width / 2)) / (r.width * 1.2));
-      const ny = gsap.utils.clamp(-1, 1, (e.clientY - (r.top + r.height / 2)) / r.height);
-      ry(nx * 16); rx(-ny * 7); hx(nx * 26);
-    });
-    sec.addEventListener("pointerleave", () => { ry(0); rx(0); hx(0); });
-    spotlight([card]);
-  }
+    // slow weightless float (staggered per card); the contact shadow breathes with it
+    const idle = gsap.timeline({ repeat: -1, yoyo: true, paused: true, defaults: { duration: 3.2 + i * 0.35, ease: "sine.inOut" } });
+    idle.fromTo(bottles, { y: 4 }, { y: -7 }, 0).fromTo(shadow, { scaleX: 1, opacity: 1 }, { scaleX: 0.86, opacity: 0.72 }, 0);
+    ScrollTrigger.create({ trigger: card, start: "top bottom", end: "bottom top", onToggle: (s) => (s.isActive ? idle.play() : idle.pause()) });
+
+    // the bottles turn through the scroll, and toward the pointer
+    const scrollTurn = { v: 0 }, pointer = { y: 0, x: 0 };
+    const apply = () => gsap.set(turn, { rotationY: scrollTurn.v + pointer.y, rotationX: pointer.x });
+    gsap.fromTo(scrollTurn, { v: -9 }, { v: 9, ease: "none", onUpdate: apply, scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: 0.8 } });
+    if (canHover) {
+      const ry = gsap.quickTo(pointer, "y", { duration: 1.1, ease: "power3.out", onUpdate: apply });
+      const rx = gsap.quickTo(pointer, "x", { duration: 1.1, ease: "power3.out", onUpdate: apply });
+      card.addEventListener("pointermove", (e) => {
+        const r = frame.getBoundingClientRect();
+        const nx = gsap.utils.clamp(-1, 1, (e.clientX - (r.left + r.width / 2)) / (r.width * 0.6));
+        const ny = gsap.utils.clamp(-1, 1, (e.clientY - (r.top + r.height / 2)) / (r.height * 0.6));
+        ry(nx * 20); rx(-ny * 6);
+      });
+      card.addEventListener("pointerleave", () => { ry(0); rx(0); });
+    }
+  });
+  if (canHover) spotlight(cards);
 }
 
-// sliding glass highlight behind the selected bundle
-function initBundleGlow() {
-  const box = $(".shop .bundles");
-  const glow = $(".bundles__glow", box);
-  if (!box || !glow) return;
-  const inputs = $$('input[name="bundle"]', box);
-  let placed = false;
-  const place = (animate) => {
-    const label = $('input[name="bundle"]:checked', box)?.closest(".bundle");
-    if (!label || !label.offsetWidth) return;
-    const to = { x: label.offsetLeft, y: label.offsetTop, width: label.offsetWidth, height: label.offsetHeight, opacity: 1 };
-    if (animate && placed) gsap.to(glow, { ...to, duration: 0.75, ease: EASE, overwrite: true });
-    else gsap.set(glow, to);
-    placed = true;
-  };
-  inputs.forEach((i) => i.addEventListener("change", () => {
-    place(true);
-    const span = $("span", i.closest(".bundle"));
-    gsap.fromTo(span, { scale: 0.96 }, { scale: 1, duration: 0.7, ease: "back.out(2.2)", clearProps: "transform" });
-  }));
-  place(false);
-  new ResizeObserver(() => place(false)).observe(box);
-  document.fonts?.ready.then(() => place(false));
-}
-
-// button morph + a small bottle flying to the cart in the header
+// button morph + the clicked card's bottle flying to the cart in the header
 function initAddToCart() {
-  const btn = $(".shop [data-add-cart]");
-  if (!btn) return;
+  const cart = $(".nav__cta");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let timer;
-  btn.addEventListener("click", () => {
-    btn.classList.add("is-added");
-    clearTimeout(timer);
-    timer = setTimeout(() => btn.classList.remove("is-added"), 1900);
-    if (reduced) return;
-    const src = $(".shop__bottle");
-    const cart = $(".nav__cta");
-    if (!src || !cart) return;
-    const a = src.getBoundingClientRect();
-    const b = cart.getBoundingClientRect();
-    const h = Math.min(170, a.height * 0.34);
-    const w = h * (a.width / a.height);
-    const fly = document.createElement("img");
-    fly.className = "fly-bottle";
-    fly.alt = "";
-    fly.src = src.currentSrc || src.src;
-    fly.style.width = `${w}px`;
-    fly.style.height = `${h}px`;
-    document.body.append(fly);
-    const x0 = a.left + a.width / 2 - w / 2, y0 = a.top + a.height * 0.3;
-    const x1 = b.left + b.width / 2 - w / 2, y1 = b.top + b.height / 2 - h / 2;
-    gsap.set(fly, { x: x0, y: y0, scale: 1, opacity: 0, rotation: 0 });
-    gsap.timeline({ onComplete: () => fly.remove() })
-      .to(fly, { opacity: 1, duration: 0.15, ease: "none" }, 0)
-      .to(fly, { x: x1, duration: 1.05, ease: "power2.inOut" }, 0)
-      .to(fly, { y: y1, duration: 1.05, ease: "back.in(1.1)" }, 0)
-      .to(fly, { scale: 0.16, rotation: 24, duration: 1.05, ease: "power2.in" }, 0)
-      .to(fly, { opacity: 0, duration: 0.2, ease: "none" }, 0.9)
-      .fromTo(cart, { scale: 1 }, { scale: 1.1, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1, clearProps: "transform" }, 0.98);
-    gsap.fromTo(".shop__float", { scale: 0.965 }, { scale: 1, duration: 0.9, ease: "back.out(2)", overwrite: "auto" });
+  $$(".shop [data-pcard]").forEach((card) => {
+    const btn = $("[data-add-cart]", card);
+    if (!btn) return;
+    let timer;
+    btn.addEventListener("click", () => {
+      btn.classList.add("is-added");
+      clearTimeout(timer);
+      timer = setTimeout(() => btn.classList.remove("is-added"), 1900);
+      if (reduced) return;
+      const src = $(".pcard__bottle--main", card) || $(".pcard__bottle", card);
+      if (!src || !cart) return;
+      const a = src.getBoundingClientRect();
+      const b = cart.getBoundingClientRect();
+      const h = Math.min(170, a.height * 0.5);
+      const w = h * (a.width / a.height);
+      const fly = document.createElement("img");
+      fly.className = "fly-bottle";
+      fly.alt = "";
+      fly.src = src.currentSrc || src.src;
+      fly.style.width = `${w}px`;
+      fly.style.height = `${h}px`;
+      document.body.append(fly);
+      const x0 = a.left + a.width / 2 - w / 2, y0 = a.top + a.height * 0.25;
+      const x1 = b.left + b.width / 2 - w / 2, y1 = b.top + b.height / 2 - h / 2;
+      gsap.set(fly, { x: x0, y: y0, scale: 1, opacity: 0, rotation: 0 });
+      gsap.timeline({ onComplete: () => fly.remove() })
+        .to(fly, { opacity: 1, duration: 0.15, ease: "none" }, 0)
+        .to(fly, { x: x1, duration: 1.05, ease: "power2.inOut" }, 0)
+        .to(fly, { y: y1, duration: 1.05, ease: "back.in(1.1)" }, 0)
+        .to(fly, { scale: 0.16, rotation: 24, duration: 1.05, ease: "power2.in" }, 0)
+        .to(fly, { opacity: 0, duration: 0.2, ease: "none" }, 0.9)
+        .fromTo(cart, { scale: 1 }, { scale: 1.1, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1, clearProps: "transform" }, 0.98);
+      gsap.fromTo($(".pcard__bottles", card), { scale: 0.965 }, { scale: 1, duration: 0.9, ease: "back.out(2)", overwrite: "auto" });
+    });
   });
 }
 

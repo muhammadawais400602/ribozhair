@@ -159,40 +159,40 @@ export function initFaq() {
   });
 }
 
-/* ---------- Shop (UI + local cart count; no checkout wired) ---------- */
-const PRICES = { 1: null, 3: null, 6: null }; // set PKR amounts here; null shows "—"
+/* ---------- Shop (product cards; local cart count only, no checkout wired) ---------- */
+const PRICES = { 1: null, 3: null, 6: null }; // set PKR amounts here; null shows "Price to be confirmed"
 export function initShop() {
-  const fmt = (n) => (n == null ? "—" : `Rs. ${n.toLocaleString("en-PK")}`);
-  $$("[data-bundle-price]").forEach((el) => (el.textContent = fmt(PRICES[el.dataset.bundlePrice])));
-  const priceEl = $("[data-price]");
-  const out = $("[data-qty-out]");
+  const fmt = (n) => `Rs. ${n.toLocaleString("en-PK")}`;
   const count = $("[data-cart-count]");
   const toast = $(".toast");
-  let qty = 1, cart = 0;
+  let cart = 0;
 
-  const bundle = () => $('input[name="bundle"]:checked').value;
-  const updatePrice = () => {
-    const p = PRICES[bundle()];
-    priceEl.textContent = p == null ? "Price to be confirmed" : fmt(p * qty);
-  };
-  $$('input[name="bundle"]').forEach((r) => r.addEventListener("change", updatePrice));
-  $$("[data-qty]").forEach((b) => b.addEventListener("click", () => {
-    qty = Math.min(10, Math.max(1, qty + +b.dataset.qty));
-    out.textContent = qty;
-    gsap.fromTo(out, { scale: 1.25 }, { scale: 1, duration: 0.5, ease: "back.out(3)" });
+  $$("[data-pcard]").forEach((card) => {
+    const priceEl = $("[data-price]", card);
+    const out = $("[data-qty-out]", card);
+    let qty = 1;
+    const updatePrice = () => {
+      const p = PRICES[card.dataset.bundle];
+      priceEl.textContent = p == null ? "Price to be confirmed" : fmt(p * qty);
+    };
+    $$("[data-qty]", card).forEach((b) => b.addEventListener("click", () => {
+      qty = Math.min(10, Math.max(1, qty + +b.dataset.qty));
+      out.textContent = qty;
+      gsap.fromTo(out, { scale: 1.25 }, { scale: 1, duration: 0.5, ease: "back.out(3)" });
+      updatePrice();
+    }));
+    $("[data-add-cart]", card).addEventListener("click", () => {
+      cart += qty;
+      count.hidden = false;
+      count.textContent = cart;
+      gsap.fromTo(count, { scale: 0.4 }, { scale: 1, duration: 0.7, ease: "back.out(3)" });
+      toast.textContent = "Added to cart";
+      gsap.timeline()
+        .fromTo(toast, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: EASE })
+        .to(toast, { opacity: 0, y: 10, duration: 0.6, ease: "power2.in" }, "+=1.6");
+    });
     updatePrice();
-  }));
-  $("[data-add-cart]").addEventListener("click", () => {
-    cart += qty;
-    count.hidden = false;
-    count.textContent = cart;
-    gsap.fromTo(count, { scale: 0.4 }, { scale: 1, duration: 0.7, ease: "back.out(3)" });
-    toast.textContent = "Added to cart";
-    gsap.timeline()
-      .fromTo(toast, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: EASE })
-      .to(toast, { opacity: 0, y: 10, duration: 0.6, ease: "power2.in" }, "+=1.6");
   });
-  updatePrice();
 }
 
 /* ---------- Newsletter (client-side only; connect a backend before launch) ---------- */
