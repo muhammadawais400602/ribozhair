@@ -194,6 +194,7 @@ export async function initStory() {
 
     const renderer = new THREE.WebGLRenderer({ canvas, context, ...ctxOpts });
     renderer.setPixelRatio(pr);
+    addEventListener("ribo:quality", () => { renderer.setPixelRatio(1); renderer.setSize(canvas.clientWidth, canvas.clientHeight, false); });
     renderer.toneMapping = THREE.NeutralToneMapping;
     renderer.toneMappingExposure = 1.05;
     renderer.setClearColor(0x000000, 0);

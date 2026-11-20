@@ -113,10 +113,8 @@ export async function initScalp(canvas) {
     }
     topGeo.setAttribute('color', new THREE.BufferAttribute(col, 3)); topGeo.computeVertexNormals();
   }
-  const topMat = new THREE.MeshPhysicalMaterial({
-    color: 0xf3f8fe, roughness: 0.42, metalness: 0, clearcoat: 0.6, clearcoatRoughness: 0.3,
-    sheen: 0.6, sheenColor: new THREE.Color(0xcfe6ff), sheenRoughness: 0.5,
-    bumpMap: noiseTex, bumpScale: 1.1, vertexColors: true, transparent: true, opacity: 0.97,
+  const topMat = new THREE.MeshStandardMaterial({
+    color: 0xf3f8fe, roughness: 0.42, metalness: 0, bumpMap: noiseTex, bumpScale: 1.1, vertexColors: true, transparent: true, opacity: 0.97,
   });
   const top = new THREE.Mesh(topGeo, topMat); top.renderOrder = 3; slab.add(top);
 
@@ -134,8 +132,8 @@ export async function initScalp(canvas) {
   faceGeo.setAttribute('position', new THREE.Float32BufferAttribute(fp, 3));
   faceGeo.setAttribute('uv', new THREE.Float32BufferAttribute(fu, 2));
   faceGeo.setIndex(fi); faceGeo.computeVertexNormals();
-  const face = new THREE.Mesh(faceGeo, new THREE.MeshPhysicalMaterial({
-    map: layerTex, roughness: 0.3, clearcoat: 0.8, clearcoatRoughness: 0.2, transparent: true, opacity: 0.62, depthWrite: false,
+  const face = new THREE.Mesh(faceGeo, new THREE.MeshStandardMaterial({
+    map: layerTex, roughness: 0.3, transparent: true, opacity: 0.62, depthWrite: false,
   }));
   face.renderOrder = 6; slab.add(face);
 
@@ -159,8 +157,8 @@ export async function initScalp(canvas) {
   mainSpots.forEach(([x, z], i) => {
     const s = 0.86 + R() * 0.28, y = surfY(x, z);
     const g = new THREE.Group(); g.position.set(x, y, z); g.scale.set(s * (0.8 + R() * 0.45), s, s * (0.8 + R() * 0.45)); g.rotation.z = (R() - 0.5) * 0.12; slab.add(g);
-    const bulbMat = new THREE.MeshPhysicalMaterial({
-      color: 0xd9eafb, roughness: 0.3, clearcoat: 0.8, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
+    const bulbMat = new THREE.MeshStandardMaterial({
+      color: 0xd9eafb, roughness: 0.3, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
       emissive: new THREE.Color(0x1e88e5), emissiveIntensity: 0.05, depthWrite: false,
     });
     const bulb = new THREE.Mesh(follGeo, bulbMat); bulb.renderOrder = 2; g.add(bulb);
@@ -173,7 +171,7 @@ export async function initScalp(canvas) {
 
   // ---------- hair ----------
   const TUB = 64, RAD = 6;
-  const hairMat = new THREE.MeshPhysicalMaterial({ color: 0x0b1426, roughness: 0.24, metalness: 0.15, clearcoat: 1, clearcoatRoughness: 0.12, sheen: 0.6, sheenColor: new THREE.Color(0x3d6db0) });
+  const hairMat = new THREE.MeshStandardMaterial({ color: 0x0b1426, roughness: 0.24, metalness: 0.15 });
   const extraMat = hairMat.clone(); extraMat.transparent = true; extraMat.opacity = 0;
   const hairs = [];
   function addHair(x, z, rootY, L, radius, mat, extra, delay) {
@@ -206,7 +204,7 @@ export async function initScalp(canvas) {
 
   // ---------- droplets ----------
   const DN = 420;
-  const dropMat = new THREE.MeshPhysicalMaterial({ color: 0xd6eaff, roughness: 0.03, metalness: 0, clearcoat: 1, transparent: true, opacity: 0.72, envMapIntensity: 1.8 });
+  const dropMat = new THREE.MeshStandardMaterial({ color: 0xd6eaff, roughness: 0.03, metalness: 0, transparent: true, opacity: 0.72, envMapIntensity: 1.8 });
   const drops = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 14, 10), dropMat, DN);
   drops.frustumCulled = false; drops.renderOrder = 5; slab.add(drops);
   const dd = [];
@@ -243,7 +241,7 @@ export async function initScalp(canvas) {
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, matchMedia('(max-width: 960px), (pointer: coarse)').matches ? 1 : 1.25));
+    renderer.setPixelRatio(window.__riboQuality === 'lite' ? 0.7 : 0.85);
     renderer.setSize(w, h, false);
     aspect = w / h; camera.aspect = aspect;
     const t = Math.tan((camera.fov * Math.PI) / 360);
@@ -320,9 +318,15 @@ export async function initScalp(canvas) {
     camera.lookAt(cx * 0.35, -0.7, 0.5);
   }
 
+  let acc = 0;
   const tick = (_t, deltaTime) => {
-    if (!visible) return;
-    update(Math.min(deltaTime, 50) / 1000);
+    if (!visible || document.hidden) return;
+    acc += deltaTime;
+    if (acc < 30) return; // ~30 fps
+    deltaTime = acc; acc = 0;
+    const rc = canvas.getBoundingClientRect();
+    if (rc.bottom < 0 || rc.top > window.innerHeight) return; // never draw off-screen
+    update(Math.min(deltaTime, 66) / 1000);
     renderer.render(scene, camera);
   };
   gsap.ticker.add(tick);

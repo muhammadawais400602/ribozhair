@@ -67,13 +67,15 @@ export async function initMolecule(canvas) {
   let THREE, renderer;
   try {
     THREE = await import('three');
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: (window.devicePixelRatio || 1) <= 1, powerPreference: 'high-performance' });
   } catch (e) {
     host.classList.add('is-fallback');
     return;
   }
   const small = matchMedia('(max-width: 960px)').matches;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  const setPR = () => renderer.setPixelRatio(window.__riboQuality === 'lite' ? 1 : Math.min(window.devicePixelRatio || 1, 1.25));
+  setPR();
+  window.addEventListener('ribo:quality', () => { setPR(); renderer.setSize(canvas.clientWidth, canvas.clientHeight, false); });
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
@@ -111,25 +113,23 @@ export async function initMolecule(canvas) {
   scene.add(tilt);
 
   const { atoms, bonds } = buildAtoms();
-  // clear crystal: real transmission, refracting a soft copy of the section's own photo backdrop
+  // clear crystal without a transmission pass: translucent, env-reflective glass (one render pass)
   const mats = {};
   const glass = {
-    C: { transmission: 1, thickness: 1.3, attenuationColor: 0x8fc4ff, attenuationDistance: 1.6 },
-    O: { transmission: 0.92, thickness: 1.4, attenuationColor: 0x1e88e5, attenuationDistance: 0.55 },
-    H: { transmission: 0.95, thickness: 0.7, attenuationColor: 0xcfe6ff, attenuationDistance: 2.5 },
+    C: { opacity: 0.58, envMapIntensity: 1.9 },
+    O: { opacity: 0.82, envMapIntensity: 1.7 },
+    H: { opacity: 0.55, envMapIntensity: 1.9 },
   };
   for (const el of Object.keys(COLORS)) {
     mats[el] = new THREE.MeshPhysicalMaterial({
-      color: COLORS[el], roughness: 0.04, metalness: 0, ior: 1.5,
-      clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.35,
-      iridescence: el === 'O' ? 0.35 : 0.2, iridescenceIOR: 1.3,
+      color: COLORS[el], roughness: 0.05, metalness: 0, ior: 1.5,
+      clearcoat: 1, clearcoatRoughness: 0.03, transparent: true, depthWrite: false,
       specularIntensity: 1, ...glass[el],
     });
-    mats[el].attenuationColor = new THREE.Color(glass[el].attenuationColor);
   }
   const bondMat = new THREE.MeshPhysicalMaterial({
-    color: 0xf4f9ff, roughness: 0.06, transmission: 1, thickness: 0.4, ior: 1.45, attenuationColor: new THREE.Color(0x9fd0ff), attenuationDistance: 1.2,
-    clearcoat: 1, clearcoatRoughness: 0.04, envMapIntensity: 1.5,
+    color: 0xf4f9ff, roughness: 0.08, transparent: true, opacity: 0.5, depthWrite: false,
+    clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.8,
   });
 
   // backdrop inside the canvas (edge-masked in CSS so it melts into the page photo) — gives the glass something to refract
@@ -165,7 +165,7 @@ export async function initMolecule(canvas) {
   const haloMat = (opacity, color = 0x3d9bf2) => new THREE.SpriteMaterial({ map: haloTex, color, transparent: true, depthWrite: false, opacity, toneMapped: false });
 
   const R = rng(19);
-  const sphereGeo = new THREE.SphereGeometry(1, 64, 48);
+  const sphereGeo = new THREE.SphereGeometry(1, 32, 24);
   const N = atoms.length;
   const nodes = atoms.map((a, i) => {
     const m = new THREE.Mesh(sphereGeo, mats[a.el]);
@@ -238,13 +238,19 @@ export async function initMolecule(canvas) {
 
   // Visibility gating
   let visible = true;
-  const io = new IntersectionObserver((es) => (visible = es[0].isIntersecting), { rootMargin: '120px' });
+  const io = new IntersectionObserver((es) => (visible = es[0].isIntersecting), { rootMargin: '0px' });
   io.observe(canvas);
 
   const v = new THREE.Vector3();
   let idle = 0, a = 0, time = 0;
+  let acc = 0;
   const tick = (_t, dt) => {
-    if (!visible) return;
+    if (!visible || document.hidden) return;
+    acc += dt;
+    if (acc < 30) return; // ~30 fps is plenty for a slow ambient rotation
+    dt = acc; acc = 0;
+    const rc = canvas.getBoundingClientRect();
+    if (rc.bottom < 0 || rc.top > window.innerHeight) return; // never draw off-screen, even if the observer is lagging
     const d = Math.min(dt, 50) / 1000;
     time += d;
     idle += d * 0.16;

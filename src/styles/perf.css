@@ -1,0 +1,26 @@
+/* Performance layer — loaded last. Rules here exist because each one was measured as a cost. */
+
+/* will-change on ~120 elements created ~120 permanent GPU layers; only what moves constantly keeps it */
+*, *::before, *::after { will-change: auto !important; }
+.traveller, .fly-bottle { will-change: transform !important; }
+
+/* big blurred drop-shadows on moving product images are recomputed every frame; contact shadows are separate elements */
+.hero__bottle, .meet__bottle img, .traveller img, .fx__competitor, .shop__visual img, .news__title, .hero__reflect, .science__glow { filter: none !important; }
+
+/* cursor light: a plain soft gradient, no blend mode over the whole page */
+.cursor-light { mix-blend-mode: normal !important; width: 420px !important; height: 420px !important;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.26), rgba(180, 220, 255, 0.09) 46%, transparent 70%) !important; }
+
+/* film grain: static and viewport-sized (was a 200% blended layer animating every frame) */
+.grain { animation: none !important; mix-blend-mode: normal !important; inset: 0 !important; opacity: 0.05 !important; }
+
+/* header: a lighter blur over the moving video */
+.nav { backdrop-filter: blur(16px) saturate(160%) !important; -webkit-backdrop-filter: blur(16px) saturate(160%) !important; }
+
+/* auto-quality: switched on by perf.js when the device cannot hold ~35 fps while scrolling */
+html.perf-lite * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+html.perf-lite .nav { background: rgba(255, 255, 255, 0.86) !important; }
+html.perf-lite .callout, html.perf-lite .glass-badge { background: rgba(10, 42, 94, 0.5) !important; }
+html.perf-lite .grain, html.perf-lite .cursor-light, html.perf-lite .cursor-ring { display: none !important; }
+html.perf-lite .hero__lines { filter: none !important; }
+html.perf-lite .hero__reflect { display: none !important; }

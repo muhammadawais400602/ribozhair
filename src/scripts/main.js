@@ -10,12 +10,14 @@ import { initNav } from "./nav.js";
 import { initHero } from "./hero.js";
 import { initCursor } from "./cursor.js";
 import { initSea } from "./sea.js";
+import { initPerf } from "./perf.js";
 import { initFaqGlass } from "./faq-glass.js";
 import { initStory } from "./story.js";
 import { initSectionsA } from "./sections-a.js";
 import { initSectionsB } from "./sections-b.js";
 import { bootLite } from "./lite.js";
 import { initThemes, initBackdrops, initReveals, initTilt, initIngredients, initChart, initStars, initSeals, initFaq, initShop, initNewsletter } from "./ui.js";
+import "../styles/perf.css"; // last: its overrides must win over every section stylesheet
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,6 +59,7 @@ async function boot() {
   initShop();
   initNewsletter();
   initCursor();
+  initPerf();
 
   // 3D scenes load lazily so the first paint stays light
   import("./molecule.js").then((m) => m.initMolecule(document.querySelector(".science__canvas"), document.querySelector(".science"))).catch(console.error);
